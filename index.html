@@ -1067,59 +1067,6 @@ font-size:14px;
 margin-bottom:4px;
 }
 
-/* CONQUISTA POPUP GRANDE */
-
-.bigAchievement{
-position:fixed;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-z-index:13000;
-width:min(620px, 90vw);
-background:
-radial-gradient(circle at top, rgba(var(--accent-rgb),0.22), transparent 50%),
-rgba(12,12,12,0.97);
-border:3px solid var(--accent);
-border-radius:24px;
-padding:24px;
-text-align:center;
-box-shadow:
-0 0 25px rgba(var(--accent-rgb),0.45),
-0 0 90px rgba(var(--accent-rgb),0.22);
-animation:bigAchAnim 3.4s forwards;
-pointer-events:none;
-}
-
-.bigAchievementTitle{
-font-size:20px;
-letter-spacing:3px;
-color:var(--accent);
-font-weight:900;
-margin-bottom:10px;
-text-shadow:0 0 14px var(--accent);
-}
-
-.bigAchievementName{
-font-size:32px;
-font-weight:900;
-color:white;
-margin-bottom:8px;
-}
-
-.bigAchievementReward{
-font-size:16px;
-color:var(--text-soft);
-}
-
-@keyframes bigAchAnim{
-0%{opacity:0;transform:translate(-50%,-50%) scale(0.75);}
-12%{opacity:1;transform:translate(-50%,-50%) scale(1.04);}
-20%{transform:translate(-50%,-50%) scale(1);}
-82%{opacity:1;}
-100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
-}
-
-
 /* DESKTOP: PAINÉIS DO MEIO MAIS ESPALHADOS */
 
 @media (min-width: 1051px){
@@ -3299,7 +3246,7 @@ let lastPrestigeSignature = "";
 let lastAppliedSkinSignature = "";
 let newsTimer = null;
 
-const BALANCE_VERSION = "import_export_gobbi4_robusto_v2";
+const BALANCE_VERSION = "final_sem_popup_grande_conquista_v1";
 const CRIT_CHANCE_CAP = 0.05;
 const PRODUCTION_BUY_NERF = 1;
 
@@ -5284,7 +5231,6 @@ unlockedAchievements[a.id] = true;
 changed = true;
 
 showToast("Conquista desbloqueada!", `${a.name}`);
-showBigAchievement(a.name,"Conquista visual");
 sound("buy");
 }
 }catch(e){
@@ -5484,17 +5430,7 @@ setTextCached(rankAura, parts[4]);
 setTextCached(rankClicks, parts[5]);
 }
 
-function showBigAchievement(name,reward){
-const div = document.createElement("div");
-div.className = "bigAchievement";
-div.innerHTML = `
-<div class="bigAchievementTitle">CONQUISTA DESBLOQUEADA</div>
-<div class="bigAchievementName">${name}</div>
-<div class="bigAchievementReward">${reward}</div>
-`;
-document.body.appendChild(div);
-setTimeout(()=>div.remove(),3500);
-}
+
 
 
 function checkEraUnlock(){
