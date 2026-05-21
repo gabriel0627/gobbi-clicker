@@ -1,0 +1,7619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOBBI CLICKER</title>
+
+<style>
+:root{
+--accent:#39ff14;
+--accent-soft:#9eff9e;
+--text-soft:#d9ffd9;
+--accent-rgb:57,255,20;
+--accent-secondary:#ffd76a;
+--accent-secondary-rgb:255,215,106;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Verdana, Arial, sans-serif;
+}
+
+body{
+overflow-x:hidden;
+overflow-y:auto;
+background:#080808;
+color:white;
+}
+
+.bg{
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 24% 35%, rgba(var(--accent-rgb),0.13), transparent 28%),
+radial-gradient(circle at 70% 55%, rgba(255,230,0,0.05), transparent 30%),
+linear-gradient(135deg,#070707,#101010);
+z-index:-3;
+}
+
+.texture{
+position:fixed;
+width:100%;
+height:100%;
+background-image:
+linear-gradient(rgba(var(--accent-rgb),0.035) 1px, transparent 1px),
+linear-gradient(90deg, rgba(var(--accent-rgb),0.035) 1px, transparent 1px),
+radial-gradient(circle, rgba(var(--accent-rgb),0.05) 1px, transparent 1px);
+background-size:42px 42px, 42px 42px, 18px 18px;
+pointer-events:none;
+z-index:-2;
+}
+
+.game{
+display:grid;
+grid-template-columns: 34% 34% 32%;
+min-height:100vh;
+}
+
+/* LEFT */
+
+.left{
+position:relative;
+border-right:3px solid rgba(var(--accent-rgb),0.55);
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:20px;
+min-height:100vh;
+background:rgba(10,10,10,0.45);
+}
+
+.titlePanel{
+width:92%;
+background:rgba(12,12,12,0.9);
+border:2px solid rgba(var(--accent-rgb),0.35);
+border-radius:14px;
+padding:12px;
+text-align:center;
+box-shadow:0 0 18px rgba(var(--accent-rgb),0.12);
+}
+
+.logo{
+font-size:34px;
+font-weight:bold;
+color:var(--accent);
+text-shadow:0 0 10px var(--accent), 0 0 24px var(--accent);
+letter-spacing:1px;
+}
+
+.count{
+font-size:27px;
+margin-top:5px;
+}
+
+.gps{
+font-size:14px;
+color:var(--accent-soft);
+margin-top:2px;
+}
+
+.gobbiStage{
+position:relative;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-top:50px;
+}
+
+.gobbiWrap{
+position:relative;
+}
+
+.ring{
+position:absolute;
+width:315px;
+height:315px;
+border-radius:50%;
+border:4px solid rgba(var(--accent-rgb),0.13);
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+animation:spin 18s linear infinite;
+}
+
+.ring::before{
+content:"";
+position:absolute;
+inset:18px;
+border-radius:50%;
+border:2px dashed rgba(var(--accent-rgb),0.14);
+}
+
+@keyframes spin{
+from{transform:translate(-50%,-50%) rotate(0deg);}
+to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+.gobbi{
+width:225px;
+cursor:pointer;
+user-select:none;
+transition:0.08s;
+animation:float 4s ease-in-out infinite;
+filter:
+drop-shadow(0 0 20px var(--accent))
+drop-shadow(0 0 50px rgba(var(--accent-rgb),0.75));
+}
+
+.gobbi:hover{
+transform:scale(1.04);
+}
+
+.gobbi:active{
+transform:scale(0.91);
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-9px);}
+100%{transform:translateY(0);}
+}
+
+.sidePanel{
+width:92%;
+background:rgba(15,15,15,0.86);
+border:2px solid rgba(var(--accent-rgb),0.28);
+border-radius:14px;
+box-shadow:0 0 15px rgba(var(--accent-rgb),0.10);
+}
+
+.stats{
+margin-top:48px;
+padding:12px 14px;
+font-size:13px;
+line-height:1.7;
+color:#ddd;
+}
+
+.panelTitle{
+font-size:12px;
+letter-spacing:2px;
+color:var(--accent);
+margin-bottom:6px;
+font-weight:bold;
+}
+
+.controls{
+margin-top:12px;
+padding:10px;
+display:grid;
+grid-template-columns:1fr 1fr 1fr 1fr;
+gap:7px;
+}
+
+.controlBtn{
+background:#151515;
+color:var(--accent);
+border:2px solid rgba(var(--accent-rgb),0.45);
+padding:8px 8px;
+border-radius:10px;
+cursor:pointer;
+font-size:12px;
+transition:0.12s;
+}
+
+.controlBtn:hover{
+background:#222;
+border-color:var(--accent);
+box-shadow:0 0 12px rgba(var(--accent-rgb),0.28);
+}
+
+.controlBtn:active{
+transform:scale(0.96);
+}
+
+/* CENTER */
+
+.center{
+position:relative;
+border-right:3px solid rgba(var(--accent-rgb),0.45);
+padding:18px;
+background:rgba(7,7,7,0.25);
+min-height:100vh;
+}
+
+.newsPanel,
+.achPanel,
+.ownedPanel,
+.infoPanel,
+.prestigePanel,
+.effectPanel{
+background:rgba(14,14,14,0.88);
+border:2px solid rgba(var(--accent-rgb),0.25);
+border-radius:14px;
+padding:14px;
+margin-bottom:14px;
+box-shadow:0 0 16px rgba(var(--accent-rgb),0.08);
+}
+
+.newsBar{
+min-height:50px;
+color:var(--text-soft);
+font-size:14px;
+line-height:1.45;
+border-left:4px solid var(--accent);
+padding-left:10px;
+}
+
+.achList{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:8px;
+}
+
+.ach{
+background:#151515;
+border:1px solid rgba(var(--accent-rgb),0.18);
+border-radius:10px;
+padding:8px;
+font-size:12px;
+color:#777;
+}
+
+.ach.unlocked{
+color:#eaffea;
+border-color:rgba(var(--accent-rgb),0.65);
+box-shadow:0 0 10px rgba(var(--accent-rgb),0.12);
+}
+
+.ownedIcons{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:9px;
+min-height:38px;
+}
+
+.ownedIcon{
+width:34px;
+height:34px;
+border-radius:8px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#202020;
+border:1px solid rgba(var(--accent-rgb),0.4);
+box-shadow:0 0 8px rgba(var(--accent-rgb),0.12);
+font-size:18px;
+}
+
+.infoGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:8px;
+}
+
+.infoBox{
+background:#151515;
+border:1px solid rgba(var(--accent-rgb),0.18);
+border-radius:10px;
+padding:10px;
+font-size:12px;
+color:#ccc;
+}
+
+.infoBox b{
+display:block;
+color:var(--accent);
+font-size:14px;
+margin-bottom:4px;
+}
+
+.prestigeText{
+font-size:13px;
+color:#ddd;
+line-height:1.5;
+margin-bottom:10px;
+}
+
+.prestigeBtn{
+width:100%;
+background:#181818;
+color:#ffe600;
+border:2px solid rgba(255,230,0,0.5);
+padding:10px;
+border-radius:10px;
+cursor:pointer;
+font-size:13px;
+transition:0.12s;
+}
+
+.prestigeBtn:hover{
+background:#252000;
+border-color:#ffe600;
+box-shadow:0 0 12px rgba(255,230,0,0.22);
+}
+
+.effectLine{
+font-size:12px;
+color:#ddd;
+line-height:1.6;
+}
+
+/* RIGHT SHOP */
+
+.right{
+background:#151515;
+overflow-y:auto;
+min-height:100vh;
+}
+
+.right::-webkit-scrollbar{
+width:8px;
+}
+
+.right::-webkit-scrollbar-thumb{
+background:var(--accent);
+}
+
+.shopTitle{
+height:64px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:26px;
+font-weight:bold;
+color:var(--accent);
+border-bottom:2px solid rgba(var(--accent-rgb),0.25);
+text-shadow:0 0 14px var(--accent);
+position:sticky;
+top:0;
+background:#151515;
+z-index:20;
+}
+
+.tabs{
+display:grid;
+grid-template-columns:1fr 1fr 1fr 1fr;
+gap:6px;
+padding:8px;
+position:sticky;
+top:116px;
+background:#151515;
+z-index:19;
+border-bottom:1px solid rgba(var(--accent-rgb),0.15);
+}
+
+.tab{
+background:#202020;
+color:var(--accent-soft);
+border:1px solid rgba(var(--accent-rgb),0.25);
+border-radius:9px;
+padding:8px 4px;
+font-size:12px;
+cursor:pointer;
+transition:0.12s;
+}
+
+.tab:hover{
+border-color:var(--accent);
+}
+
+.tab.active{
+background:var(--accent);
+color:#071007;
+font-weight:bold;
+box-shadow:0 0 12px rgba(var(--accent-rgb),0.35);
+}
+
+.buyModes{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:6px;
+padding:0 8px 8px;
+position:sticky;
+top:167px;
+background:#151515;
+z-index:18;
+border-bottom:1px solid rgba(var(--accent-rgb),0.15);
+}
+
+.buyMode{
+background:#101010;
+color:#ccc;
+border:1px solid rgba(var(--accent-rgb),0.2);
+border-radius:8px;
+padding:7px 4px;
+font-size:11px;
+cursor:pointer;
+transition:0.12s;
+}
+
+.buyMode.active{
+color:#071007;
+background:var(--accent-soft);
+font-weight:bold;
+}
+
+.shopList{
+padding-bottom:25px;
+}
+
+.item{
+display:grid;
+grid-template-columns:46px 1fr 42px;
+gap:9px;
+align-items:center;
+margin:7px 8px;
+padding:8px;
+background:#222;
+border-radius:12px;
+border:2px solid rgba(var(--accent-rgb),0.12);
+cursor:pointer;
+transition:0.12s;
+position:relative;
+min-height:66px;
+}
+
+.item.locked{
+opacity:0.34;
+filter:grayscale(1);
+cursor:not-allowed;
+}
+
+.item.canBuy{
+border-color:rgba(var(--accent-rgb),0.72);
+box-shadow:0 0 10px rgba(var(--accent-rgb),0.16);
+}
+
+.item.cannotBuy{
+filter:grayscale(0.75);
+opacity:0.55;
+}
+
+.item:hover{
+transform:scale(1.015);
+background:#2a2a2a;
+}
+
+.item.locked:hover{
+transform:none;
+background:#222;
+}
+
+.item:active{
+transform:scale(0.97);
+}
+
+.icon{
+width:46px;
+height:46px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+font-size:21px;
+background:linear-gradient(135deg,var(--accent),#00bb55);
+box-shadow:0 0 12px rgba(var(--accent-rgb),0.38);
+}
+
+.clickUpgrade .icon{
+background:linear-gradient(135deg,#00eaff,#0066ff);
+}
+
+.special .icon{
+background:linear-gradient(135deg,#ffe600,#ff9900);
+}
+
+.info h2{
+font-size:14px;
+line-height:1.15;
+}
+
+.info p{
+margin-top:2px;
+font-size:11px;
+color:var(--accent-soft);
+}
+
+.amount{
+font-size:20px;
+font-weight:bold;
+color:rgba(255,255,255,0.32);
+text-align:right;
+}
+
+
+/* PÁGINAS DA LOJA */
+
+.pageControls{
+display:grid;
+grid-template-columns:42px 1fr 42px;
+gap:6px;
+padding:0 8px 8px;
+position:sticky;
+top:218px;
+background:#151515;
+z-index:17;
+border-bottom:1px solid rgba(var(--accent-rgb),0.15);
+}
+
+.pageBtn{
+background:#101010;
+color:var(--accent);
+border:1px solid rgba(var(--accent-rgb),0.32);
+border-radius:8px;
+font-size:16px;
+font-weight:900;
+cursor:pointer;
+transition:0.12s;
+}
+
+.pageBtn:hover{
+border-color:var(--accent);
+box-shadow:0 0 10px rgba(var(--accent-rgb),0.2);
+}
+
+.pageInfo{
+display:flex;
+align-items:center;
+justify-content:center;
+background:#202020;
+color:var(--text-soft);
+border:1px solid rgba(var(--accent-rgb),0.25);
+border-radius:8px;
+font-size:11px;
+font-weight:700;
+}
+
+@media (max-width: 1050px){
+.pageControls{
+top:218px;
+}
+}
+
+
+.entrosamentoUpgrade .icon{
+background:linear-gradient(135deg,#b06cff,var(--accent));
+}
+
+.entrosamentoUpgrade{
+border-color:rgba(176,108,255,0.45);
+}
+
+.entrosamentoUpgrade.canBuy{
+border-color:rgba(176,108,255,0.9);
+box-shadow:
+0 0 10px rgba(176,108,255,0.25),
+0 0 14px rgba(var(--accent-rgb),0.12);
+}
+
+.entrosamentoCurrency{
+color:#cfa7ff;
+font-weight:bold;
+}
+
+.entrosamentoLocked{
+color:#999;
+font-size:11px;
+margin-top:2px;
+}
+
+
+/* AJUSTE DA ABA ENTROSAMENTO */
+
+.shopList.entrosamentoShop{
+padding-top:16px;
+}
+
+.entrosamentoUpgrade .info p{
+line-height:1.25;
+}
+
+
+/* LOJA / SKINS NA COLUNA DIREITA */
+
+.shopModeSwitch{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px;
+padding:8px;
+position:sticky;
+top:64px;
+background:#151515;
+z-index:21;
+border-bottom:1px solid rgba(var(--accent-rgb),0.15);
+}
+
+.shopModeBtn{
+background:#202020;
+color:var(--accent-soft);
+border:1px solid rgba(var(--accent-rgb),0.28);
+border-radius:10px;
+padding:9px 6px;
+font-size:13px;
+font-weight:800;
+cursor:pointer;
+transition:0.12s;
+}
+
+.shopModeBtn:hover{
+border-color:var(--accent);
+box-shadow:0 0 10px rgba(var(--accent-rgb),0.22);
+}
+
+.shopModeBtn.active{
+background:var(--accent);
+color:#071007;
+box-shadow:0 0 12px rgba(var(--accent-rgb),0.35);
+}
+
+.skinShopPanel{
+display:none;
+padding:10px 8px 25px;
+}
+
+.right.showSkins .tabs,
+.right.showSkins .buyModes,
+.right.showSkins .pageControls,
+.right.showSkins .shopList{
+display:none !important;
+}
+
+.right.showSkins .skinShopPanel{
+display:block;
+}
+
+.right.showShop .skinShopPanel{
+display:none;
+}
+
+.right.showShop .shopList{
+display:block;
+}
+
+.right.showShop .tabs{
+display:grid;
+}
+
+.right.showShop .buyModes{
+display:grid;
+}
+
+.right.showShop .pageControls{
+display:grid;
+}
+
+.skinGrid{
+grid-template-columns:1fr;
+}
+
+.skinBtn{
+min-height:62px;
+}
+
+.skinBtnContent{
+display:block;
+}
+
+.skinPreview{
+display:none !important;
+}
+
+/* EVENTOS ALEATÓRIOS E SKINS */
+
+.eventPulse{
+animation:eventPulseScreen 0.8s alternate 6;
+}
+
+@keyframes eventPulseScreen{
+from{filter:brightness(1);}
+to{filter:brightness(1.28) saturate(1.25);}
+}
+
+.skinPanel{
+background:rgba(14,14,14,0.88);
+border:2px solid rgba(var(--accent-rgb),0.25);
+border-radius:14px;
+padding:14px;
+margin-bottom:14px;
+box-shadow:0 0 16px rgba(var(--accent-rgb),0.08);
+}
+
+.skinGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:8px;
+}
+
+.skinBtn{
+background:#151515;
+color:var(--text-soft);
+border:1px solid rgba(var(--accent-rgb),0.26);
+border-radius:10px;
+padding:8px;
+font-size:12px;
+cursor:pointer;
+transition:0.12s;
+text-align:left;
+}
+
+.skinBtn:hover{
+border-color:var(--accent);
+box-shadow:0 0 10px rgba(var(--accent-rgb),0.18);
+}
+
+.skinBtn.active{
+border-color:var(--accent);
+box-shadow:0 0 14px rgba(var(--accent-rgb),0.28);
+color:white;
+}
+
+.skinBtn.locked{
+opacity:0.42;
+filter:grayscale(1);
+cursor:not-allowed;
+}
+
+
+.skinPreview{
+width:34px;
+height:34px;
+object-fit:cover;
+border-radius:8px;
+border:1px solid rgba(var(--accent-rgb),0.32);
+box-shadow:0 0 8px rgba(var(--accent-rgb),0.20);
+margin-right:7px;
+vertical-align:middle;
+}
+
+.skinBtnContent{
+display:flex;
+align-items:center;
+gap:7px;
+}
+
+.skinTextWrap{
+display:flex;
+flex-direction:column;
+}
+
+.skinName{
+display:block;
+font-weight:900;
+color:var(--accent);
+}
+
+.skinReq{
+display:block;
+font-size:10px;
+opacity:0.85;
+margin-top:2px;
+}
+
+.eventBadge{
+font-size:12px;
+color:var(--text-soft);
+line-height:1.5;
+}
+
+.eventBadge b{
+color:var(--accent);
+}
+
+/* EFFECTS */
+
+.float{
+position:absolute;
+font-size:26px;
+font-weight:bold;
+pointer-events:none;
+animation:floatUp 1s forwards;
+z-index:99;
+}
+
+.normal{
+color:var(--accent);
+text-shadow:0 0 10px var(--accent);
+}
+
+.crit{
+color:#ffe600;
+text-shadow:0 0 15px #ffe600,0 0 40px #ffe600;
+}
+
+@keyframes floatUp{
+to{transform:translateY(-100px) scale(1.2);opacity:0;}
+}
+
+.particle{
+position:absolute;
+width:6px;
+height:6px;
+border-radius:50%;
+background:var(--accent);
+pointer-events:none;
+animation:particle 1s linear forwards;
+z-index:99;
+}
+
+@keyframes particle{
+to{transform:translate(var(--x),var(--y));opacity:0;}
+}
+
+.wave{
+position:absolute;
+border:2px solid var(--accent);
+border-radius:50%;
+pointer-events:none;
+animation:waveAnim 0.55s forwards;
+z-index:80;
+}
+
+@keyframes waveAnim{
+from{width:10px;height:10px;opacity:0.8;}
+to{width:150px;height:150px;opacity:0;transform:translate(-70px,-70px);}
+}
+
+.golden{
+position:absolute;
+width:86px;
+cursor:pointer;
+z-index:50;
+animation:goldFloat 2s infinite alternate, goldGlow 1s infinite alternate;
+}
+
+@keyframes goldFloat{
+from{transform:translateY(0);}
+to{transform:translateY(-10px);}
+}
+
+@keyframes goldGlow{
+from{filter:drop-shadow(0 0 10px gold);}
+to{filter:drop-shadow(0 0 30px gold);}
+}
+
+.toastBox{
+position:fixed;
+left:16px;
+top:16px;
+z-index:200;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.toast{
+background:#151515;
+border:2px solid var(--accent);
+color:white;
+padding:10px 14px;
+border-radius:12px;
+box-shadow:0 0 16px rgba(var(--accent-rgb),0.25);
+animation:toastAnim 3s forwards;
+font-size:13px;
+}
+
+.toast b{
+color:var(--accent);
+}
+
+@keyframes toastAnim{
+0%{transform:translateX(-30px);opacity:0;}
+15%{transform:translateX(0);opacity:1;}
+80%{opacity:1;}
+100%{transform:translateX(-30px);opacity:0;}
+}
+
+
+/* ALERTA TUFF EVENT */
+
+.tuffFlash{
+animation:tuffScreenFlash 0.18s alternate 56;
+}
+
+@keyframes tuffScreenFlash{
+from{
+background:#080808;
+filter:brightness(1);
+}
+to{
+background:#ffe600;
+filter:brightness(1.8) saturate(1.8);
+}
+}
+
+.tuffAlert{
+position:fixed;
+inset:0;
+display:flex;
+align-items:flex-start;
+justify-content:center;
+z-index:9999;
+padding-top:110px;
+pointer-events:none;
+background:rgba(255,230,0,0.18);
+animation:tuffAlertFade 10s forwards;
+}
+
+.tuffAlertText{
+font-size:clamp(42px, 8vw, 130px);
+font-weight:900;
+color:#ff0000;
+text-align:center;
+text-shadow:
+0 0 8px #000,
+0 0 18px #ff0000,
+0 0 35px #ff0000;
+animation:tuffTextShake 0.08s infinite alternate;
+}
+
+@keyframes tuffTextShake{
+from{
+transform:translate(-4px, -3px) rotate(-1deg) scale(1);
+}
+to{
+transform:translate(4px, 3px) rotate(1deg) scale(1.04);
+}
+}
+
+@keyframes tuffAlertFade{
+0%{opacity:0;}
+4%{opacity:1;}
+92%{opacity:1;}
+100%{opacity:0;}
+}
+
+
+/* GOLDEN GOBBI MELHORADO */
+
+.goldAmbient{
+position:fixed;
+inset:0;
+z-index:45;
+pointer-events:none;
+background:
+radial-gradient(circle at center, rgba(255,230,0,0.18), transparent 55%);
+animation:goldAmbientPulse 1s infinite alternate;
+}
+
+@keyframes goldAmbientPulse{
+from{opacity:0.35;}
+to{opacity:0.75;}
+}
+
+.golden{
+position:absolute;
+width:86px;
+cursor:pointer;
+z-index:60;
+animation:
+goldSpawn 0.35s ease-out,
+goldFloat 2s infinite alternate,
+goldGlow 1s infinite alternate,
+goldShake 0.12s infinite alternate;
+}
+
+.goldenTimer{
+position:absolute;
+z-index:61;
+pointer-events:none;
+background:rgba(0,0,0,0.78);
+color:#ffe600;
+border:2px solid rgba(255,230,0,0.7);
+border-radius:999px;
+padding:3px 8px;
+font-size:12px;
+font-weight:900;
+box-shadow:0 0 12px rgba(255,230,0,0.3);
+}
+
+@keyframes goldSpawn{
+from{
+transform:scale(0) rotate(-25deg);
+opacity:0;
+}
+to{
+transform:scale(1) rotate(0deg);
+opacity:1;
+}
+}
+
+@keyframes goldFloat{
+from{translate:0 0;}
+to{translate:0 -10px;}
+}
+
+@keyframes goldGlow{
+from{filter:drop-shadow(0 0 10px gold);}
+to{filter:drop-shadow(0 0 35px gold);}
+}
+
+@keyframes goldShake{
+from{rotate:-1.5deg;}
+to{rotate:1.5deg;}
+}
+
+/* RANKING LOCAL */
+
+.rankGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:8px;
+}
+
+.rankBox{
+background:#151515;
+border:1px solid rgba(var(--accent-rgb),0.18);
+border-radius:10px;
+padding:10px;
+font-size:12px;
+color:#ccc;
+}
+
+.rankBox b{
+display:block;
+color:var(--accent);
+font-size:14px;
+margin-bottom:4px;
+}
+
+/* CONQUISTA POPUP GRANDE */
+
+.bigAchievement{
+position:fixed;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+z-index:13000;
+width:min(620px, 90vw);
+background:
+radial-gradient(circle at top, rgba(var(--accent-rgb),0.22), transparent 50%),
+rgba(12,12,12,0.97);
+border:3px solid var(--accent);
+border-radius:24px;
+padding:24px;
+text-align:center;
+box-shadow:
+0 0 25px rgba(var(--accent-rgb),0.45),
+0 0 90px rgba(var(--accent-rgb),0.22);
+animation:bigAchAnim 3.4s forwards;
+pointer-events:none;
+}
+
+.bigAchievementTitle{
+font-size:20px;
+letter-spacing:3px;
+color:var(--accent);
+font-weight:900;
+margin-bottom:10px;
+text-shadow:0 0 14px var(--accent);
+}
+
+.bigAchievementName{
+font-size:32px;
+font-weight:900;
+color:white;
+margin-bottom:8px;
+}
+
+.bigAchievementReward{
+font-size:16px;
+color:var(--text-soft);
+}
+
+@keyframes bigAchAnim{
+0%{opacity:0;transform:translate(-50%,-50%) scale(0.75);}
+12%{opacity:1;transform:translate(-50%,-50%) scale(1.04);}
+20%{transform:translate(-50%,-50%) scale(1);}
+82%{opacity:1;}
+100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
+}
+
+
+/* DESKTOP: PAINÉIS DO MEIO MAIS ESPALHADOS */
+
+@media (min-width: 1051px){
+
+.center{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+align-content:start;
+}
+
+.center > div{
+margin-bottom:0;
+}
+
+.newsPanel{
+grid-column:1 / -1;
+}
+
+.achPanel{
+grid-column:1 / -1;
+}
+
+.ownedPanel{
+min-height:120px;
+}
+
+.skinPanel{
+min-height:120px;
+}
+
+.prestigePanel{
+grid-column:1 / -1;
+}
+
+}
+
+
+/* CONQUISTAS NA COLUNA ESQUERDA NO PC */
+
+@media (min-width:1051px){
+.left .achPanel{
+width:92%;
+margin-top:12px;
+}
+
+.left .achList{
+grid-template-columns:1fr;
+max-height:260px;
+overflow-y:auto;
+padding-right:4px;
+}
+
+.left .achList::-webkit-scrollbar{
+width:6px;
+}
+
+.left .achList::-webkit-scrollbar-thumb{
+background:var(--accent);
+border-radius:999px;
+}
+}
+
+
+/* RESUMO + RANKING JUNTOS E PAINEL DE ERAS */
+
+.summaryRankPanel{
+grid-column:1 / -1;
+}
+
+.mergedPanelGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.subPanelTitle{
+font-size:11px;
+letter-spacing:2px;
+color:var(--accent);
+font-weight:bold;
+margin:2px 0 7px;
+}
+
+.eraPanel{
+background:rgba(14,14,14,0.88);
+border:2px solid rgba(var(--accent-rgb),0.25);
+border-radius:14px;
+padding:14px;
+margin-bottom:14px;
+box-shadow:0 0 16px rgba(var(--accent-rgb),0.08);
+grid-column:1 / -1;
+}
+
+.eraText{
+font-size:13px;
+color:#ddd;
+line-height:1.5;
+}
+
+.eraProgressOuter{
+width:100%;
+height:12px;
+border-radius:999px;
+background:#111;
+border:1px solid rgba(var(--accent-rgb),0.32);
+overflow:hidden;
+margin-top:8px;
+}
+
+.eraProgressInner{
+height:100%;
+width:0%;
+background:var(--accent);
+box-shadow:0 0 12px rgba(var(--accent-rgb),0.45);
+transition:width 0.25s;
+}
+
+.eraPagesText{
+font-size:11px;
+color:var(--accent-soft);
+margin-top:7px;
+}
+
+.lockedEraPageMsg{
+padding:14px;
+margin:8px;
+border:2px dashed rgba(var(--accent-rgb),0.35);
+border-radius:14px;
+color:#aaa;
+font-size:13px;
+text-align:center;
+}
+
+@media (max-width:700px){
+.mergedPanelGrid{
+grid-template-columns:1fr;
+}
+}
+
+
+/* CONQUISTAS SEM SCROLL EM COLUNAS */
+
+@media (min-width:1051px){
+.left .achPanel{
+width:92%;
+margin-top:12px;
+}
+
+.left .achList{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:7px;
+max-height:none !important;
+overflow:visible !important;
+padding-right:0 !important;
+}
+
+.left .ach{
+font-size:11px;
+padding:7px;
+min-height:34px;
+display:flex;
+align-items:center;
+}
+
+.left .achList::-webkit-scrollbar{
+display:none;
+}
+}
+
+@media (min-width:1650px){
+.left .achList{
+grid-template-columns:repeat(3, minmax(0, 1fr));
+}
+}
+
+@media (max-width:1050px){
+.achList{
+grid-template-columns:1fr 1fr;
+}
+}
+
+@media (max-width:520px){
+.achList{
+grid-template-columns:1fr;
+}
+}
+
+
+/* removido: MOBILE COM ABAS FIXAS, ERAS, MISSÕES E POLIMENTO (substituído pelos blocos finais force-mobile/PC) */
+
+/* removido: MOBILE FINAL: NEWS, CONTROLES E GOBBI CENTRALIZADA (substituído pelos blocos finais force-mobile/PC) */
+/* MOBILE NEWS ACIMA DA GOBBI EM ESTILO LED */
+
+@media (max-width:1050px){
+
+body.mobile-view-main .left{
+align-items:center !important;
+justify-content:flex-start !important;
+padding-top:16px;
+gap:0;
+}
+
+body.mobile-view-main .titlePanel{
+width:92%;
+order:1;
+}
+
+body.mobile-view-main .mobileMainNewsPanel{
+display:block !important;
+width:92%;
+margin:12px auto 16px !important;
+order:2;
+padding:10px 12px;
+overflow:hidden;
+}
+
+body.mobile-view-main .gobbiStage{
+order:3;
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top:18px !important;
+margin-bottom:16px;
+min-height:270px;
+}
+
+body.mobile-view-main .gobbiWrap{
+margin-left:auto;
+margin-right:auto;
+}
+
+body.mobile-view-main .gobbi{
+margin-left:auto;
+margin-right:auto;
+display:block;
+}
+
+.mobileNewsTicker{
+display:flex;
+align-items:center;
+gap:8px;
+width:100%;
+overflow:hidden;
+white-space:nowrap;
+}
+
+.mobileNewsLabel{
+flex:0 0 auto;
+font-size:12px;
+font-weight:900;
+letter-spacing:1px;
+color:var(--accent);
+text-shadow:0 0 8px var(--accent);
+}
+
+.mobileNewsTrack{
+flex:1;
+overflow:hidden;
+position:relative;
+height:18px;
+}
+
+.mobileNewsTrack span{
+position:absolute;
+white-space:nowrap;
+will-change:transform;
+animation:gobbiNewsMarquee var(--news-duration, 16s) linear 1;
+color:var(--text-soft);
+font-size:12px;
+line-height:18px;
+left:0;
+top:0;
+}
+
+@keyframes gobbiNewsMarquee{
+0%{
+transform:translateX(var(--news-start, 260px));
+}
+100%{
+transform:translateX(calc(-1 * var(--news-text-width, 600px)));
+}
+}
+
+body.mobile-view-main .counter,
+body.mobile-view-main .count,
+body.mobile-view-main .gps{
+text-align:center;
+}
+}
+
+
+/* ENGRENAGEM DE CONFIGURAÇÕES MOBILE */
+
+.mobileSettingsGear,
+.mobileSettingsOverlay{
+display:none;
+}
+
+@media (max-width:1050px){
+body.mobile-view-main .mobileSettingsGear{
+display:flex;
+position:fixed;
+right:14px;
+bottom:76px;
+z-index:17000;
+width:48px;
+height:48px;
+border-radius:50%;
+align-items:center;
+justify-content:center;
+background:rgba(14,14,14,0.96);
+color:var(--accent);
+border:2px solid rgba(var(--accent-rgb),0.65);
+box-shadow:
+0 0 14px rgba(var(--accent-rgb),0.28),
+0 0 28px rgba(0,0,0,0.45);
+font-size:23px;
+cursor:pointer;
+touch-action:manipulation;
+}
+
+body.mobile-view-main .mobileSettingsGear:active{
+transform:scale(0.94);
+}
+
+.mobileSettingsOverlay.open{
+display:flex;
+position:fixed;
+inset:0;
+z-index:18000;
+background:rgba(0,0,0,0.58);
+align-items:flex-end;
+justify-content:center;
+padding:0 14px 84px;
+}
+
+.mobileSettingsPopup{
+width:min(360px, 96vw);
+background:rgba(12,12,12,0.98);
+border:2px solid rgba(var(--accent-rgb),0.7);
+border-radius:18px;
+padding:14px;
+box-shadow:
+0 0 22px rgba(var(--accent-rgb),0.28),
+0 0 60px rgba(0,0,0,0.55);
+}
+
+.mobileSettingsHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
+color:var(--accent);
+font-weight:900;
+letter-spacing:1px;
+font-size:14px;
+margin-bottom:10px;
+}
+
+#mobileSettingsClose{
+background:#181818;
+color:var(--accent);
+border:1px solid rgba(var(--accent-rgb),0.4);
+border-radius:9px;
+width:32px;
+height:32px;
+font-size:22px;
+line-height:24px;
+cursor:pointer;
+}
+
+.mobileSettingsOption{
+width:100%;
+display:block;
+background:#161616;
+color:var(--text-soft);
+border:1px solid rgba(var(--accent-rgb),0.35);
+border-radius:12px;
+padding:13px 10px;
+font-size:15px;
+font-weight:900;
+margin-top:8px;
+cursor:pointer;
+touch-action:manipulation;
+}
+
+.mobileSettingsOption:active{
+transform:scale(0.98);
+}
+
+.mobileSettingsOption.danger{
+color:#ffdada;
+border-color:rgba(255,70,70,0.55);
+}
+}
+
+
+/* TEMA ESPECIAL: GOBBI DEMIURGO */
+
+body.skin-demiurgo .bg{
+background:
+radial-gradient(circle at 24% 35%, rgba(176,108,255,0.16), transparent 28%),
+radial-gradient(circle at 70% 55%, rgba(255,215,106,0.13), transparent 30%),
+radial-gradient(circle at 50% 15%, rgba(255,215,106,0.06), transparent 22%),
+linear-gradient(135deg,#08050d,#140f1b,#0a0910);
+}
+
+body.skin-demiurgo .texture{
+background-image:
+linear-gradient(rgba(176,108,255,0.04) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,215,106,0.035) 1px, transparent 1px),
+radial-gradient(circle, rgba(176,108,255,0.06) 1px, transparent 1px);
+}
+
+body.skin-demiurgo .panelTitle,
+body.skin-demiurgo .eventBadge,
+body.skin-demiurgo .mobileNewsLabel{
+color:var(--accent-secondary);
+text-shadow:0 0 10px rgba(var(--accent-secondary-rgb),0.45);
+}
+
+body.skin-demiurgo .counter,
+body.skin-demiurgo .count{
+text-shadow:
+0 0 10px rgba(176,108,255,0.22),
+0 0 18px rgba(255,215,106,0.18);
+}
+
+body.skin-demiurgo .gobbi,
+body.skin-demiurgo .gobbiButton{
+filter:
+drop-shadow(0 0 18px rgba(176,108,255,0.95))
+drop-shadow(0 0 30px rgba(255,215,106,0.42)) !important;
+}
+
+body.skin-demiurgo .controlBtn,
+body.skin-demiurgo .shopItem,
+body.skin-demiurgo .skinBtn,
+body.skin-demiurgo .ach,
+body.skin-demiurgo .rankBox,
+body.skin-demiurgo .infoBox{
+border-color:rgba(var(--accent-secondary-rgb),0.26);
+box-shadow:0 0 10px rgba(176,108,255,0.06);
+}
+
+body.skin-demiurgo .activeEventPanel,
+body.skin-demiurgo .prestigePanel,
+body.skin-demiurgo .eraPanel{
+box-shadow:
+0 0 18px rgba(176,108,255,0.10),
+0 0 22px rgba(255,215,106,0.05);
+}
+
+
+
+/* FIX: MISSÕES DIÁRIAS FORMATADAS */
+
+.missionsPanel,
+.lorePanel{
+background:rgba(14,14,14,0.88);
+border:2px solid rgba(var(--accent-rgb),0.25);
+border-radius:14px;
+padding:14px;
+margin-bottom:14px;
+box-shadow:0 0 16px rgba(var(--accent-rgb),0.08);
+grid-column:1 / -1;
+}
+
+.missionsList{
+display:flex;
+flex-direction:column;
+gap:8px;
+margin-top:8px;
+}
+
+.missionResetText{
+font-size:11px;
+color:var(--accent-soft);
+margin:0 0 2px;
+opacity:0.92;
+}
+
+.missionCard{
+background:#151515;
+border:1px solid rgba(var(--accent-rgb),0.22);
+border-radius:10px;
+padding:9px;
+font-size:12px;
+line-height:1.45;
+color:#ddd;
+margin-top:0;
+}
+
+.missionCard b{
+display:inline-block;
+color:var(--accent);
+font-size:13px;
+margin-bottom:2px;
+}
+
+.missionCard.completed{
+opacity:0.72;
+border-color:rgba(var(--accent-rgb),0.55);
+}
+
+.missionProgressOuter{
+width:100%;
+height:8px;
+border-radius:999px;
+background:#080808;
+border:1px solid rgba(var(--accent-rgb),0.24);
+overflow:hidden;
+margin-top:7px;
+}
+
+.missionProgressInner{
+height:100%;
+background:var(--accent);
+width:0%;
+box-shadow:0 0 10px rgba(var(--accent-rgb),0.38);
+}
+
+.missionDoneBadge{
+display:inline-block;
+margin-top:5px;
+padding:3px 7px;
+border-radius:999px;
+background:rgba(var(--accent-rgb),0.16);
+border:1px solid rgba(var(--accent-rgb),0.35);
+color:var(--accent-soft);
+font-size:10px;
+font-weight:900;
+}
+
+@media (min-width:1051px){
+.missionsPanel{
+padding:14px;
+}
+
+.missionCard{
+font-size:12px;
+}
+
+.missionCard b{
+font-size:13px;
+}
+}
+
+
+/* ÁRVORE DE ENTROSAMENTO */
+
+.entTreeOpenBtn{
+width:100%;
+background:#151515;
+color:#d7b8ff;
+border:2px solid rgba(176,108,255,0.55);
+padding:10px;
+border-radius:10px;
+cursor:pointer;
+font-size:13px;
+font-weight:900;
+transition:0.12s;
+margin-top:8px;
+}
+
+.entTreeOpenBtn:hover{
+border-color:#b06cff;
+box-shadow:0 0 14px rgba(176,108,255,0.28);
+}
+
+.entTreeOverlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.72);
+z-index:22000;
+padding:24px;
+overflow:auto;
+}
+
+.entTreeOverlay.open{
+display:flex;
+align-items:flex-start;
+justify-content:center;
+}
+
+.entTreeWindow{
+width:min(1100px,96vw);
+background:
+radial-gradient(circle at top, rgba(176,108,255,0.18), transparent 35%),
+rgba(10,10,10,0.98);
+border:2px solid rgba(176,108,255,0.7);
+border-radius:22px;
+box-shadow:
+0 0 28px rgba(176,108,255,0.28),
+0 0 90px rgba(0,0,0,0.65);
+padding:16px;
+}
+
+.entTreeHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+border-bottom:1px solid rgba(176,108,255,0.28);
+padding-bottom:12px;
+margin-bottom:12px;
+}
+
+.entTreeTitle{
+font-size:18px;
+letter-spacing:2px;
+font-weight:900;
+color:#d7b8ff;
+text-shadow:0 0 12px rgba(176,108,255,0.5);
+}
+
+.entTreeSubtitle{
+font-size:13px;
+color:var(--accent-soft);
+margin-top:4px;
+}
+
+.entTreeClose{
+width:40px;
+height:40px;
+border-radius:12px;
+border:1px solid rgba(176,108,255,0.45);
+background:#161616;
+color:#d7b8ff;
+font-size:28px;
+line-height:34px;
+cursor:pointer;
+}
+
+.entTreeHelp{
+font-size:12px;
+line-height:1.45;
+color:#ccc;
+background:rgba(255,255,255,0.035);
+border:1px solid rgba(176,108,255,0.18);
+border-radius:12px;
+padding:10px;
+margin-bottom:14px;
+}
+
+.entTreeGrid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0,1fr));
+gap:18px 14px;
+position:relative;
+}
+
+.entNode{
+position:relative;
+background:#151515;
+border:2px solid rgba(176,108,255,0.24);
+border-radius:16px;
+padding:12px;
+min-height:138px;
+cursor:pointer;
+transition:0.14s;
+box-shadow:0 0 12px rgba(0,0,0,0.25);
+}
+
+.entNode::before{
+content:"";
+position:absolute;
+left:50%;
+top:-19px;
+width:2px;
+height:18px;
+background:rgba(176,108,255,0.22);
+display:none;
+}
+
+.entNode.hasReq::before{
+display:block;
+}
+
+.entNode.canBuy{
+border-color:rgba(176,108,255,0.9);
+box-shadow:
+0 0 14px rgba(176,108,255,0.22),
+0 0 22px rgba(var(--accent-rgb),0.08);
+}
+
+.entNode.locked{
+opacity:0.48;
+filter:grayscale(0.55);
+}
+
+.entNode.maxed{
+border-color:rgba(var(--accent-rgb),0.75);
+background:linear-gradient(135deg,rgba(var(--accent-rgb),0.13),#151515);
+}
+
+.entNode:hover{
+transform:translateY(-2px);
+}
+
+.entNodeTop{
+display:flex;
+align-items:center;
+gap:8px;
+margin-bottom:7px;
+}
+
+.entNodeEmoji{
+width:34px;
+height:34px;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#b06cff,var(--accent));
+font-size:18px;
+box-shadow:0 0 10px rgba(176,108,255,0.18);
+}
+
+.entNodeName{
+font-size:13px;
+font-weight:900;
+color:white;
+line-height:1.15;
+}
+
+.entNodeLevel{
+font-size:11px;
+color:#d7b8ff;
+margin-top:2px;
+}
+
+.entNodeDesc{
+font-size:11px;
+line-height:1.35;
+color:#bbb;
+margin-top:6px;
+}
+
+.entNodeCost{
+font-size:12px;
+font-weight:900;
+color:var(--accent-soft);
+margin-top:8px;
+}
+
+.entNodeNext{
+font-size:11px;
+line-height:1.3;
+color:#9eff9e;
+margin-top:6px;
+}
+
+.entNodeReq{
+font-size:10px;
+color:#ffb0b0;
+margin-top:6px;
+}
+
+.entTreeFooterNote{
+font-size:11px;
+color:#aaa;
+margin-top:12px;
+text-align:center;
+}
+
+@media (max-width:760px){
+.entTreeOverlay{
+padding:10px;
+align-items:stretch;
+}
+
+.entTreeWindow{
+width:100%;
+border-radius:16px;
+padding:12px;
+}
+
+.entTreeGrid{
+grid-template-columns:1fr;
+gap:12px;
+}
+
+.entNode{
+grid-column:auto !important;
+grid-row:auto !important;
+min-height:auto;
+}
+
+.entNode::before{
+display:none !important;
+}
+
+.entTreeTitle{
+font-size:15px;
+}
+
+.entTreeSubtitle{
+font-size:12px;
+}
+}
+
+
+/* LORE COMPLETA POR ERA */
+
+.loreText{
+max-height:420px;
+overflow-y:auto;
+padding-right:6px;
+}
+
+.loreEraBlock{
+margin-bottom:18px;
+padding-bottom:14px;
+border-bottom:1px solid rgba(var(--accent-rgb),0.18);
+}
+
+.loreEraBlock:last-child{
+border-bottom:none;
+margin-bottom:0;
+}
+
+.loreEraBlock h3{
+font-size:15px;
+color:var(--accent);
+margin-bottom:8px;
+text-shadow:0 0 8px rgba(var(--accent-rgb),0.28);
+}
+
+.loreEraBlock p{
+font-size:12px;
+line-height:1.55;
+color:#ddd;
+margin-bottom:8px;
+}
+
+.loreText::-webkit-scrollbar{
+width:6px;
+}
+
+.loreText::-webkit-scrollbar-thumb{
+background:var(--accent);
+border-radius:999px;
+}
+
+
+.loreProgress{
+font-size:12px;
+color:var(--accent-soft);
+margin-bottom:12px;
+padding:8px;
+border:1px solid rgba(var(--accent-rgb),0.22);
+border-radius:10px;
+background:rgba(255,255,255,0.03);
+}
+
+.loreLockedBlock{
+opacity:0.55;
+filter:grayscale(0.6);
+margin-bottom:14px;
+padding:10px;
+border:1px dashed rgba(var(--accent-rgb),0.24);
+border-radius:12px;
+background:#111;
+}
+
+.loreLockedBlock h3{
+font-size:13px;
+color:#aaa;
+margin-bottom:5px;
+}
+
+.loreLockedBlock p{
+font-size:11px;
+color:#888;
+line-height:1.45;
+}
+
+
+/* MODO LEVE AUTOMÁTICO */
+
+body.lowPerf .texture{
+display:none !important;
+}
+
+body.lowPerf .ring{
+animation:none !important;
+opacity:0.45;
+}
+
+body.lowPerf .gobbi{
+animation:none !important;
+filter:drop-shadow(0 0 18px var(--accent)) !important;
+}
+
+body.lowPerf .bg{
+background:
+radial-gradient(circle at 30% 30%, rgba(var(--accent-rgb),0.08), transparent 30%),
+linear-gradient(135deg,#070707,#101010) !important;
+}
+
+body.lowPerf .shopItem,
+body.lowPerf .item,
+body.lowPerf .skinBtn,
+body.lowPerf .ach,
+body.lowPerf .infoBox,
+body.lowPerf .rankBox{
+box-shadow:none !important;
+}
+
+body.lowPerf .mobileNewsTrack span{
+animation-duration:var(--news-duration, 18s) !important;
+}
+
+
+/* removido: MOBILE: BOTÃO DA GOBBI MAIOR E CENTRALIZADO (substituído pelos blocos finais force-mobile/PC) */
+/* GUIA DO JOGO */
+
+.guideOverlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.72);
+backdrop-filter:blur(6px);
+z-index:22000;
+align-items:center;
+justify-content:center;
+padding:18px;
+}
+
+.guideOverlay.open{
+display:flex;
+}
+
+.guidePopup{
+width:min(900px,96vw);
+max-height:min(86vh,900px);
+background:linear-gradient(180deg,#121212,#0b0b0b);
+border:1px solid rgba(var(--accent-rgb),0.28);
+border-radius:18px;
+box-shadow:0 24px 80px rgba(0,0,0,0.55),0 0 28px rgba(var(--accent-rgb),0.12);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.guideHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:14px 16px;
+background:rgba(var(--accent-rgb),0.08);
+border-bottom:1px solid rgba(var(--accent-rgb),0.18);
+font-weight:900;
+letter-spacing:0.5px;
+color:var(--accent);
+}
+
+.guideHeader button{
+width:38px;
+height:38px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:24px;
+font-weight:900;
+background:#181818;
+color:var(--text);
+border:1px solid rgba(var(--accent-rgb),0.16);
+}
+
+.guideBody{
+padding:16px 18px 24px;
+overflow:auto;
+font-size:14px;
+line-height:1.62;
+color:#e8e8e8;
+}
+
+.guideBody h2{
+font-size:19px;
+margin:0 0 10px;
+color:var(--accent);
+}
+
+.guideBody h3{
+font-size:16px;
+margin:14px 0 8px;
+color:#fff;
+}
+
+.guideBody p{
+margin:0 0 10px;
+}
+
+.guideBody ul{
+margin:0 0 12px 20px;
+padding:0;
+}
+
+.guideBody li{
+margin:0 0 6px;
+}
+
+.guideQuote{
+padding:10px 12px;
+border-radius:12px;
+background:#151515;
+border:1px solid rgba(var(--accent-rgb),0.18);
+color:#fff7cc;
+font-weight:700;
+margin:8px 0 12px;
+}
+
+@media (max-width:1050px){
+.guideOverlay{
+padding:10px;
+}
+
+.guidePopup{
+width:100%;
+max-height:88vh;
+border-radius:16px;
+}
+
+.guideBody{
+padding:14px 14px 22px;
+font-size:13px;
+line-height:1.55;
+}
+
+.guideBody h2{
+font-size:17px;
+}
+
+.guideBody h3{
+font-size:15px;
+}
+}
+
+
+/* removido: FIX: CONQUISTAS E UPGRADES COMPRADOS NO LUGAR CERTO (substituído pelos blocos finais force-mobile/PC) */
+
+/* removido: MOBILE (substituído pelos blocos finais force-mobile/PC) */
+
+/* removido: ORDEM MOBILE: LOJA ANTES DOS PAINÉIS/CONQUISTAS (substituído pelos blocos finais force-mobile/PC) */
+
+/* removido: FIX FINAL: CONQUISTAS/UPGRADES NO LUGAR E GOBBI MOBILE MENOR (substituído pelos blocos finais force-mobile/PC) */
+
+/* removido: FIX FINAL REAL: GUIA, NAV MOBILE, OBJETIVOS E GOBBI (substituído pelos blocos finais force-mobile/PC) */
+
+/* removido: diminuição mais segura do botão da Gobbi no mobile (substituído pelos blocos finais force-mobile/PC) */
+/* FIX DEFINITIVO MOBILE/LOJA/LAYOUT */
+
+body.force-mobile{
+padding-bottom:76px !important;
+}
+
+body.guide-open .mobileNav,
+body.guide-open .mobileSettingsGear{
+display:none !important;
+pointer-events:none !important;
+}
+
+.guideOverlay{
+z-index:30000 !important;
+}
+
+body.force-mobile .mobileNav{
+display:grid !important;
+grid-template-columns:repeat(4,1fr) !important;
+position:fixed !important;
+left:0 !important;
+right:0 !important;
+bottom:0 !important;
+z-index:16000 !important;
+background:rgba(10,10,10,0.98) !important;
+border-top:2px solid rgba(var(--accent-rgb),0.45) !important;
+box-shadow:0 -8px 25px rgba(0,0,0,0.45) !important;
+padding:6px !important;
+gap:5px !important;
+}
+
+body.force-mobile .mobileNavBtn{
+touch-action:manipulation !important;
+background:#151515;
+color:var(--accent-soft);
+border:1px solid rgba(var(--accent-rgb),0.35);
+border-radius:10px;
+padding:10px 4px;
+font-size:11px;
+font-weight:900;
+cursor:pointer;
+}
+
+body.force-mobile .mobileNavBtn.active{
+background:var(--accent);
+color:#071007;
+box-shadow:0 0 12px rgba(var(--accent-rgb),0.35);
+}
+
+body.force-mobile.mobile-view-main .center,
+body.force-mobile.mobile-view-main .right{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-main .left{
+display:flex !important;
+flex-direction:column !important;
+align-items:center !important;
+justify-content:flex-start !important;
+min-height:calc(100vh - 76px) !important;
+border:none !important;
+padding:16px 0 86px !important;
+}
+
+body.force-mobile.mobile-view-main .left .stats,
+body.force-mobile.mobile-view-main .left .controls:not(.mobileMainControls),
+body.force-mobile.mobile-view-main #desktopOwnedAchSlot,
+body.force-mobile.mobile-view-main .ownedPanel,
+body.force-mobile.mobile-view-main .achPanel{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-main .mobileMainControls{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-main .titlePanel{
+width:92% !important;
+order:1;
+}
+
+body.force-mobile.mobile-view-main .mobileMainNewsPanel{
+display:block !important;
+width:92% !important;
+margin:12px auto 12px !important;
+order:2;
+padding:10px 12px;
+overflow:hidden;
+}
+
+body.force-mobile.mobile-view-main .gobbiStage{
+order:3;
+width:100% !important;
+min-height:270px !important;
+display:flex !important;
+align-items:center !important;
+justify-content:center !important;
+margin:8px auto 10px !important;
+}
+
+body.force-mobile.mobile-view-main .gobbiWrap{
+width:250px !important;
+height:250px !important;
+display:flex !important;
+align-items:center !important;
+justify-content:center !important;
+position:relative !important;
+margin:0 auto !important;
+}
+
+body.force-mobile.mobile-view-main .ring{
+width:250px !important;
+height:250px !important;
+left:50% !important;
+top:50% !important;
+transform:translate(-50%,-50%) !important;
+}
+
+body.force-mobile.mobile-view-main .gobbi{
+width:min(210px,70vw) !important;
+height:min(210px,70vw) !important;
+object-fit:contain !important;
+display:block !important;
+margin:0 auto !important;
+position:relative !important;
+z-index:2 !important;
+}
+
+body.force-mobile.mobile-view-main .counter,
+body.force-mobile.mobile-view-main .count,
+body.force-mobile.mobile-view-main .gps{
+text-align:center !important;
+}
+
+body.force-mobile.mobile-view-main .mobileSettingsGear{
+display:flex !important;
+position:fixed !important;
+right:14px !important;
+bottom:86px !important;
+z-index:17000 !important;
+width:48px !important;
+height:48px !important;
+border-radius:50% !important;
+align-items:center !important;
+justify-content:center !important;
+background:rgba(14,14,14,0.96) !important;
+color:var(--accent) !important;
+border:2px solid rgba(var(--accent-rgb),0.65) !important;
+box-shadow:0 0 14px rgba(var(--accent-rgb),0.28),0 0 28px rgba(0,0,0,0.45) !important;
+font-size:23px !important;
+cursor:pointer !important;
+touch-action:manipulation !important;
+}
+
+body.force-mobile.mobile-view-shop .left,
+body.force-mobile.mobile-view-shop .center{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-shop .right{
+display:block !important;
+width:100% !important;
+min-height:calc(100vh - 76px) !important;
+padding-bottom:84px !important;
+}
+
+body.force-mobile.mobile-view-stats .left,
+body.force-mobile.mobile-view-stats .right{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-stats .center{
+display:block !important;
+width:100% !important;
+padding:12px 12px 86px !important;
+}
+
+body.force-mobile.mobile-view-stats .center > div{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-stats .center .summaryRankPanel,
+body.force-mobile.mobile-view-stats .center .effectPanel{
+display:block !important;
+}
+
+body.force-mobile.mobile-view-goals .left,
+body.force-mobile.mobile-view-goals .right{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-goals .center{
+display:flex !important;
+flex-direction:column !important;
+width:100% !important;
+gap:12px !important;
+padding:12px 12px 86px !important;
+}
+
+body.force-mobile.mobile-view-goals .center > div{
+display:none !important;
+}
+
+body.force-mobile.mobile-view-goals .center .objectivePanel{display:block !important;order:1 !important;}
+body.force-mobile.mobile-view-goals .center .missionsPanel{display:block !important;order:2 !important;}
+body.force-mobile.mobile-view-goals .center .eraPanel{display:block !important;order:3 !important;}
+body.force-mobile.mobile-view-goals .center .prestigePanel{display:block !important;order:4 !important;}
+body.force-mobile.mobile-view-goals .center .lorePanel{display:block !important;order:5 !important;}
+body.force-mobile.mobile-view-goals .center .ownedPanel{display:block !important;order:6 !important;}
+body.force-mobile.mobile-view-goals .center .achPanel{display:block !important;order:7 !important;}
+
+body.force-mobile .mobileSettingsOverlay.open{
+display:flex !important;
+position:fixed !important;
+inset:0 !important;
+z-index:18000 !important;
+background:rgba(0,0,0,0.58) !important;
+align-items:flex-end !important;
+justify-content:center !important;
+padding:0 14px 84px !important;
+}
+
+#desktopOwnedAchSlot{
+width:92%;
+margin:12px auto 0;
+}
+
+@media (min-width:1051px){
+#desktopOwnedAchSlot .ownedPanel,
+#desktopOwnedAchSlot .achPanel{
+width:100%;
+margin:12px 0 0;
+}
+
+#desktopOwnedAchSlot .ownedIcons{
+min-height:36px;
+max-height:115px;
+overflow-y:auto;
+}
+
+#desktopOwnedAchSlot .achList{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:7px;
+max-height:300px;
+overflow-y:auto;
+padding-right:2px;
+}
+}
+
+
+/* removido: evita loja vazia visual se a classe ainda não foi aplicada (substituído pelos blocos finais force-mobile/PC) */
+/* FIX PC: JANELA ESTREITA NÃO VIRA MOBILE */
+
+body:not(.force-mobile){
+padding-bottom:0 !important;
+}
+
+body:not(.force-mobile) .mobileNav,
+body:not(.force-mobile) .mobileSettingsGear,
+body:not(.force-mobile) .mobileSettingsOverlay{
+display:none !important;
+pointer-events:none !important;
+}
+
+body:not(.force-mobile) .game{
+display:grid !important;
+grid-template-columns:34% 34% 32% !important;
+min-height:100vh !important;
+}
+
+body:not(.force-mobile) .left{
+display:flex !important;
+flex-direction:column !important;
+align-items:center !important;
+order:0 !important;
+width:auto !important;
+min-height:100vh !important;
+border-right:3px solid rgba(var(--accent-rgb),0.55) !important;
+padding-top:20px !important;
+padding-bottom:0 !important;
+background:rgba(10,10,10,0.45) !important;
+}
+
+body:not(.force-mobile) .center{
+display:block !important;
+order:0 !important;
+width:auto !important;
+min-height:100vh !important;
+border-right:3px solid rgba(var(--accent-rgb),0.45) !important;
+padding:18px !important;
+background:rgba(7,7,7,0.25) !important;
+}
+
+body:not(.force-mobile) .right{
+display:block !important;
+order:0 !important;
+width:auto !important;
+min-height:100vh !important;
+background:#151515 !important;
+overflow-y:auto !important;
+}
+
+body:not(.force-mobile) .mobileMainNewsPanel{
+display:none !important;
+}
+
+body:not(.force-mobile) .left .stats{
+display:block !important;
+}
+
+body:not(.force-mobile) .left .controls{
+display:grid !important;
+grid-template-columns:1fr 1fr 1fr !important;
+}
+
+body:not(.force-mobile) #desktopOwnedAchSlot{
+display:block !important;
+width:92% !important;
+margin:12px auto 0 !important;
+}
+
+body:not(.force-mobile) #desktopOwnedAchSlot .ownedPanel,
+body:not(.force-mobile) #desktopOwnedAchSlot .achPanel{
+display:block !important;
+width:100% !important;
+margin:12px 0 0 !important;
+}
+
+body:not(.force-mobile) .center .ownedPanel,
+body:not(.force-mobile) .center .achPanel{
+display:none !important;
+}
+
+body:not(.force-mobile) .right .shopList{
+display:block !important;
+min-height:120px !important;
+}
+
+body:not(.force-mobile) .right.showSkins .shopList{
+display:none !important;
+}
+
+body:not(.force-mobile) .right:not(.showSkins) .skinShopPanel{
+display:none !important;
+}
+
+body:not(.force-mobile) .right:not(.showSkins) .tabs{
+display:grid !important;
+}
+
+body:not(.force-mobile) .right:not(.showSkins) .buyModes{
+display:grid !important;
+}
+
+body:not(.force-mobile) .right:not(.showSkins) .pageControls{
+display:grid !important;
+}
+
+/* em PC muito estreito, deixa compacto, mas ainda desktop */
+@media (max-width:900px){
+body:not(.force-mobile) .game{
+grid-template-columns:32% 36% 32% !important;
+}
+
+body:not(.force-mobile) .logo{
+font-size:24px !important;
+}
+
+body:not(.force-mobile) .gobbi{
+width:145px !important;
+}
+
+body:not(.force-mobile) .ring{
+width:220px !important;
+height:220px !important;
+}
+}
+
+
+/* FIX PONTUAL: PC NÃO MOSTRA CONTROLES MOBILE */
+
+body:not(.force-mobile) .left .controls:not(.mobileMainControls){
+display:grid !important;
+grid-template-columns:1fr 1fr 1fr !important;
+}
+
+/* garante que os painéis movidos realmente apareçam no slot de PC */
+body:not(.force-mobile) #desktopOwnedAchSlot .ownedPanel,
+body:not(.force-mobile) #desktopOwnedAchSlot .achPanel{
+display:block !important;
+}
+
+body:not(.force-mobile) #desktopOwnedAchSlot .ownedIcons{
+min-height:38px;
+}
+
+/* garante que a loja não fique visualmente invisível */
+body:not(.force-mobile) .right:not(.showSkins) .shopList{
+display:block !important;
+visibility:visible !important;
+opacity:1 !important;
+}
+
+
+/* FIX MOBILE: USAR A TELA INTEIRA */
+
+body.force-mobile,
+html:has(body.force-mobile){
+width:100% !important;
+max-width:100% !important;
+overflow-x:hidden !important;
+}
+
+body.force-mobile .game{
+display:grid !important;
+grid-template-columns:1fr !important;
+width:100vw !important;
+max-width:100vw !important;
+min-width:0 !important;
+overflow-x:hidden !important;
+}
+
+body.force-mobile .left,
+body.force-mobile .center,
+body.force-mobile .right{
+grid-column:1 / -1 !important;
+width:100vw !important;
+max-width:100vw !important;
+min-width:0 !important;
+box-sizing:border-box !important;
+}
+
+body.force-mobile.mobile-view-main .left,
+body.force-mobile.mobile-view-shop .right,
+body.force-mobile.mobile-view-stats .center,
+body.force-mobile.mobile-view-goals .center{
+display:block !important;
+}
+
+body.force-mobile.mobile-view-main .left{
+display:flex !important;
+}
+
+body.force-mobile.mobile-view-shop .right{
+padding-bottom:86px !important;
+}
+
+body.force-mobile.mobile-view-shop .shopTitle,
+body.force-mobile.mobile-view-shop .shopModeSwitch,
+body.force-mobile.mobile-view-shop .tabs,
+body.force-mobile.mobile-view-shop .buyModes,
+body.force-mobile.mobile-view-shop .pageControls,
+body.force-mobile.mobile-view-shop .shopList,
+body.force-mobile.mobile-view-shop .skinShopPanel{
+width:100% !important;
+max-width:100% !important;
+box-sizing:border-box !important;
+}
+
+body.force-mobile.mobile-view-shop .shopList{
+padding-left:8px !important;
+padding-right:8px !important;
+}
+
+body.force-mobile.mobile-view-shop .item{
+width:calc(100vw - 16px) !important;
+max-width:calc(100vw - 16px) !important;
+grid-template-columns:52px minmax(0,1fr) 42px !important;
+}
+
+body.force-mobile.mobile-view-shop .item .info{
+min-width:0 !important;
+overflow:hidden !important;
+}
+
+body.force-mobile.mobile-view-shop .item .info h2,
+body.force-mobile.mobile-view-shop .item .info p{
+overflow-wrap:anywhere !important;
+}
+
+body.force-mobile.mobile-view-stats .summaryRankPanel,
+body.force-mobile.mobile-view-stats .effectPanel,
+body.force-mobile.mobile-view-goals .objectivePanel,
+body.force-mobile.mobile-view-goals .missionsPanel,
+body.force-mobile.mobile-view-goals .eraPanel,
+body.force-mobile.mobile-view-goals .prestigePanel,
+body.force-mobile.mobile-view-goals .lorePanel,
+body.force-mobile.mobile-view-goals .ownedPanel,
+body.force-mobile.mobile-view-goals .achPanel{
+width:calc(100vw - 24px) !important;
+max-width:calc(100vw - 24px) !important;
+box-sizing:border-box !important;
+margin-left:auto !important;
+margin-right:auto !important;
+}
+
+body.force-mobile.mobile-view-stats .summaryRankPanel .mergedPanelGrid,
+body.force-mobile.mobile-view-stats .summaryRankPanel .infoGrid,
+body.force-mobile.mobile-view-goals .infoGrid{
+grid-template-columns:1fr 1fr !important;
+width:100% !important;
+}
+
+body.force-mobile.mobile-view-stats .infoBox,
+body.force-mobile.mobile-view-goals .infoBox,
+body.force-mobile.mobile-view-goals .missionCard{
+min-width:0 !important;
+overflow-wrap:anywhere !important;
+}
+
+/* evita qualquer sobra lateral causada por CSS antigo */
+body.force-mobile *{
+max-width:100vw;
+}
+
+
+/* IMPORTAR / EXPORTAR SAVE ROBUSTO */
+
+.saveTransferOverlay{
+display:none;
+position:fixed;
+inset:0;
+z-index:32000;
+background:rgba(0,0,0,0.72);
+backdrop-filter:blur(5px);
+align-items:center;
+justify-content:center;
+padding:16px;
+}
+
+.saveTransferOverlay.open{
+display:flex;
+}
+
+.saveTransferBox{
+width:min(720px,96vw);
+max-height:86vh;
+background:linear-gradient(180deg,#151515,#090909);
+border:2px solid rgba(var(--accent-rgb),0.38);
+border-radius:16px;
+box-shadow:0 0 30px rgba(var(--accent-rgb),0.16),0 20px 70px rgba(0,0,0,0.55);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.saveTransferHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:13px 14px;
+border-bottom:1px solid rgba(var(--accent-rgb),0.25);
+color:var(--accent);
+font-weight:900;
+letter-spacing:1px;
+}
+
+.saveTransferClose{
+width:34px;
+height:34px;
+border-radius:10px;
+background:#202020;
+color:white;
+border:1px solid rgba(var(--accent-rgb),0.35);
+font-size:20px;
+font-weight:900;
+cursor:pointer;
+}
+
+.saveTransferBody{
+padding:14px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.saveTransferHelp{
+font-size:12px;
+line-height:1.45;
+color:#d8ffd8;
+}
+
+.saveTransferText{
+width:100%;
+height:210px;
+resize:vertical;
+background:#080808;
+color:#eaffea;
+border:1px solid rgba(var(--accent-rgb),0.45);
+border-radius:12px;
+padding:10px;
+font-size:12px;
+line-height:1.35;
+outline:none;
+font-family:monospace;
+}
+
+.saveTransferStatus{
+min-height:18px;
+font-size:12px;
+color:var(--accent-soft);
+}
+
+.saveTransferActions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+}
+
+.saveTransferActions button{
+background:#151515;
+color:var(--accent-soft);
+border:1px solid rgba(var(--accent-rgb),0.45);
+border-radius:10px;
+padding:10px 8px;
+font-size:13px;
+font-weight:900;
+cursor:pointer;
+}
+
+.saveTransferActions button.primary{
+background:var(--accent);
+color:#071007;
+box-shadow:0 0 12px rgba(var(--accent-rgb),0.28);
+}
+
+@media (max-width:1050px){
+.saveTransferOverlay{
+align-items:flex-end;
+padding:10px 10px 86px;
+}
+
+.saveTransferBox{
+width:100%;
+max-height:78vh;
+border-radius:16px;
+}
+
+.saveTransferText{
+height:230px;
+font-size:11px;
+}
+
+.saveTransferActions{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="texture"></div>
+<div class="toastBox" id="toastBox"></div>
+
+
+<div class="game">
+
+<!-- ESQUERDA -->
+<div class="left">
+
+<div class="titlePanel">
+<div class="logo">GOBBI CLICKER</div>
+<div class="count" id="count">0 GOBBI</div>
+<div class="gps" id="gps">0 por segundo</div>
+</div>
+
+<div class="newsPanel mobileMainNewsPanel">
+<div class="mobileNewsTicker">
+<span class="mobileNewsLabel">GOBBI NEWS:</span>
+<div class="mobileNewsTrack">
+<span id="mobileNewsBar">Carregando notícias do universo Gobbi...</span>
+</div>
+</div>
+</div>
+
+
+<div class="gobbiStage">
+<div class="gobbiWrap">
+<div class="ring"></div>
+<img src="./gobbi.png" class="gobbi" id="gobbi">
+</div>
+</div>
+
+
+<div class="stats sidePanel">
+<div class="panelTitle">ESTATÍSTICAS</div>
+Cliques: <span id="clicks">0</span><br>
+Críticos: <span id="criticals">0</span><br>
+Por clique: <span id="perClick">1</span><br>
+Conquistas: <span id="achCount">0</span><br>
+Aura atual: <span id="auraCount">0</span>
+</div>
+
+<div class="controls sidePanel">
+<button class="controlBtn" id="saveBtn">Salvar</button>
+<button class="controlBtn" id="loadBtn">Carregar</button>
+<button class="controlBtn" id="resetBtn">Resetar</button>
+</div>
+
+<div class="controls sidePanel">
+<button class="controlBtn" id="exportBtn">Exportar</button>
+<button class="controlBtn" id="importBtn">Importar</button>
+<button class="controlBtn" id="hardResetBtn">Limpar</button>
+</div>
+
+<div id="desktopOwnedAchSlot" class="desktopOwnedAchSlot"></div>
+
+<div class="controls sidePanel">
+<button class="controlBtn" id="desktopGuideBtn">Guia do jogo</button>
+</div>
+</div>
+
+<!-- CENTRO -->
+<div class="center">
+
+<div class="newsPanel">
+<div class="panelTitle">GOBBI NEWS</div>
+<div class="newsBar" id="newsBar">Carregando notícias do universo Gobbi...</div>
+</div>
+
+<div class="infoPanel summaryRankPanel">
+<div class="panelTitle">RESUMO / RANKING LOCAL</div>
+
+<div class="mergedPanelGrid">
+<div>
+<div class="subPanelTitle">RESUMO</div>
+<div class="infoGrid">
+<div class="infoBox"><b>Total</b><span id="summaryTotal">0</span></div>
+<div class="infoBox"><b>GPS</b><span id="summaryGps">0</span></div>
+<div class="infoBox"><b>Clique</b><span id="summaryClick">1</span></div>
+<div class="infoBox"><b>Crítico</b><span id="summaryCrit">10% x10</span></div>
+</div>
+</div>
+
+<div>
+<div class="subPanelTitle">RANKING</div>
+<div class="rankGrid">
+<div class="rankBox"><b>Maior total</b><span id="rankTotal">0</span></div>
+<div class="rankBox"><b>Maior GPS</b><span id="rankGps">0</span></div>
+<div class="rankBox"><b>Maior clique</b><span id="rankClick">0</span></div>
+<div class="rankBox"><b>Mais críticos</b><span id="rankCrit">0</span></div>
+<div class="rankBox"><b>Mais Six Gobbis</b><span id="rankAura">0</span></div>
+<div class="rankBox"><b>Mais cliques</b><span id="rankClicks">0</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="eraPanel">
+<div class="panelTitle">ERAS DE UPGRADES</div>
+<div class="eraText" id="eraText">Calculando era...</div>
+<div class="eraProgressOuter">
+<div class="eraProgressInner" id="eraProgressInner"></div>
+</div>
+<div class="eraPagesText" id="eraPagesText">Páginas liberadas: 1/20</div>
+</div>
+
+
+<div class="effectPanel">
+<div class="panelTitle">EFEITOS ATIVOS</div>
+<div id="effectList" class="effectLine">Nenhum efeito ativo.</div>
+</div>
+
+<div class="prestigePanel">
+<div class="panelTitle">ENTROSAMENTO</div>
+<div class="prestigeText" id="prestigeInfo">
+Junte 1B Gobbis no total para aumentar seu entrosamento. Cada Six Gobbi dá bônus leve permanente.
+</div>
+<button class="prestigeBtn" id="prestigeBtn">Entrosar</button>
+<button class="entTreeOpenBtn" id="entTreeOpenBtn" type="button">Abrir árvore de Entrosamento</button>
+</div>
+
+
+<div class="infoPanel objectivePanel">
+<div class="panelTitle">OBJETIVO FINAL</div>
+<div class="infoBox" style="margin-top:8px;">
+<b>Entrosar a Gobbilândia inteira</b>
+<span id="objectiveText">Alcance 1Ce Gobbis lifetime para completar o objetivo final.</span>
+</div>
+</div>
+
+
+<div class="missionsPanel">
+<div class="panelTitle">MISSÕES LOCAIS</div>
+<div class="missionsList" id="missionsList">Carregando missões...</div>
+</div>
+
+
+<div class="lorePanel">
+<div class="panelTitle">LORE DA GOBBI</div>
+<div class="loreText" id="loreText">A Gobbi ainda está acumulando aura...</div>
+</div>
+
+<div id="ownedOriginalSlot"></div>
+
+<div class="ownedPanel">
+<div class="panelTitle">UPGRADES COMPRADOS</div>
+<div class="ownedIcons" id="ownedIcons"></div>
+</div>
+
+<div id="achOriginalSlot"></div>
+
+<div class="achPanel">
+<div class="panelTitle">CONQUISTAS</div>
+<div class="achList" id="achList"></div>
+</div>
+
+</div>
+
+<!-- DIREITA -->
+<div class="right">
+
+<div class="shopTitle">GOBBI</div>
+
+<div class="shopModeSwitch">
+<button class="shopModeBtn active" id="shopModeStore">Loja</button>
+<button class="shopModeBtn" id="shopModeSkins">Skins</button>
+</div>
+
+
+<div class="tabs">
+<button class="tab active" id="tabProduction">Produção</button>
+<button class="tab" id="tabClick">Clique</button>
+<button class="tab" id="tabSpecial">Especiais</button>
+<button class="tab" id="tabEntrosamento">Entrosamento</button>
+</div>
+
+<div class="buyModes">
+<button class="buyMode active" id="buy1">Comprar 1</button>
+<button class="buyMode" id="buy10">Comprar 10</button>
+<button class="buyMode" id="buy100">Comprar 100</button>
+</div>
+
+
+<div class="pageControls">
+<button class="pageBtn" id="prevPageBtn">‹</button>
+<div class="pageInfo" id="pageInfo">Página 1/1</div>
+<button class="pageBtn" id="nextPageBtn">›</button>
+</div>
+
+
+<div class="skinShopPanel" id="skinShopPanel">
+<div class="panelTitle">SKINS DA GOBBI</div>
+<div class="eventBadge" id="skinInfo">Skin atual: Gobbi Verde</div>
+<div class="skinGrid" id="skinGrid"></div>
+</div>
+
+<div class="shopList" id="shop"></div>
+
+</div>
+
+</div>
+
+
+<div class="entTreeOverlay" id="entTreeOverlay">
+<div class="entTreeWindow">
+<div class="entTreeHeader">
+<div>
+<div class="entTreeTitle">ÁRVORE DE ENTROSAMENTO</div>
+<div class="entTreeSubtitle" id="entTreeCurrency">Six Gobbis: 0</div>
+</div>
+<button class="entTreeClose" id="entTreeClose" type="button">×</button>
+</div>
+
+<div class="entTreeHelp">
+Compre upgrades permanentes com Six Gobbis. Alguns nós precisam de níveis anteriores para liberar.
+</div>
+
+<div class="entTreeGrid" id="entTreeGrid"></div>
+</div>
+</div>
+
+<button class="mobileSettingsGear" id="mobileSettingsGear" type="button" aria-label="Configurações">⚙️</button>
+
+<div class="mobileSettingsOverlay" id="mobileSettingsOverlay">
+<div class="mobileSettingsPopup" id="mobileSettingsPopup">
+<div class="mobileSettingsHeader">
+<span>Configurações</span>
+<button id="mobileSettingsClose" type="button">×</button>
+</div>
+<button class="mobileSettingsOption" id="mobilePopupSave" type="button">Salvar</button>
+<button class="mobileSettingsOption" id="mobilePopupLoad" type="button">Carregar</button>
+<button class="mobileSettingsOption" id="mobilePopupExport" type="button">Exportar save</button>
+<button class="mobileSettingsOption" id="mobilePopupImport" type="button">Importar save</button>
+<button class="mobileSettingsOption" id="mobilePopupGuide" type="button">Guia do jogo</button>
+<button class="mobileSettingsOption danger" id="mobilePopupReset" type="button">Resetar tudo</button>
+</div>
+</div>
+
+
+<div class="guideOverlay" id="guideOverlay">
+<div class="guidePopup" id="guidePopup">
+<div class="guideHeader">
+<span>Guia do Gobbi Clicker</span>
+<button id="guideCloseBtn" type="button">×</button>
+</div>
+<div class="guideBody" id="guideBody">
+<h2>Objetivo do jogo</h2>
+<p>O objetivo é produzir o máximo de <b>Gobbis</b> possível, desbloquear novas <b>eras</b>, conseguir <b>Six Gobbis</b>, comprar melhorias permanentes no <b>Entrosamento</b> e evoluir a Gobbi até sair do mundo material.</p>
+<p>Você começa clicando na Gobbi e vai comprando upgrades para produzir Gobbis automaticamente.</p>
+
+<h2>1. Clicando na Gobbi</h2>
+<p>Clique na Gobbi para ganhar Gobbis.</p>
+<p>No começo, o clique é uma das formas principais de progresso. Depois, os upgrades automáticos começam a produzir Gobbis por segundo.</p>
+<p>Alguns cliques podem ser críticos, dando mais Gobbis de uma vez.</p>
+
+<h2>2. Loja</h2>
+<p>A loja tem upgrades separados por tipo:</p>
+<ul>
+<li>Produção</li>
+<li>Clique</li>
+<li>Especiais</li>
+<li>Entrosamento</li>
+<li>Skins</li>
+</ul>
+
+<h3>Produção</h3>
+<p>São upgrades que aumentam os <b>Gobbis por segundo</b>.</p>
+<p>Eles são a base do progresso automático.</p>
+
+<h3>Clique</h3>
+<p>São upgrades que aumentam os <b>Gobbis por clique</b>.</p>
+<p>Bom para quem gosta de jogar clicando bastante.</p>
+
+<h3>Especiais</h3>
+<p>São upgrades com bônus diferentes, como crítico, multiplicadores e melhorias extras.</p>
+
+<h3>Skins</h3>
+<p>As skins mudam a imagem da Gobbi e também mudam a cor do tema do jogo.</p>
+<p>Elas são desbloqueadas com <b>Six Gobbis totais</b>.</p>
+
+<h2>3. Golden Gobbi</h2>
+<p>De vez em quando aparece uma <b>Golden Gobbi</b> na tela.</p>
+<p>Clique nela antes que suma.</p>
+<p>Ela pode dar bônus como:</p>
+<ul>
+<li>Gobbis extras</li>
+<li>GPS x2 por um tempo</li>
+<li>Clique x2 por um tempo</li>
+<li>Mais chance de crítico</li>
+<li>Desconto na loja</li>
+</ul>
+
+<h2>4. Missões diárias</h2>
+<p>O jogo tem missões que renovam a cada <b>24 horas</b>.</p>
+<p>Exemplos:</p>
+<ul>
+<li>Produza certa quantidade de Gobbis</li>
+<li>Clique várias vezes</li>
+<li>Compre upgrades</li>
+<li>Pegue Golden Gobbi</li>
+<li>Alcance certo GPS</li>
+</ul>
+<p>Quando completa uma missão, ela fica marcada como concluída e só troca no próximo ciclo diário.</p>
+<p>As recompensas aumentam conforme o jogador evolui.</p>
+
+<h2>5. Eras</h2>
+<p>Conforme você aumenta seu lifetime de Gobbis, novas eras são liberadas.</p>
+<p>Cada era desbloqueia novas páginas de upgrades e novos capítulos da lore.</p>
+<p>As eras são:</p>
+<ul>
+<li>Era Tuff</li>
+<li>Era 67</li>
+<li>Era Aura</li>
+<li>Era Entrosa</li>
+<li>Era Gobbilândia</li>
+<li>Era Demiurgo</li>
+<li>Era Cósmica</li>
+<li>Era Primordial</li>
+<li>Era Universal</li>
+<li>Era Gobbi sai do mundo material</li>
+</ul>
+<p>A lore não aparece toda de uma vez. Ela vai liberando conforme você chega em cada era.</p>
+
+<h2>6. Entrosamento</h2>
+<p>O <b>Entrosamento</b> é o sistema de rebirth/prestige do jogo.</p>
+<p>Quando você alcança uma quantidade alta de Gobbis lifetime, pode fazer Entrosamento para ganhar <b>Six Gobbis</b>.</p>
+<p>Ao Entrosar:</p>
+<ul>
+<li>Sua rodada atual reseta</li>
+<li>Você perde os upgrades normais</li>
+<li>Você mantém Six Gobbis</li>
+<li>Você mantém skins desbloqueadas</li>
+<li>Você mantém upgrades permanentes da árvore</li>
+<li>Você ganha bônus global</li>
+</ul>
+<p>É parecido com o sistema de Ascension do Cookie Clicker.</p>
+
+<h2>7. Aura Gobbi e Six Gobbis</h2>
+<h3>Six Gobbis</h3>
+<p>São a moeda permanente do Entrosamento.</p>
+<p>Você usa Six Gobbis para comprar upgrades na árvore de Entrosamento.</p>
+
+<h3>Aura Gobbi total</h3>
+<p>Funciona como seu nível permanente de prestígio.</p>
+<p>Quanto mais Aura/Six Gobbis você tem, maior fica seu bônus global.</p>
+<p>O jogo mostra quando será a próxima Aura Gobbi, tipo:</p>
+<div class="guideQuote">Próxima Aura Gobbi em: 8T lifetime</div>
+<p>Isso significa que você precisa alcançar esse lifetime para ganhar mais Six Gobbis no próximo Entrosamento.</p>
+
+<h2>8. Árvore de Entrosamento</h2>
+<p>A árvore de Entrosamento tem upgrades permanentes.</p>
+<p>Alguns upgrades precisam de outros antes para desbloquear.</p>
+<p>Ela pode melhorar coisas como:</p>
+<ul>
+<li>Gobbis iniciais</li>
+<li>GPS permanente</li>
+<li>Clique permanente</li>
+<li>Golden Gobbi</li>
+<li>Crítico</li>
+<li>Desconto</li>
+<li>Ganho de Six Gobbis</li>
+</ul>
+<p>Esses upgrades continuam depois do Entrosamento.</p>
+
+<h2>9. Skins</h2>
+<p>As skins são desbloqueadas com Six Gobbis totais.</p>
+<p>Você não precisa gastar Six Gobbis para desbloquear skin. Basta alcançar a quantidade necessária.</p>
+<p>Exemplos:</p>
+<ul>
+<li>Gobbi Verde</li>
+<li>Gobbi Azul</li>
+<li>Gobbi Roxa</li>
+<li>Gobbi Dourada</li>
+<li>Gobbi Tuff Vermelha</li>
+<li>Gobbi Cyber</li>
+<li>Gobbi Aura Branca</li>
+<li>Gobbi Demiurgo</li>
+</ul>
+<p>A skin selecionada muda o visual da Gobbi e a cor da interface.</p>
+
+<h2>10. Save</h2>
+<p>O jogo salva automaticamente, mas também dá pra salvar manualmente.</p>
+<p>No celular, use a engrenagem no canto inferior direito da tela principal.</p>
+<p>Lá tem:</p>
+<ul>
+<li>Salvar</li>
+<li>Carregar</li>
+<li>Exportar save</li>
+<li>Importar save</li>
+<li>Resetar tudo</li>
+</ul>
+<p>Exportar save é recomendado se você for trocar de navegador ou celular.</p>
+
+<h2>Dica geral</h2>
+<p>No começo, foque em comprar upgrades de produção e clique.</p>
+<p>Depois, tente chegar no primeiro Entrosamento.</p>
+<p>A partir daí, o jogo fica mais sobre:</p>
+<ul>
+<li>fazer runs melhores</li>
+<li>ganhar Six Gobbis</li>
+<li>comprar upgrades permanentes</li>
+<li>desbloquear skins</li>
+<li>avançar eras</li>
+<li>liberar lore</li>
+</ul>
+</div>
+</div>
+
+</div>
+<div class="mobileNav" id="mobileNav">
+<button class="mobileNavBtn active" id="mobileMainBtn" type="button">Principal</button>
+<button class="mobileNavBtn" id="mobileShopBtn" type="button">Loja</button>
+<button class="mobileNavBtn" id="mobileStatsBtn" type="button">Estatística</button>
+<button class="mobileNavBtn" id="mobileGoalsBtn" type="button">Objetivos</button>
+</div>
+
+<script>
+let gobbi = 0;
+let lifetimeGobbi = 0;
+let gps = 0;
+let perClick = 1;
+let clicks = 0;
+let criticals = 0;
+let critChance = 0.0025;
+let critMulti = 2;
+let activeTab = "production";
+let buyAmount = 1;
+let auraGobbi = 0;
+let totalSixGobbis = 0;
+let claimedAuraLevel = 0;
+let totalPrestiges = 0;
+let tuffAlertTriggered = false;
+let tuffLastLifetimeGobbi = 0;
+
+let goldenClickBoostTime = 0;
+let goldenGpsBoostTime = 0;
+let goldenCritBoostTime = 0;
+let discountTime = 0;
+
+let selectedSkinId = "verde";
+let mobileView = "main";
+let missions = [];
+let missionGeneratedAt = 0;
+let completedMissions = 0;
+let lastUnlockedEraBanner = 0;
+let activeRandomEvent = null;
+let randomEventTimeLeft = 0;
+
+let saveLoadFailed = false;
+let storageWarningShown = false;
+let ownedIconsSignature = "";
+let achievementSignature = "";
+let lastSkinGridSignature = "";
+let lastMissionsRender = 0;
+let lastLoreEra = -1;
+let lastAchievementCheck = 0;
+let lowPerfMode = false;
+let lastFloatAt = 0;
+let lastSoundAt = 0;
+let lastUiUpdateAt = 0;
+let uiUpdateQueued = false;
+let lastRecordsSignature = "";
+let lastEffectsSignature = "";
+let lastPrestigeSignature = "";
+let lastAppliedSkinSignature = "";
+let newsTimer = null;
+
+const BALANCE_VERSION = "import_export_gobbi4_robusto_v2";
+const CRIT_CHANCE_CAP = 0.05;
+const PRODUCTION_BUY_NERF = 1;
+
+const gobbiBtn = document.getElementById("gobbi");
+const countText = document.getElementById("count");
+const gpsText = document.getElementById("gps");
+const clicksText = document.getElementById("clicks");
+const criticalsText = document.getElementById("criticals");
+const perClickText = document.getElementById("perClick");
+const achCountText = document.getElementById("achCount");
+const auraCountText = document.getElementById("auraCount");
+const shop = document.getElementById("shop");
+const toastBox = document.getElementById("toastBox");
+const saveBtn = document.getElementById("saveBtn");
+const loadBtn = document.getElementById("loadBtn");
+const resetBtn = document.getElementById("resetBtn");
+const hardResetBtn = document.getElementById("hardResetBtn");
+const exportBtn = document.getElementById("exportBtn");
+const importBtn = document.getElementById("importBtn");
+const prestigeBtn = document.getElementById("prestigeBtn");
+const entTreeOpenBtn = document.getElementById("entTreeOpenBtn");
+const entTreeOverlay = document.getElementById("entTreeOverlay");
+const entTreeGrid = document.getElementById("entTreeGrid");
+const entTreeClose = document.getElementById("entTreeClose");
+const entTreeCurrency = document.getElementById("entTreeCurrency");
+const prestigeInfo = document.getElementById("prestigeInfo");
+const effectList = document.getElementById("effectList");
+const newsBar = document.getElementById("newsBar");
+const mobileNewsBar = document.getElementById("mobileNewsBar");
+const ownedIcons = document.getElementById("ownedIcons");
+const achList = document.getElementById("achList");
+const summaryTotal = document.getElementById("summaryTotal");
+const summaryGps = document.getElementById("summaryGps");
+const summaryClick = document.getElementById("summaryClick");
+const summaryCrit = document.getElementById("summaryCrit");
+const missionsList = document.getElementById("missionsList");
+const loreText = document.getElementById("loreText");
+const mobileMainBtn = document.getElementById("mobileMainBtn");
+const mobileShopBtn = document.getElementById("mobileShopBtn");
+const mobileStatsBtn = document.getElementById("mobileStatsBtn");
+const mobileGoalsBtn = document.getElementById("mobileGoalsBtn");
+const eraText = document.getElementById("eraText");
+const eraProgressInner = document.getElementById("eraProgressInner");
+const eraPagesText = document.getElementById("eraPagesText");
+const skinGrid = document.getElementById("skinGrid");
+const skinInfo = document.getElementById("skinInfo");
+const objectiveText = document.getElementById("objectiveText");
+
+const tabProduction = document.getElementById("tabProduction");
+const tabClick = document.getElementById("tabClick");
+const tabSpecial = document.getElementById("tabSpecial");
+const tabEntrosamento = document.getElementById("tabEntrosamento");
+
+const buy1 = document.getElementById("buy1");
+const buy10 = document.getElementById("buy10");
+const buy100 = document.getElementById("buy100");
+
+const prevPageBtn = document.getElementById("prevPageBtn");
+const nextPageBtn = document.getElementById("nextPageBtn");
+const pageInfo = document.getElementById("pageInfo");
+
+const rightPanel = document.querySelector(".right");
+const shopModeStore = document.getElementById("shopModeStore");
+const shopModeSkins = document.getElementById("shopModeSkins");
+
+let shopPage = 0;
+let shopMode = "shop";
+let lastEraIndex = 0;
+const ITEMS_PER_PAGE = 10;
+
+const startMenu = document.getElementById("startMenu");
+const startPlayBtn = document.getElementById("startPlayBtn");
+const startLoadBtn = document.getElementById("startLoadBtn");
+
+const rankTotal = document.getElementById("rankTotal");
+const rankGps = document.getElementById("rankGps");
+const rankClick = document.getElementById("rankClick");
+const rankCrit = document.getElementById("rankCrit");
+const rankAura = document.getElementById("rankAura");
+const rankClicks = document.getElementById("rankClicks");
+
+let localRecords = {
+total:0,
+gps:0,
+click:0,
+criticals:0,
+aura:0,
+clicks:0
+};
+
+
+const MAX_GAME_NUMBER = Number.MAX_VALUE;
+
+function cleanNumber(n, fallback=0){
+n = Number(n);
+if(Number.isNaN(n)) return fallback;
+if(n === Infinity) return MAX_GAME_NUMBER;
+if(n === -Infinity) return fallback;
+if(n > MAX_GAME_NUMBER || n === Infinity) return MAX_GAME_NUMBER;
+if(n < 0) return 0;
+return n;
+}
+
+function safeAdd(a,b){
+return cleanNumber(cleanNumber(a) + cleanNumber(b));
+}
+
+function safeMul(a,b){
+return cleanNumber(cleanNumber(a) * cleanNumber(b));
+}
+
+function sanitizeGameNumbers(){
+gobbi = cleanNumber(gobbi,0);
+lifetimeGobbi = cleanNumber(lifetimeGobbi,0);
+gps = cleanNumber(gps,0);
+perClick = cleanNumber(perClick,1);
+if(perClick <= 0) perClick = 1;
+critChance = Math.min(CRIT_CHANCE_CAP, Math.max(0, cleanNumber(critChance,0.01)));
+critMulti = cleanNumber(critMulti,10);
+if(critMulti < 1) critMulti = 1;
+}
+
+function trim2(n){
+if(!Number.isFinite(n)) return "MAX";
+return Number(n.toFixed(2)).toString();
+}
+
+const numberSuffixes = [
+{value:1e303,suffix:"Ce"},
+{value:1e300,suffix:"NoN"},
+{value:1e297,suffix:"OcN"},
+{value:1e294,suffix:"SpN"},
+{value:1e291,suffix:"SxN"},
+{value:1e288,suffix:"QiN"},
+{value:1e285,suffix:"QaN"},
+{value:1e282,suffix:"TnN"},
+{value:1e279,suffix:"DuN"},
+{value:1e276,suffix:"UnN"},
+{value:1e273,suffix:"Ng"},
+{value:1e270,suffix:"NoOg"},
+{value:1e267,suffix:"OcOg"},
+{value:1e264,suffix:"SpOg"},
+{value:1e261,suffix:"SxOg"},
+{value:1e258,suffix:"QiOg"},
+{value:1e255,suffix:"QaOg"},
+{value:1e252,suffix:"TnOg"},
+{value:1e249,suffix:"DuOg"},
+{value:1e246,suffix:"UnOg"},
+{value:1e243,suffix:"Og"},
+{value:1e240,suffix:"NoSg"},
+{value:1e237,suffix:"OcSg"},
+{value:1e234,suffix:"SpSg"},
+{value:1e231,suffix:"SxSg"},
+{value:1e228,suffix:"QiSg"},
+{value:1e225,suffix:"QaSg"},
+{value:1e222,suffix:"TnSg"},
+{value:1e219,suffix:"DuSg"},
+{value:1e216,suffix:"UnSg"},
+{value:1e213,suffix:"Sg"},
+{value:1e210,suffix:"NoSxg"},
+{value:1e207,suffix:"OcSxg"},
+{value:1e204,suffix:"SpSxg"},
+{value:1e201,suffix:"SxSxg"},
+{value:1e198,suffix:"QiSxg"},
+{value:1e195,suffix:"QaSxg"},
+{value:1e192,suffix:"TnSxg"},
+{value:1e189,suffix:"DuSxg"},
+{value:1e186,suffix:"UnSxg"},
+{value:1e183,suffix:"Sxg"},
+{value:1e180,suffix:"NoQqg"},
+{value:1e177,suffix:"OcQqg"},
+{value:1e174,suffix:"SpQqg"},
+{value:1e171,suffix:"SxQqg"},
+{value:1e168,suffix:"QiQqg"},
+{value:1e165,suffix:"QaQqg"},
+{value:1e162,suffix:"TnQqg"},
+{value:1e159,suffix:"DuQqg"},
+{value:1e156,suffix:"UnQqg"},
+{value:1e153,suffix:"Qqg"},
+{value:1e150,suffix:"NoQg"},
+{value:1e147,suffix:"OcQg"},
+{value:1e144,suffix:"SpQg"},
+{value:1e141,suffix:"SxQg"},
+{value:1e138,suffix:"QiQg"},
+{value:1e135,suffix:"QaQg"},
+{value:1e132,suffix:"TnQg"},
+{value:1e129,suffix:"DuQg"},
+{value:1e126,suffix:"UnQg"},
+{value:1e123,suffix:"Qg"},
+{value:1e120,suffix:"NoTg"},
+{value:1e117,suffix:"OcTg"},
+{value:1e114,suffix:"SpTg"},
+{value:1e111,suffix:"SxTg"},
+{value:1e108,suffix:"QiTg"},
+{value:1e105,suffix:"QaTg"},
+{value:1e102,suffix:"TnTg"},
+{value:1e99,suffix:"DuTg"},
+{value:1e96,suffix:"UnTg"},
+{value:1e93,suffix:"Tg"},
+{value:1e90,suffix:"NoVg"},
+{value:1e87,suffix:"OcVg"},
+{value:1e84,suffix:"SpVg"},
+{value:1e81,suffix:"SxVg"},
+{value:1e78,suffix:"QiVg"},
+{value:1e75,suffix:"QaVg"},
+{value:1e72,suffix:"TnVg"},
+{value:1e69,suffix:"DuVg"},
+{value:1e66,suffix:"UnVg"},
+{value:1e63,suffix:"Vg"},
+{value:1e60,suffix:"NoD"},
+{value:1e57,suffix:"OcD"},
+{value:1e54,suffix:"SpD"},
+{value:1e51,suffix:"SxD"},
+{value:1e48,suffix:"QiD"},
+{value:1e45,suffix:"QaD"},
+{value:1e42,suffix:"Td"},
+{value:1e39,suffix:"Dd"},
+{value:1e36,suffix:"Ud"},
+{value:1e33,suffix:"Dc"},
+{value:1e30,suffix:"No"},
+{value:1e27,suffix:"Oc"},
+{value:1e24,suffix:"Sp"},
+{value:1e21,suffix:"Sx"},
+{value:1e18,suffix:"Qi"},
+{value:1e15,suffix:"Qa"},
+{value:1e12,suffix:"T"},
+{value:1e9,suffix:"B"},
+{value:1e6,suffix:"M"},
+{value:1e3,suffix:"K"}
+];
+
+function format(n){
+n = cleanNumber(n,0);
+
+if(n >= Number.MAX_VALUE * 0.999) return "MAX";
+
+for(const item of numberSuffixes){
+if(n >= item.value){
+return trim2(n / item.value) + item.suffix;
+}
+}
+
+return Math.floor(n).toString();
+}
+
+function getAuraBonus(){
+return getProjectedAuraBonus(0);
+}
+
+function getClickBoost(){
+return goldenClickBoostTime > 0 ? 2 : 1;
+}
+
+function getGpsBoost(){
+return goldenGpsBoostTime > 0 ? 2 : 1;
+}
+
+function getCritBoost(){
+return goldenCritBoostTime > 0 ? 0.02 : 0;
+}
+
+function getEffectivePerClick(){
+return safeMul(safeMul(safeMul(safeMul(perClick, getAuraBonus()), getPermanentClickMultiplier()), getClickBoost()), getEventClickMultiplier());
+}
+
+function getEffectiveGps(){
+return safeMul(safeMul(safeMul(safeMul(gps, getAuraBonus()), getPermanentGpsMultiplier()), getGpsBoost()), getEventGpsMultiplier());
+}
+
+function getEffectiveCritChance(){
+return Math.min(CRIT_CHANCE_CAP, critChance + getCritBoost() + getPermanentCritBonus() + getEventCritBonus());
+}
+
+function getDiscountedCost(cost){
+let finalCost = cleanNumber(cost);
+
+if(discountTime > 0){
+finalCost = safeMul(finalCost, 0.90);
+}
+
+finalCost = safeMul(finalCost, 1 - getPermanentDiscountPercent());
+finalCost = safeMul(finalCost, 1 - getEventDiscount());
+
+return Math.floor(finalCost);
+}
+
+function sound(type){
+try{
+const now = Date.now();
+
+if(type === "click" && lowPerfMode){
+return;
+}
+
+if(now - lastSoundAt < 45){
+return;
+}
+
+lastSoundAt = now;
+
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+const osc = ctx.createOscillator();
+const gain = ctx.createGain();
+
+if(type === "click"){osc.frequency.value = 220; gain.gain.value = 0.025;}
+else if(type === "buy"){osc.frequency.value = 520; gain.gain.value = 0.04;}
+else if(type === "error"){osc.frequency.value = 90; gain.gain.value = 0.035;}
+else if(type === "gold"){osc.frequency.value = 880; gain.gain.value = 0.045;}
+else if(type === "prestige"){osc.frequency.value = 660; gain.gain.value = 0.05;}
+else{osc.frequency.value = 300; gain.gain.value = 0.025;}
+
+osc.type = "square";
+osc.connect(gain);
+gain.connect(ctx.destination);
+osc.start();
+
+osc.frequency.exponentialRampToValueAtTime(
+type === "buy" || type === "gold" || type === "prestige" ? osc.frequency.value * 1.8 : 70,
+ctx.currentTime + 0.08
+);
+
+gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+osc.stop(ctx.currentTime + 0.1);
+}catch(e){}
+}
+
+/* PRODUÇÃO AUTOMÁTICA */
+
+
+function earlyCostFactor(index){
+const t = Math.min(1, index / 55);
+return 0.62 + 0.38 * t;
+}
+
+
+function pow10(x){
+return Math.pow(10,x);
+}
+
+function scaleCost(index,start,end){
+const t = index / 199;
+return Math.floor(pow10(Math.log10(start) + (Math.log10(end) - Math.log10(start)) * t));
+}
+
+function eraName(index){
+const eras = [
+"Era Tuff",
+"Era 67",
+"Era Aura",
+"Era Entrosa",
+"Era Gobbilândia",
+"Era Demiurgo",
+"Era Cósmica",
+"Era Primordial",
+"Era Universal",
+"Era Gobbi sai do mundo material"
+];
+
+return eras[Math.min(eras.length-1, Math.floor(index/20))];
+}
+
+function eraUnlock(cost){
+return Math.floor(cost * 0.32);
+}
+
+function defaultUpgrades(){
+const bases = [
+["Mini","🟢"],["Caseira","🏠"],["Fazenda","🌱"],["Mina","⛏️"],["Fábrica","🏭"],
+["Banco","🏦"],["Templo","⛪"],["Torre Mística","🧙"],["Nave","🚀"],["Laboratório","🧪"],
+["Portal","🌀"],["Máquina do Tempo","⏳"],["Condensador","⚛️"],["Prisma","🔺"],["Chancemaker","🎲"],
+["Motor Fractal","🧬"],["Console JS","💻"],["Idleverso","🌌"],["Córtex Gobbi","🧠"],["Você","👤"]
+];
+
+const tags = ["Tuff","67","Aura","Entrosa","Demiurgo","Gobbilândia","Cósmica","Primordial","Universal","Centillion"];
+
+/*
+Balanceamento inspirado nos prédios do Cookie Clicker.
+Cada posição usa o tempo de retorno base do prédio equivalente:
+custo base / CpS base.
+Assim, os upgrades automáticos deixam de ser "roubados" e seguem
+uma curva mais parecida com Cookie Clicker.
+*/
+const cookieBuildings = [
+{name:"Cursor", cost:15, cps:0.1},
+{name:"Grandma", cost:100, cps:1},
+{name:"Farm", cost:1100, cps:8},
+{name:"Mine", cost:12000, cps:47},
+{name:"Factory", cost:130000, cps:260},
+{name:"Bank", cost:1400000, cps:1400},
+{name:"Temple", cost:20000000, cps:7800},
+{name:"Wizard tower", cost:330000000, cps:44000},
+{name:"Shipment", cost:5100000000, cps:260000},
+{name:"Alchemy lab", cost:75000000000, cps:1600000},
+{name:"Portal", cost:1000000000000, cps:10000000},
+{name:"Time machine", cost:14000000000000, cps:65000000},
+{name:"Antimatter condenser", cost:170000000000000, cps:430000000},
+{name:"Prism", cost:2100000000000000, cps:2900000000},
+{name:"Chancemaker", cost:26000000000000000, cps:21000000000},
+{name:"Fractal engine", cost:310000000000000000, cps:150000000000},
+{name:"Javascript console", cost:71000000000000000000, cps:1100000000000},
+{name:"Idleverse", cost:12000000000000000000000, cps:8300000000000},
+{name:"Cortex baker", cost:1900000000000000000000000, cps:64000000000000},
+{name:"You", cost:540000000000000000000000000, cps:510000000000000}
+];
+
+let arr = [];
+
+for(let i=0;i<200;i++){
+const cookie = cookieBuildings[i % cookieBuildings.length];
+const cost = Math.floor(scaleCost(i,15,1e303) * earlyCostFactor(i));
+const payback = cookie.cost / cookie.cps;
+const gpsVal = cost / payback;
+const base = bases[i % bases.length];
+const era = eraName(i);
+
+arr.push({
+name:`${base[0]} ${tags[i%tags.length]} da Gobbi ${era}`,
+emoji:base[1],
+baseCost:cost,
+cost:cost,
+gps:gpsVal,
+owned:0,
+unlock:eraUnlock(cost),
+cookieModel:cookie.name
+});
+}
+
+return arr;
+}
+
+
+/* CLIQUE */
+
+function defaultClickUpgrades(){
+const bases = [
+"Dedo","Mouse","Clique","Braço","Punho","Luva","Toque","Mão","Pulso","Aura",
+"Entrosa","Tuff","67","Cósmico","Astral","Demiurgo","Supremo","Universal","Primordial","Final"
+];
+
+const emojis = ["👆","🖱️","🎯","🦾","🥊","🧤","🌌","👑","💠","⚜️"];
+
+let arr = [];
+
+for(let i=0;i<200;i++){
+const cost = Math.floor(scaleCost(i,35,1e303) * earlyCostFactor(i));
+const clicksToPayBack = 160 + i * 20;
+const power = Math.max(1, Math.floor(cost / clicksToPayBack));
+const era = eraName(i);
+
+arr.push({
+name:`${bases[i%bases.length]} ${["Tuff","67","Aura","Entrosa","Demiurgo"][i%5]} ${era}`,
+emoji:emojis[i%emojis.length],
+baseCost:cost,
+cost:cost,
+desc:`+${format(power)} por clique`,
+owned:0,
+unlock:eraUnlock(cost),
+buy(){
+perClick = safeAdd(perClick,power);
+}
+});
+}
+
+return arr;
+}
+
+
+/* ESPECIAIS */
+
+function defaultSpecials(){
+const bases = [
+"Olho","Motor","Pacto","Ordem","Colapso","Instinto","Turbo","Aura","Entrosamento","Demiurgo",
+"Portal","Mandamento","Coroa","Selo","Benção","Explosão","Chave","Ritual","Código","Núcleo"
+];
+
+const emojis = ["👁️","⚡","🌌","👑","🟩","🚀","✨","🛐","🌀","🧿"];
+
+let arr = [];
+
+for(let i=0;i<200;i++){
+const type = i % 3;
+const cost = Math.floor(scaleCost(i,120000,1e303) * earlyCostFactor(i));
+const era = eraName(i);
+
+let obj = {
+name:`${bases[i%bases.length]} ${["Tuff","67","Aura","Entrosa","Demiurgo"][i%5]} ${era}`,
+emoji:emojis[i%emojis.length],
+baseCost:cost,
+cost:cost,
+owned:0,
+unlock:Math.floor(cost*0.45)
+};
+
+if(type === 0){
+const bonus = Math.min(0.00012 + i * 0.000003,0.00065);
+obj.desc = "+" + (bonus*100).toFixed(3) + "% crítico";
+obj.buy = function(){
+critChance = Math.min(CRIT_CHANCE_CAP, cleanNumber(critChance) + bonus);
+};
+}
+else if(type === 1){
+const multi = 1.003 + Math.min(i * 0.00004,0.012);
+obj.desc = "+" + ((multi-1)*100).toFixed(2) + "% GPS";
+obj.buy = function(){
+gps = safeMul(gps,multi);
+};
+}
+else{
+const multi = 1.003 + Math.min(i * 0.00004,0.012);
+obj.desc = "+" + ((multi-1)*100).toFixed(2) + "% clique";
+obj.buy = function(){
+perClick = safeMul(perClick,multi);
+};
+}
+
+arr.push(obj);
+}
+
+return arr;
+}
+
+
+function defaultEntrosamentoUpgrades(){
+return [
+{
+id:"aura_inicial",
+name:"Aura Inicial",
+emoji:"✨",
+max:20,
+level:0,
+baseCost:1,
+growth:1.65,
+desc:"Começa cada rodada com Gobbis extras.",
+effect(){
+const value = getStartingGobbis();
+return value > 0 ? "+" + format(value) + " Gobbis iniciais" : "nenhum bônus ainda";
+}
+},
+{
+id:"memoria_tuff",
+name:"Memória Tuff",
+emoji:"🧠",
+max:50,
+level:0,
+baseCost:2,
+growth:1.42,
+requires:{id:"aura_inicial",level:1},
+desc:"+1% GPS permanente por nível.",
+effect(){
+return "+" + (getEntLevel("memoria_tuff")*1).toFixed(0) + "% GPS";
+}
+},
+{
+id:"dedo_67",
+name:"Dedo 67",
+emoji:"☝️",
+max:50,
+level:0,
+baseCost:3,
+growth:1.42,
+requires:{id:"aura_inicial",level:1},
+desc:"+1% clique permanente por nível.",
+effect(){
+return "+" + (getEntLevel("dedo_67")*1).toFixed(0) + "% clique";
+}
+},
+{
+id:"radar_golden",
+name:"Radar Golden Gobbi",
+emoji:"📡",
+max:20,
+level:0,
+baseCost:6,
+growth:1.75,
+requires:{id:"memoria_tuff",level:3},
+desc:"Golden Gobbi aparece um pouco mais.",
+effect(){
+return "+" + (getEntLevel("radar_golden")*0.5).toFixed(1) + "% chance";
+}
+},
+{
+id:"entrosamento_profundo",
+name:"Entrosamento Profundo",
+emoji:"🌌",
+max:30,
+level:0,
+baseCost:10,
+growth:1.62,
+requires:{id:"dedo_67",level:5},
+desc:"+3% Six Gobbis ao entrosar por nível.",
+effect(){
+return "+" + (getEntLevel("entrosamento_profundo")*3).toFixed(0) + "% Six Gobbis";
+}
+},
+{
+id:"aura_do_67",
+name:"Aura do 67",
+emoji:"🟩",
+max:20,
+level:0,
+baseCost:18,
+growth:1.85,
+requires:{id:"entrosamento_profundo",level:3},
+desc:"+0.05% crítico permanente por nível.",
+effect(){
+return "+" + (getEntLevel("aura_do_67")*0.05).toFixed(2) + "% crítico";
+}
+},
+{
+id:"desconto_tuff",
+name:"Desconto Tuff",
+emoji:"🏷️",
+max:20,
+level:0,
+baseCost:25,
+growth:1.85,
+requires:{id:"radar_golden",level:5},
+desc:"Reduz levemente o preço dos upgrades.",
+effect(){
+return "-" + (getPermanentDiscountPercent()*100).toFixed(2) + "% custos";
+}
+},
+{
+id:"demiurgo_gobbi",
+name:"Demiurgo da Gobbi",
+emoji:"🛐",
+max:10,
+level:0,
+baseCost:70,
+growth:2.15,
+requires:{id:"aura_do_67",level:5},
+desc:"+2% GPS e clique por nível.",
+effect(){
+return "+" + (getEntLevel("demiurgo_gobbi")*2).toFixed(0) + "% global";
+}
+},
+{
+id:"gobbilandia_inicial",
+name:"Gobbilândia Inicial",
+emoji:"🌍",
+max:10,
+level:0,
+baseCost:120,
+growth:2.25,
+requires:{id:"demiurgo_gobbi",level:3},
+desc:"Começa rodadas futuras com ainda mais Gobbis.",
+effect(){
+const value = getStartingGobbis();
+return value > 0 ? "+" + format(value) + " Gobbis iniciais" : "nenhum bônus ainda";
+}
+},
+{
+id:"chave_centillion",
+name:"Chave Centillion",
+emoji:"👑",
+max:1,
+level:0,
+baseCost:670,
+growth:1,
+requires:{id:"gobbilandia_inicial",level:5},
+desc:"Um pequeno bônus final para buscar 1Ce.",
+effect(){
+return "+5% Six Gobbis e +5% global";
+}
+}
+];
+}
+
+let entrosamentoUpgrades = defaultEntrosamentoUpgrades();
+
+function getEntUpgrade(id){
+return entrosamentoUpgrades.find(u=>u.id === id);
+}
+
+function getEntLevel(id){
+const u = getEntUpgrade(id);
+return u ? (u.level || 0) : 0;
+}
+
+function getEntCost(u){
+return Math.floor(u.baseCost * Math.pow(u.growth, u.level || 0));
+}
+
+function canBuyEntUpgrade(u){
+if((u.level || 0) >= u.max) return false;
+if(u.requires){
+const req = getEntUpgrade(u.requires.id);
+if(!req || (req.level || 0) < u.requires.level) return false;
+}
+return auraGobbi >= getEntCost(u);
+}
+
+function getEntRequirementText(u){
+if(!u.requires) return "";
+const req = getEntUpgrade(u.requires.id);
+if(!req || (req.level || 0) >= u.requires.level) return "";
+return `Requer ${req.name} nível ${u.requires.level}`;
+}
+
+function getSixGainMultiplier(){
+return 1 + getEntLevel("entrosamento_profundo") * 0.03 + getEntLevel("chave_centillion") * 0.05;
+}
+
+function getPermanentGpsMultiplier(){
+return 1
++ totalSixGobbis * 0.005
++ getEntLevel("memoria_tuff") * 0.01
++ getEntLevel("demiurgo_gobbi") * 0.02
++ getEntLevel("chave_centillion") * 0.05;
+}
+
+function getPermanentClickMultiplier(){
+return 1
++ totalSixGobbis * 0.005
++ getEntLevel("dedo_67") * 0.01
++ getEntLevel("demiurgo_gobbi") * 0.02
++ getEntLevel("chave_centillion") * 0.05;
+}
+
+function getPermanentCritBonus(){
+return getEntLevel("aura_do_67") * 0.0005;
+}
+
+function getPermanentDiscountPercent(){
+return Math.min(0.05, getEntLevel("desconto_tuff") * 0.0025);
+}
+
+function getGoldenSpawnChance(){
+return Math.min(0.36, 0.16 + getEntLevel("radar_golden") * 0.005 + getEventGoldenBonus());
+}
+
+
+function getStartingGobbisForLevels(auraLevel, landLevel){
+return Math.floor(100 * auraLevel * auraLevel + 1000000 * landLevel * landLevel * landLevel);
+}
+
+function getEntNextEffect(u){
+const current = u.level || 0;
+const next = Math.min(u.max, current + 1);
+
+if(u.id === "aura_inicial"){
+const currentValue = getStartingGobbisForLevels(current, getEntLevel("gobbilandia_inicial"));
+const nextValue = getStartingGobbisForLevels(next, getEntLevel("gobbilandia_inicial"));
+return "+" + format(Math.max(0, nextValue - currentValue)) + " Gobbis iniciais no próximo nível";
+}
+
+if(u.id === "gobbilandia_inicial"){
+const currentValue = getStartingGobbisForLevels(getEntLevel("aura_inicial"), current);
+const nextValue = getStartingGobbisForLevels(getEntLevel("aura_inicial"), next);
+return "+" + format(Math.max(0, nextValue - currentValue)) + " Gobbis iniciais no próximo nível";
+}
+
+if(u.id === "memoria_tuff"){
+return "+1% GPS permanente no próximo nível";
+}
+
+if(u.id === "dedo_67"){
+return "+1% clique permanente no próximo nível";
+}
+
+if(u.id === "radar_golden"){
+return "+0.5% chance de Golden Gobbi no próximo nível";
+}
+
+if(u.id === "entrosamento_profundo"){
+return "+3% Six Gobbis ao entrosar no próximo nível";
+}
+
+if(u.id === "aura_do_67"){
+return "+0.05% crítico permanente no próximo nível";
+}
+
+if(u.id === "desconto_tuff"){
+return "+0.25% desconto permanente no próximo nível";
+}
+
+if(u.id === "demiurgo_gobbi"){
+return "+2% GPS e clique no próximo nível";
+}
+
+if(u.id === "chave_centillion"){
+return "+5% Six Gobbis e +5% global";
+}
+
+return "";
+}
+
+function getStartingGobbis(){
+const auraLevel = getEntLevel("aura_inicial");
+const landLevel = getEntLevel("gobbilandia_inicial");
+return Math.floor(100 * auraLevel * auraLevel + 1000000 * landLevel * landLevel * landLevel);
+}
+
+let upgrades = defaultUpgrades();
+let clickUpgrades = defaultClickUpgrades();
+let specials = defaultSpecials();
+
+function createGeneratedAchievements(){
+const list = [];
+
+function add(id,name,condition){
+list.push({id,name,reward:"Conquista visual",condition});
+}
+
+function makeMilestones(prefix,label,values,formatter,getter){
+values.forEach((value,index)=>{
+add(`${prefix}_${index}`, `${formatter(value)} ${label}`, ()=>getter() >= value);
+});
+}
+
+function mulSeries(multipliers,startExp,endExp){
+const values = [];
+for(let exp=startExp; exp<=endExp; exp++){
+multipliers.forEach(m=>values.push(m * Math.pow(10,exp)));
+}
+return values;
+}
+
+function gobbiMilestones(){
+// Mantém a mesma curva antiga, incluindo o salto de 1e18 para 1e19.
+return [
+...mulSeries([1,5],2,17),
+1e18,
+...mulSeries([1,5],19,101),
+1e102
+];
+}
+
+const clickMilestones = [1,10,25,50, ...mulSeries([1,2.5,5],2,13)];
+const gpsMilestones = [1,5, ...mulSeries([1,2.5,5],1,12), 1e13, 2.5e13];
+const perClickMilestones = [1,2,5, ...mulSeries([1,2.5,5],1,9)];
+const critMilestones = [1,5, ...mulSeries([1,2.5,5],1,6)];
+const upgradeMilestones = [1,5,10,25,50,75,100,150,200,250,300,350,400,450,500,600,700,800,900,1000];
+const sixMilestones = [1,2,5, ...mulSeries([1,2.5,5],1,5), 1e6, 2.5e6];
+const entLevelMilestones = [1,3,5,10,15,20,30,40,50,75,100,125,150,200,250,300,350,400,450,500];
+
+makeMilestones("gobbi","Gobbis lifetime",gobbiMilestones(),format,()=>lifetimeGobbi);
+makeMilestones("clicks","cliques",clickMilestones,format,()=>clicks);
+makeMilestones("gps","GPS",gpsMilestones,format,()=>getEffectiveGps());
+makeMilestones("perclick","por clique",perClickMilestones,format,()=>getEffectivePerClick());
+makeMilestones("crit","críticos",critMilestones,format,()=>criticals);
+makeMilestones("upgrades","upgrades comprados",upgradeMilestones,format,()=>totalOwned());
+makeMilestones("six","Six Gobbis totais",sixMilestones,format,()=>totalSixGobbis || auraGobbi);
+makeMilestones("entlevel","níveis de Entrosamento",entLevelMilestones,format,()=>totalEntrosamentoLevels());
+
+add("tuff_67000","ALERTA TUFF",()=>lifetimeGobbi >= 67000);
+add("first_golden","Primeiro Golden Gobbi",()=>goldenClicks >= 1);
+add("golden_10","10 Golden Gobbis",()=>goldenClicks >= 10);
+add("golden_50","50 Golden Gobbis",()=>goldenClicks >= 50);
+add("golden_100","100 Golden Gobbis",()=>goldenClicks >= 100);
+add("first_event","Primeiro evento limitado",()=>randomEventsTriggered >= 1);
+add("events_10","10 eventos limitados",()=>randomEventsTriggered >= 10);
+add("events_50","50 eventos limitados",()=>randomEventsTriggered >= 50);
+add("events_100","100 eventos limitados",()=>randomEventsTriggered >= 100);
+add("skin_azul","Skin azul desbloqueada",()=>totalSixGobbis >= 3);
+add("skin_roxa","Skin roxa desbloqueada",()=>totalSixGobbis >= 8);
+add("skin_dourada","Skin dourada desbloqueada",()=>totalSixGobbis >= 20);
+add("skin_vermelha","Skin vermelha desbloqueada",()=>totalSixGobbis >= 50);
+add("skin_cyber","Skin cyber desbloqueada",()=>totalSixGobbis >= 120);
+add("skin_branca","Skin aura branca desbloqueada",()=>totalSixGobbis >= 300);
+add("skin_demiurgo","Skin demiurgo desbloqueada",()=>totalSixGobbis >= 670);
+add("first_entrosamento","Primeiro Entrosamento",()=>totalPrestiges >= 1);
+add("entrosamentos_5","5 Entrosamentos",()=>totalPrestiges >= 5);
+add("entrosamentos_10","10 Entrosamentos",()=>totalPrestiges >= 10);
+add("entrosamentos_25","25 Entrosamentos",()=>totalPrestiges >= 25);
+
+for(let i=0;i<10;i++){
+add(`era_unlock_${i+1}`,`${eraName(i*20)} desbloqueada`,()=>getUnlockedEraAchievements() >= i+1);
+}
+
+add("mission_1","Primeira missão completa",()=>completedMissions >= 1);
+add("mission_10","10 missões completas",()=>completedMissions >= 10);
+add("mission_67","67 missões completas",()=>completedMissions >= 67);
+add("mission_100","100 missões completas",()=>completedMissions >= 100);
+add("all_skins","Todas as skins desbloqueadas",()=>typeof getUnlockedSkinsCount === "function" && getUnlockedSkinsCount() >= gobbiSkins.length);
+add("all_era_pages","Todas as eras liberadas",()=>getUnlockedEraAchievements() >= 10);
+add("material_exit","Gobbi saiu do mundo material",()=>typeof getCurrentEraIndex === "function" && getCurrentEraIndex() >= 9);
+
+const extraPrefixes = ["era_unlock_","mission_","all_skins","all_era_pages","material_exit","tuff_","first_golden","golden_","first_event","events_","skin_","first_entrosamento","entrosamentos_"];
+const extrasFirst = list.filter(a=>extraPrefixes.some(p=>a.id.startsWith(p)));
+const rest = list.filter(a=>!extraPrefixes.some(p=>a.id.startsWith(p)));
+return [...extrasFirst,...rest].slice(0,350);
+}
+
+
+const achievements = createGeneratedAchievements();
+
+function totalEntrosamentoLevels(){
+if(typeof entrosamentoUpgrades === "undefined" || !entrosamentoUpgrades) return 0;
+
+return entrosamentoUpgrades.reduce((sum,u)=>sum + (u.level || 0),0);
+}
+
+let goldenClicks = 0;
+let randomEventsTriggered = 0;
+
+let unlockedAchievements = {};
+
+
+const gobbiSkins = [
+{
+id:"verde",
+name:"Gobbi Verde",
+req:0,
+image:"./gobbi.png",
+accent:"#39ff14",
+soft:"#9eff9e",
+text:"#d9ffd9",
+rgb:"57,255,20"
+},
+{
+id:"azul",
+name:"Gobbi Azul",
+req:3,
+image:"./gobbi_azul.png",
+accent:"#00aaff",
+soft:"#9edfff",
+text:"#d9f3ff",
+rgb:"0,170,255"
+},
+{
+id:"roxa",
+name:"Gobbi Roxa",
+req:8,
+image:"./gobbi_roxa.png",
+accent:"#b06cff",
+soft:"#d2b6ff",
+text:"#efe2ff",
+rgb:"176,108,255"
+},
+{
+id:"dourada",
+name:"Gobbi Dourada",
+req:20,
+image:"./gobbi_dourada.png",
+accent:"#ffe600",
+soft:"#fff29e",
+text:"#fff8d9",
+rgb:"255,230,0"
+},
+{
+id:"vermelha",
+name:"Gobbi Tuff Vermelha",
+req:50,
+image:"./gobbi_vermelha.png",
+accent:"#ff3030",
+soft:"#ff9e9e",
+text:"#ffe1e1",
+rgb:"255,48,48"
+},
+{
+id:"cyber",
+name:"Gobbi Cyber",
+req:120,
+image:"./gobbi_cyber.png",
+accent:"#00fff0",
+soft:"#9efff8",
+text:"#d9fffc",
+rgb:"0,255,240"
+},
+{
+id:"branca",
+name:"Gobbi Aura Branca",
+req:300,
+image:"./gobbi_branca.png",
+accent:"#ffffff",
+soft:"#e8e8e8",
+text:"#ffffff",
+rgb:"255,255,255"
+},
+{
+id:"demiurgo",
+name:"Gobbi Demiurgo",
+req:670,
+image:"./gobbi_demiurgo.png",
+accent:"#b06cff",
+soft:"#ffd76a",
+text:"#fff6df",
+rgb:"176,108,255",
+secondary:"#ffd76a",
+secondaryRgb:"255,215,106"
+}
+];
+
+const randomEvents = [
+{
+id:"entrosa_global",
+name:"Entrosamento Global",
+duration:45,
+message:"Gabriela Gobbi entrosou geral: +20% GPS por tempo limitado.",
+gpsMulti:1.20
+},
+{
+id:"chuva_tuff",
+name:"Chuva Tuff",
+duration:35,
+message:"Chuva Tuff caiu na Gobbilândia: +25% clique por tempo limitado.",
+clickMulti:1.25
+},
+{
+id:"aura_67",
+name:"Aura do 67 Detectada",
+duration:30,
+message:"Aura do 67 detectada: +1.5% crítico temporário.",
+critBonus:0.015
+},
+{
+id:"liquidacao_gobbi",
+name:"Liquidação Gobbi",
+duration:40,
+message:"A loja entrou em liquidação: 8% de desconto temporário.",
+discount:0.08
+},
+{
+id:"silencio_demiurgo",
+name:"Silêncio Demiurgo",
+duration:25,
+message:"O Demiurgo observou a Gobbi: Golden Gobbi aparece mais fácil por um tempo.",
+goldenBonus:0.08
+}
+];
+
+function getSelectedSkin(){
+return gobbiSkins.find(s=>s.id === selectedSkinId) || gobbiSkins[0];
+}
+
+function getHighestUnlockedSkin(){
+let unlocked = gobbiSkins.filter(s=>totalSixGobbis >= s.req);
+return unlocked[unlocked.length-1] || gobbiSkins[0];
+}
+
+
+function getUnlockedSkinsCount(){
+if(!Array.isArray(gobbiSkins)) return 0;
+return gobbiSkins.filter(skin=>isSkinUnlocked(skin)).length;
+}
+
+function isSkinUnlocked(skin){
+return totalSixGobbis >= skin.req;
+}
+
+function applySkin(force=false){
+let skin = getSelectedSkin();
+
+if(!isSkinUnlocked(skin)){
+skin = getHighestUnlockedSkin();
+selectedSkinId = skin.id;
+}
+
+const next = gobbiSkins.find(s=>!isSkinUnlocked(s));
+const sig = `${skin.id}|${totalSixGobbis}|${next ? next.id : "all"}`;
+
+if(!force && sig === lastAppliedSkinSignature){
+return;
+}
+
+lastAppliedSkinSignature = sig;
+
+document.documentElement.style.setProperty("--accent", skin.accent);
+document.documentElement.style.setProperty("--accent-soft", skin.soft);
+document.documentElement.style.setProperty("--text-soft", skin.text);
+document.documentElement.style.setProperty("--accent-rgb", skin.rgb);
+document.documentElement.style.setProperty("--accent-secondary", skin.secondary || skin.soft || skin.accent);
+document.documentElement.style.setProperty("--accent-secondary-rgb", skin.secondaryRgb || skin.rgb);
+
+document.body.classList.remove("skin-verde","skin-azul","skin-roxa","skin-dourada","skin-vermelha","skin-cyber","skin-branca","skin-demiurgo");
+document.body.classList.add("skin-" + skin.id);
+
+if(gobbiBtn){
+gobbiBtn.onerror = ()=>{
+gobbiBtn.onerror = null;
+gobbiBtn.src = "./gobbi.png";
+};
+
+if(gobbiBtn.getAttribute("src") !== skin.image){
+gobbiBtn.src = skin.image;
+}
+
+gobbiBtn.style.filter =
+"drop-shadow(0 0 20px var(--accent)) drop-shadow(0 0 50px rgba(var(--accent-rgb),0.75))";
+}
+
+if(skinInfo){
+skinInfo.innerHTML =
+`Skin atual: <b>${skin.name}</b>` +
+(next ? `<br>Próxima: ${next.name} em ${format(next.req)} Six Gobbis` : `<br>Todas as skins desbloqueadas`);
+}
+}
+
+function renderSkinGrid(force=false){
+if(!skinGrid) return;
+
+const sig = `${selectedSkinId}|${totalSixGobbis}`;
+
+if(!force && sig === lastSkinGridSignature){
+return;
+}
+
+lastSkinGridSignature = sig;
+skinGrid.innerHTML = "";
+
+gobbiSkins.forEach(skin=>{
+const unlocked = isSkinUnlocked(skin);
+const btn = document.createElement("button");
+btn.className = "skinBtn " + (selectedSkinId === skin.id ? "active " : "") + (!unlocked ? "locked" : "");
+
+btn.innerHTML = `
+<div class="skinBtnContent">
+<div class="skinTextWrap">
+<span class="skinName">${unlocked ? skin.name : "???"}</span>
+<span class="skinReq">${unlocked ? "Desbloqueada" : "Requer " + format(skin.req) + " Six Gobbis"}</span>
+</div>
+</div>
+`;
+
+btn.onclick = ()=>{
+if(!unlocked){
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "Skin bloqueada", true);
+return;
+}
+
+selectedSkinId = skin.id;
+applySkin();
+lastSkinGridSignature = "";
+renderSkinGrid(true);
+saveGame(false);
+};
+
+skinGrid.appendChild(btn);
+});
+}
+
+function getEventGpsMultiplier(){
+return activeRandomEvent && activeRandomEvent.gpsMulti ? activeRandomEvent.gpsMulti : 1;
+}
+
+function getEventClickMultiplier(){
+return activeRandomEvent && activeRandomEvent.clickMulti ? activeRandomEvent.clickMulti : 1;
+}
+
+function getEventCritBonus(){
+return activeRandomEvent && activeRandomEvent.critBonus ? activeRandomEvent.critBonus : 0;
+}
+
+function getEventDiscount(){
+return activeRandomEvent && activeRandomEvent.discount ? activeRandomEvent.discount : 0;
+}
+
+function getEventGoldenBonus(){
+return activeRandomEvent && activeRandomEvent.goldenBonus ? activeRandomEvent.goldenBonus : 0;
+}
+
+function startRandomEvent(){
+if(activeRandomEvent) return;
+
+const event = randomEvents[Math.floor(Math.random()*randomEvents.length)];
+activeRandomEvent = event;
+randomEventTimeLeft = event.duration;
+randomEventsTriggered++;
+
+showToast("Evento limitado!", `<b>${event.name}</b><br>${event.message}`);
+document.body.classList.add("eventPulse");
+
+setTimeout(()=>{
+document.body.classList.remove("eventPulse");
+},4500);
+
+updateUI();
+renderShop();
+saveGame(false);
+}
+
+function tickRandomEvent(){
+if(!activeRandomEvent) return;
+
+randomEventTimeLeft--;
+
+if(randomEventTimeLeft <= 0){
+showToast("Evento encerrado", activeRandomEvent.name);
+activeRandomEvent = null;
+randomEventTimeLeft = 0;
+updateUI();
+renderShop();
+}
+}
+
+const news = [
+`Confirmado, Gabriela Gobbi Entrosou em mais um grupo..`,
+`Cientistas apontam: entrosamento da gobbi beira a aura do 67!`,
+`Intenso! Gobbi aparece em videoclipe da música "entrosando com os crias"!`,
+`A produção de gobbis está aumentando em um nível intenso, não sabemos o porquê`,
+`Gabriela Gobbi acaba de ir para o planeta gobbilandia`,
+`Gabriela Gobbi N°7261 é eliminada após falar mal da convocação de Neymar Jr.`,
+`Decepcionante... Gobbi perde -1000 de aura na frente de seus fãs`,
+`Gabriela Gobbi N° 23 abre a livraria Gobbi fontes para pessoas aprenderem sobre a Gobbi`
+];
+
+
+const productionDescriptions = {
+"Mini Gobbi Tuff":"Uma mini Gobbi começa a entrosar baixinho no canto.",
+"Gobbi Entrosada":"A Gobbi aprende a circular pelos grupos certos.",
+"Fazenda da Gobbi 67":"Uma fazenda inteira dedicada à aura do 67.",
+"Plantação Tuff da Gobbi":"Cada broto nasce com energia tuff.",
+"Reator Aura Gobbi":"Transforma aura acumulada em produção constante.",
+"Oficina da Gobbi Entrosa":"Ajusta motores, cliques e fofocas de Gobbilândia.",
+"Fábrica Tuff 67":"Produção industrial para Gobbis extremamente entrosadas.",
+"Laboratório Aura da Gobbi":"Testes estranhos medem a potência da aura.",
+"Portal Entrosa Gobbi":"Abre passagens para grupos ainda mais entrosados.",
+"Datacenter Tuff da Gobbi":"Servidores calculam a rota mais tuff possível.",
+"Cyber Gobbi 67":"Uma Gobbi digital com aura binária.",
+"Satélite Aura Gobbi":"Transmite sinal de entrosamento para todo o planeta.",
+"Quantum Gobbi Entrosada":"A Gobbi está entrosada e não-entrosada ao mesmo tempo.",
+"Colônia Tuff da Gobbi":"Uma comunidade inteira vivendo de energia tuff.",
+"Multiverso Gobbi 67":"Toda realidade agora conhece a aura 67.",
+"Gobbi Aura GOD":"A produção começa a parecer coisa divina.",
+"Galáxia Tuff da Gobbi":"Sistemas solares entram no esquema da Gobbi.",
+"Singularidade Demiurgo da Gobbi":"A Gobbi dobra a realidade ao redor da produção.",
+"Dimensão Aura 67 Demiurgo":"Uma dimensão feita só de aura e entrosamento.",
+"Eternidade Tuff Demiurgo da Gobbi":"A produção nunca acaba. A Gobbi também não."
+};
+
+const clickDescriptions = {
+"Dedo Tuff da Gobbi":"O primeiro toque carregado de aura.",
+"Dois Dedos 67":"Dois dedos, uma missão, muito 67.",
+"Mouse Aura RGB":"O RGB aumenta a confiança do clique.",
+"Clique Entrosa":"Um clique que chega cumprimentando todo mundo.",
+"Braço Mecânico da Gobbi":"Força mecânica com etiqueta social.",
+"Auto Click Tuff Mental":"A mente clica antes da mão.",
+"Clique Atômico 67":"Cada clique divide a realidade em Gobbis.",
+"Punho Neon da Gobbi":"Um soco de luz verde no contador.",
+"Gobbi Frenética":"A Gobbi entra no modo sem freio.",
+"Luva Aura Suprema":"A luva brilha com energia acumulada.",
+"Mão Entrosa do Multiverso":"Aperta a mão de todas as versões da Gobbi.",
+"Clique Divino Tuff":"Um clique que parece decreto celestial.",
+"Gobbi Infinita 67":"A Gobbi entende o infinito e segue clicando.",
+"Mão Cósmica da Aura":"A aura alcança estrelas distantes."
+};
+
+const specialDescriptions = {
+"Olho Aura Supremo":"Enxerga críticos antes deles acontecerem.",
+"Gobbi Rage Tuff":"A raiva tuff multiplica o impacto crítico.",
+"Motor Verde 67":"Liga um motor suspeito movido por aura.",
+"Benção Entrosa da Gobbi":"A Gobbi abençoa o grupo inteiro.",
+"Explosão Neon Tuff":"Um clarão tuff que assusta até o contador.",
+"Turbo Gobbi Aura":"Mais velocidade sem perder a pose.",
+"Instinto Tuff da Gobbi":"A Gobbi sente quando é hora de critar.",
+"Colapso Verde 67":"Tudo colapsa em um ponto verde.",
+"Ordem Entrosa da Gobbi":"A ordem oficial do entrosamento.",
+"Pacto Cósmico Aura":"Um acordo silencioso com forças de Gobbilândia."
+};
+
+function getFlavorDescription(obj,type){
+if(type === "production") return productionDescriptions[obj.name] || "";
+if(type === "click") return clickDescriptions[obj.name] || "";
+if(type === "special") return specialDescriptions[obj.name] || "";
+return "";
+}
+
+
+const UPGRADES_PER_ERA = 20;
+
+function getEraCount(){
+return Math.ceil(upgrades.length / UPGRADES_PER_ERA);
+}
+
+function getEraThreshold(eraIndex){
+if(eraIndex <= 0) return 0;
+
+const item = upgrades[eraIndex * UPGRADES_PER_ERA];
+
+if(item){
+return item.unlock || item.baseCost || item.cost || 0;
+}
+
+return FINAL_OBJECTIVE;
+}
+
+function getCurrentEraIndex(){
+let current = 0;
+const count = getEraCount();
+
+for(let i=0;i<count;i++){
+if(lifetimeGobbi >= getEraThreshold(i)){
+current = i;
+}
+}
+
+return Math.min(current,count-1);
+}
+
+function getCurrentEraInfo(){
+const currentIndex = getCurrentEraIndex();
+const count = getEraCount();
+const currentName = eraName(currentIndex * UPGRADES_PER_ERA);
+const nextIndex = currentIndex + 1;
+const nextName = nextIndex < count ? eraName(nextIndex * UPGRADES_PER_ERA) : null;
+
+const currentThreshold = getEraThreshold(currentIndex);
+const nextThreshold = nextIndex < count ? getEraThreshold(nextIndex) : FINAL_OBJECTIVE;
+
+let progress = 100;
+
+if(nextName){
+if(currentThreshold <= 0){
+progress = Math.max(0, Math.min(100, (lifetimeGobbi / nextThreshold) * 100));
+}else{
+const curLog = Math.log10(currentThreshold);
+const nextLog = Math.log10(nextThreshold);
+const valLog = lifetimeGobbi <= 1 ? 0 : Math.log10(lifetimeGobbi);
+progress = Math.max(0, Math.min(100, ((valLog - curLog) / (nextLog - curLog)) * 100));
+}
+}
+
+return {
+currentIndex,
+currentName,
+nextIndex,
+nextName,
+currentThreshold,
+nextThreshold,
+progress
+};
+}
+
+function getUnlockedShopPages(type,totalPages){
+if(type === "entrosamento") return totalPages;
+
+const pagesPerEra = Math.ceil(UPGRADES_PER_ERA / ITEMS_PER_PAGE);
+const unlockedPages = (getCurrentEraIndex() + 1) * pagesPerEra;
+
+return Math.max(1, Math.min(totalPages, unlockedPages));
+}
+
+function updateEraPanel(){
+if(!eraText || !eraProgressInner) return;
+
+const info = getCurrentEraInfo();
+const pagesPerEra = Math.ceil(UPGRADES_PER_ERA / ITEMS_PER_PAGE);
+const totalPages = Math.ceil(upgrades.length / ITEMS_PER_PAGE);
+const unlockedPages = Math.min(totalPages,(info.currentIndex+1)*pagesPerEra);
+
+eraText.innerHTML =
+`Era atual: <b>${info.currentName}</b>` +
+(info.nextName ? `<br>Próxima era: ${info.nextName} em ${format(info.nextThreshold)} Gobbis lifetime` : `<br>Última era liberada`);
+
+eraProgressInner.style.width = info.progress + "%";
+
+if(eraPagesText){
+eraPagesText.innerText = `Páginas de loja liberadas: ${unlockedPages}/${totalPages}`;
+}
+}
+
+
+function isMobileLayout(){
+return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
+
+function applyMobileLayoutMode(){
+const mobile = isMobileLayout();
+document.body.classList.toggle("force-mobile", mobile);
+document.documentElement.style.overflowX = mobile ? "hidden" : "";
+document.body.style.overflowX = mobile ? "hidden" : "";
+
+if(!mobile){
+document.body.classList.remove("mobile-view-main","mobile-view-shop","mobile-view-stats","mobile-view-goals");
+}
+
+return mobile;
+}
+
+function setMobileView(view){
+mobileView = view || "main";
+
+const isMobile = applyMobileLayoutMode();
+
+document.body.classList.remove("mobile-view-main","mobile-view-shop","mobile-view-stats","mobile-view-goals");
+
+if(isMobile){
+document.body.classList.add("mobile-view-" + mobileView);
+}
+
+const buttons = {
+main:document.getElementById("mobileMainBtn"),
+shop:document.getElementById("mobileShopBtn"),
+stats:document.getElementById("mobileStatsBtn"),
+goals:document.getElementById("mobileGoalsBtn")
+};
+
+Object.values(buttons).forEach(btn=>{
+if(btn) btn.classList.remove("active");
+});
+
+if(buttons[mobileView]){
+buttons[mobileView].classList.add("active");
+}
+
+positionAchievementPanel();
+
+if(mobileView === "shop"){
+setShopMode(shopMode || "shop");
+renderShop();
+}
+
+if(mobileView === "goals"){
+renderMissions(true);
+}
+}
+
+
+document.addEventListener("keydown",(e)=>{
+if(e.key === "Escape"){
+closeGuidePopup();
+closeMobileSettingsPopup();
+
+const saveTransferOverlay = document.getElementById("saveTransferOverlay");
+if(saveTransferOverlay){
+saveTransferOverlay.classList.remove("open");
+document.body.classList.remove("guide-open");
+document.body.style.overflow = "";
+}
+}
+});
+
+window.addEventListener("resize", ()=>{
+applyPerformanceMode();
+applyMobileLayoutMode();
+setMobileView(mobileView || "main");
+positionAchievementPanel();
+if(mobileView === "shop"){
+forceRenderShopSafe();
+}
+if(newsTimer){
+clearTimeout(newsTimer);
+}
+updateNews();
+});
+
+
+function niceMissionNumber(n){
+n = cleanNumber(n,1);
+
+if(n <= 10) return Math.ceil(n);
+
+const magnitude = Math.pow(10, Math.floor(Math.log10(n)));
+const normalized = n / magnitude;
+
+let nice = 1;
+
+if(normalized <= 1) nice = 1;
+else if(normalized <= 2) nice = 2;
+else if(normalized <= 5) nice = 5;
+else nice = 10;
+
+return Math.ceil(nice * magnitude);
+}
+
+function getMissionDifficultyScale(){
+const era = typeof getCurrentEraIndex === "function" ? getCurrentEraIndex() : 0;
+const lifetimeScale = lifetimeGobbi > 0 ? Math.pow(Math.log10(lifetimeGobbi + 10),1.35) : 1;
+const sixScale = Math.sqrt(Math.max(totalSixGobbis || 0,0) + 1);
+const upgradeScale = Math.sqrt(totalOwned() + 1);
+
+return Math.max(1, lifetimeScale * (1 + era * 0.16) + sixScale * 0.8 + upgradeScale * 0.25);
+}
+
+function getMissionReward(target,type){
+const scale = getMissionDifficultyScale();
+const gpsBase = Math.max(getEffectiveGps(),1);
+const clickBase = Math.max(getEffectivePerClick(),1);
+
+let reward = Math.max(
+500,
+gpsBase * 240,
+clickBase * 120,
+Math.sqrt(Math.max(lifetimeGobbi,1)) * 22,
+scale * 250
+);
+
+if(type === "gobbis"){
+reward = Math.max(reward, target * 0.10);
+}
+
+if(type === "gps"){
+reward = Math.max(reward, gpsBase * 420);
+}
+
+if(type === "golden"){
+reward = Math.max(reward, gpsBase * 600, clickBase * 350);
+}
+
+if(type === "buy"){
+reward = Math.max(reward, gpsBase * 360, clickBase * 220);
+}
+
+return Math.floor(niceMissionNumber(reward));
+}
+
+function createMission(){
+const choices = ["clicks","buy","golden","gobbis","gps"];
+const type = choices[Math.floor(Math.random()*choices.length)];
+
+const scale = getMissionDifficultyScale();
+const era = typeof getCurrentEraIndex === "function" ? getCurrentEraIndex() : 0;
+const gpsBase = Math.max(getEffectiveGps(),0);
+const clickBase = Math.max(getEffectivePerClick(),1);
+
+let amount = 0;
+let label = "";
+let start = 0;
+
+if(type === "clicks"){
+start = clicks;
+amount = niceMissionNumber(Math.max(
+50,
+70 + scale * 9 + Math.sqrt(Math.max(clicks,1)) * 4 + era * 35
+));
+label = `Clique ${format(amount)} vezes`;
+}
+
+if(type === "buy"){
+start = totalOwned();
+amount = Math.max(3, Math.min(80, Math.floor(3 + era * 1.4 + Math.sqrt(totalOwned()+1) * 0.28)));
+label = `Compre ${format(amount)} upgrades`;
+}
+
+if(type === "golden"){
+start = goldenClicks || 0;
+amount = Math.max(1, Math.min(5, 1 + Math.floor(era / 3)));
+label = `Clique em ${format(amount)} Golden Gobbi${amount > 1 ? "s" : ""}`;
+}
+
+if(type === "gobbis"){
+start = lifetimeGobbi;
+amount = niceMissionNumber(Math.max(
+1000,
+gpsBase * (600 + era * 60),
+clickBase * (260 + era * 25),
+Math.sqrt(Math.max(lifetimeGobbi,1)) * 18,
+scale * 180
+));
+label = `Produza ${format(amount)} Gobbis`;
+}
+
+if(type === "gps"){
+start = getEffectiveGps();
+amount = niceMissionNumber(Math.max(
+1,
+gpsBase * (1.18 + era * 0.015),
+scale * 0.85
+));
+label = `Alcance ${format(amount)} GPS`;
+}
+
+return {
+id:"mission_" + Date.now() + "_" + Math.random().toString(16).slice(2),
+type,
+label,
+start,
+amount,
+reward:getMissionReward(amount,type),
+completed:false,
+difficultyScale:scale
+};
+}
+
+function getMissionCurrent(mission){
+if(mission.type === "clicks") return clicks - mission.start;
+if(mission.type === "buy") return totalOwned() - mission.start;
+if(mission.type === "golden") return (goldenClicks || 0) - mission.start;
+if(mission.type === "gobbis") return lifetimeGobbi - mission.start;
+if(mission.type === "gps") return getEffectiveGps();
+return 0;
+}
+
+const DAILY_MISSION_INTERVAL = 24 * 60 * 60 * 1000;
+
+function getDailyMissionTimeLeft(){
+if(!missionGeneratedAt) return 0;
+
+return Math.max(0, DAILY_MISSION_INTERVAL - (Date.now() - missionGeneratedAt));
+}
+
+function formatMissionTimer(ms){
+let totalSeconds = Math.ceil(ms / 1000);
+
+const h = Math.floor(totalSeconds / 3600);
+const m = Math.floor((totalSeconds % 3600) / 60);
+const s = totalSeconds % 60;
+
+return `${h}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
+}
+
+function generateDailyMissions(){
+missions = [];
+
+for(let i=0;i<3;i++){
+missions.push(createMission());
+}
+
+missionGeneratedAt = Date.now();
+}
+
+function ensureMissions(){
+if(!missions || !Array.isArray(missions)){
+missions = [];
+}
+
+missions = missions.filter(m=>m && m.type && m.amount > 0 && m.reward > 0);
+
+const expired = !missionGeneratedAt || Date.now() - missionGeneratedAt >= DAILY_MISSION_INTERVAL;
+
+if(expired || missions.length === 0){
+generateDailyMissions();
+}
+}
+
+function renderMissions(force=false){
+if(!missionsList) return;
+
+const now = Date.now();
+
+if(!force && now - lastMissionsRender < 2500){
+return;
+}
+
+lastMissionsRender = now;
+
+ensureMissions();
+missionsList.innerHTML = "";
+
+const timer = document.createElement("div");
+timer.className = "missionResetText";
+timer.innerText = "Novas missões em: " + formatMissionTimer(getDailyMissionTimeLeft());
+missionsList.appendChild(timer);
+
+missions.forEach((mission,index)=>{
+let current = getMissionCurrent(mission);
+let displayCurrent = mission.completed ? mission.amount : Math.min(Math.max(0,current), mission.amount);
+let progress = mission.amount > 0 ? Math.min(100, (displayCurrent / mission.amount) * 100) : 0;
+
+const div = document.createElement("div");
+div.className = "missionCard " + (mission.completed ? "completed" : "");
+div.innerHTML = `
+<b>${mission.label}</b><br>
+Progresso: ${format(displayCurrent)}/${format(mission.amount)}<br>
+Recompensa: ${format(mission.reward)} Gobbis
+${mission.completed ? `<br><span class="missionDoneBadge">CONCLUÍDA</span>` : ""}
+<div class="missionProgressOuter">
+<div class="missionProgressInner" style="width:${progress}%"></div>
+</div>
+`;
+missionsList.appendChild(div);
+});
+}
+
+function checkMissions(){
+ensureMissions();
+
+let changed = false;
+
+missions.forEach(mission=>{
+if(mission.completed) return;
+
+const current = getMissionCurrent(mission);
+const done = current >= mission.amount;
+
+if(done){
+gobbi = safeAdd(gobbi, mission.reward);
+lifetimeGobbi = safeAdd(lifetimeGobbi, mission.reward);
+completedMissions++;
+mission.completed = true;
+showToast("Missão diária completa!", `${mission.label}<br>+${format(mission.reward)} Gobbis`);
+changed = true;
+}
+});
+
+if(changed){
+renderMissions(true);
+updateUI();
+checkEraUnlock();
+saveGame(false);
+}
+}
+
+function updateLore(){
+if(!loreText) return;
+
+const currentEra = typeof getCurrentEraIndex === "function" ? getCurrentEraIndex() : 0;
+
+if(currentEra === lastLoreEra && loreText.innerHTML.trim()){
+return;
+}
+
+lastLoreEra = currentEra;
+
+const loreBlocks = [
+{
+title:"1. Era Tuff",
+html:`
+<p>No começo, a Gobbi ainda está presa ao mundo normal. Ela é só uma presença estranha no grupo, acumulando pequenos sinais de aura.</p>
+<p>Cada clique representa a Gobbi ganhando mais influência, mais presença e mais capacidade de <b>entrosar</b>.</p>
+<p>É a fase mais “terrena” da Gobbi: ela ainda depende de cliques, upgrades simples e produção básica.</p>
+`
+},
+{
+title:"2. Era 67",
+html:`
+<p>O número <b>67</b> começa a aparecer em tudo.</p>
+<p>Ninguém sabe exatamente por quê, mas toda vez que a produção aumenta, o 67 parece estar por trás. O grupo começa a perceber que o 67 não é só um número: é uma espécie de sinal cósmico da Gobbi.</p>
+<p>A Gobbi começa a deixar de ser só uma pessoa do grupo e vira uma entidade de meme interno.</p>
+`
+},
+{
+title:"3. Era Aura",
+html:`
+<p>A produção deixa de ser só Gobbis. Agora cada clique carrega <b>aura</b>.</p>
+<p>A Gobbi começa a acumular uma presença quase mística. Não é mais só quantidade: é energia, status, influência e entrosamento concentrado.</p>
+<p>Nessa fase, o jogador percebe que o verdadeiro poder não está só em produzir Gobbis, mas em aumentar a <b>Aura Gobbi</b>.</p>
+`
+},
+{
+title:"4. Era Entrosa",
+html:`
+<p>A Gobbi domina a arte de <b>entrosar</b>.</p>
+<p>Ela começa a entrar em grupos, situações, conversas e eventos com facilidade absurda. Onde existe um grupo, a Gobbi consegue se encaixar. Onde existe uma panelinha, a Gobbi atravessa.</p>
+<p>Aqui nasce o conceito de Entrosamento como força permanente. A Gobbi não só produz: ela evolui através dos Six Gobbis.</p>
+`
+},
+{
+title:"5. Era Gobbilândia",
+html:`
+<p>Gobbilândia deixa de ser só uma piada e passa a existir de verdade dentro da lore.</p>
+<p>É como se a produção de Gobbis tivesse criado um planeta próprio, um lugar onde toda regra gira em torno de aura, tuff, 67 e entrosamento.</p>
+<p>As Gobbis começam a vir de algum lugar. Não são mais apenas criadas: elas são convocadas de Gobbilândia.</p>
+`
+},
+{
+title:"6. Era Demiurgo",
+html:`
+<p>A Gobbi se aproxima do poder de um <b>Demiurgo</b>: uma entidade que não só joga dentro do sistema, mas começa a criar regras para o próprio sistema.</p>
+<p>Nessa fase, a Gobbi deixa de obedecer totalmente às leis normais do clicker. Ela começa a manipular produção, upgrades, aura e realidade.</p>
+<p>É uma era mais roxa/dourada, mística e final de jogo.</p>
+`
+},
+{
+title:"7. Era Cósmica",
+html:`
+<p>A aura da Gobbi sai do planeta.</p>
+<p>Agora a produção não está mais limitada a Gobbilândia. Estrelas, satélites, galáxias e sinais cósmicos começam a carregar energia Gobbi.</p>
+<p>A Gobbi vira um fenômeno espacial. Não é mais só “a Gobbi do grupo”: é uma presença cósmica.</p>
+`
+},
+{
+title:"8. Era Primordial",
+html:`
+<p>A Gobbi chega num ponto anterior ao próprio começo.</p>
+<p>Antes dos cliques, antes dos upgrades, antes do 67, antes da aura, já existia uma Gobbi primordial. Essa era revela que a Gobbi não foi criada pelo jogador — talvez ela sempre tenha existido.</p>
+<p>O jogador não está criando a Gobbi. Ele está apenas despertando algo antigo.</p>
+`
+},
+{
+title:"9. Era Universal",
+html:`
+<p>A Gobbi deixa de ser um evento local, cósmico ou lendário. Ela vira uma estrutura do universo.</p>
+<p>Tudo tem um pouco de Gobbi: cliques, upgrades, eventos, aura, 67, entrosamento, missões, skins. O universo inteiro começa a funcionar como uma máquina de produção Gobbi.</p>
+<p>Nessa fase, Gobbilândia não é mais um lugar dentro do universo. O universo é que parece estar dentro da Gobbilândia.</p>
+`
+},
+{
+title:"10. Era Gobbi sai do mundo material",
+html:`
+<p>Essa é a era final.</p>
+<p>A Gobbi transcende a matéria. Ela não depende mais de corpo, planeta, grupo, número ou realidade física. O contador ainda tenta medir Gobbis, mas já está medindo algo que não cabe mais em número.</p>
+<p>A Gobbi não está mais “no jogo”. Ela está acima do jogo.</p>
+<p>O mundo material ficou pequeno demais para ela.</p>
+`
+}
+];
+
+let output = `<div class="loreProgress">Lore desbloqueada: <b>${Math.min(currentEra+1,loreBlocks.length)}/${loreBlocks.length}</b><br>Passe de era para revelar mais capítulos.</div>`;
+
+loreBlocks.forEach((block,index)=>{
+if(index <= currentEra){
+output += `
+<div class="loreEraBlock">
+<h3>${block.title}</h3>
+${block.html}
+</div>
+`;
+}else{
+output += `
+<div class="loreLockedBlock">
+<h3>🔒 Era bloqueada</h3>
+<p>Continue produzindo Gobbis para desbloquear esse capítulo da lore.</p>
+</div>
+`;
+}
+});
+
+loreText.innerHTML = output;
+}
+
+const eraVisuals = [
+{rgb:"57,255,20"},
+{rgb:"0,170,255"},
+{rgb:"176,108,255"},
+{rgb:"255,230,0"},
+{rgb:"255,123,0"},
+{rgb:"255,48,48"},
+{rgb:"0,255,240"},
+{rgb:"255,255,255"},
+{rgb:"160,120,255"},
+{rgb:"255,80,180"}
+];
+
+function applyEraVisual(){
+if(typeof getCurrentEraIndex !== "function") return;
+
+const era = getCurrentEraIndex();
+const visual = eraVisuals[Math.min(era,eraVisuals.length-1)] || eraVisuals[0];
+
+document.documentElement.style.setProperty("--era-rgb", visual.rgb);
+}
+
+function showEraUnlockBanner(name){
+const div = document.createElement("div");
+div.className = "eraUnlockBanner";
+div.innerHTML = `
+<div class="eraUnlockBannerTitle">NOVA ERA DESBLOQUEADA</div>
+<div class="eraUnlockBannerName">${name}</div>
+<div class="eraUnlockBannerText">Novas páginas de upgrades foram liberadas.</div>
+`;
+document.body.appendChild(div);
+setTimeout(()=>div.remove(),4200);
+}
+
+function getUnlockedEraAchievements(){
+if(typeof getEraCount !== "function") return 0;
+return getCurrentEraIndex()+1;
+}
+
+function totalOwned(){
+return [...upgrades, ...clickUpgrades, ...specials]
+.reduce((sum,item)=>sum + (item.owned || 0),0);
+}
+
+function isUnlocked(item){
+return lifetimeGobbi >= (item.unlock || 0) || item.owned > 0;
+}
+
+function showToast(title, text=""){
+const div = document.createElement("div");
+div.className = "toast";
+div.innerHTML = `<b>${title}</b>${text ? "<br>"+text : ""}`;
+toastBox.appendChild(div);
+setTimeout(()=>div.remove(),3000);
+}
+
+
+function storageGet(key){
+try{
+return localStorage.getItem(key);
+}catch(e){
+return null;
+}
+}
+
+function storageSet(key,value){
+try{
+localStorage.setItem(key,value);
+return true;
+}catch(e){
+return false;
+}
+}
+
+function storageRemove(key){
+try{
+localStorage.removeItem(key);
+return true;
+}catch(e){
+return false;
+}
+}
+
+
+function detectLowPerformanceMode(){
+const smallScreen = window.innerWidth <= 760;
+const lowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+return smallScreen || lowCpu;
+}
+
+function applyPerformanceMode(){
+lowPerfMode = detectLowPerformanceMode();
+document.body.classList.toggle("lowPerf", lowPerfMode);
+}
+
+function setTextCached(el,value){
+if(!el) return;
+
+const text = String(value);
+
+if(el.textContent !== text){
+el.textContent = text;
+}
+}
+
+function requestUIUpdate(force=false){
+const now = Date.now();
+
+if(force || now - lastUiUpdateAt > 250){
+lastUiUpdateAt = now;
+updateUI();
+return;
+}
+
+if(!uiUpdateQueued){
+uiUpdateQueued = true;
+
+setTimeout(()=>{
+uiUpdateQueued = false;
+lastUiUpdateAt = Date.now();
+updateUI();
+},250);
+}
+}
+
+function updateNews(){
+let text = news[Math.floor(Math.random()*news.length)];
+
+if(newsBar){
+newsBar.innerText = text;
+}
+
+let duration = 12;
+
+if(mobileNewsBar){
+mobileNewsBar.innerText = text;
+
+const track = mobileNewsBar.parentElement;
+const trackWidth = track ? track.clientWidth : 260;
+
+// Espera o navegador medir o tamanho real do texto antes de animar.
+mobileNewsBar.style.animation = "none";
+mobileNewsBar.style.transform = "translateX(" + trackWidth + "px)";
+
+void mobileNewsBar.offsetWidth;
+
+const textWidth = Math.max(mobileNewsBar.scrollWidth, 120);
+duration = Math.max(12, Math.min(34, (trackWidth + textWidth) / (lowPerfMode ? 32 : 42)));
+
+mobileNewsBar.style.setProperty("--news-start", trackWidth + "px");
+mobileNewsBar.style.setProperty("--news-text-width", (textWidth + 24) + "px");
+mobileNewsBar.style.setProperty("--news-duration", duration + "s");
+mobileNewsBar.style.animation = "";
+}
+
+if(newsTimer){
+clearTimeout(newsTimer);
+}
+
+newsTimer = setTimeout(updateNews, (duration + 1.2) * 1000);
+}
+
+
+function checkAchievements(force=false){
+const now = Date.now();
+
+if(!force && now - lastAchievementCheck < 1000){
+return;
+}
+
+lastAchievementCheck = now;
+
+let changed = false;
+
+achievements.forEach(a=>{
+try{
+if(!unlockedAchievements[a.id] && a.condition()){
+unlockedAchievements[a.id] = true;
+changed = true;
+
+showToast("Conquista desbloqueada!", `${a.name}`);
+showBigAchievement(a.name,"Conquista visual");
+sound("buy");
+}
+}catch(e){
+console.log("Erro em conquista ignorado:", a.id, e);
+}
+});
+
+const unlockedCount = Object.keys(unlockedAchievements).length;
+
+achCountText.innerText = unlockedCount + "/" + achievements.length;
+
+const sig = unlockedCount + "|" + achievements.length;
+
+if(force || changed || sig !== achievementSignature){
+achievementSignature = sig;
+renderAchievements();
+}
+}
+
+function updateEffects(){
+let effects = [];
+
+if(goldenClickBoostTime > 0) effects.push(`Clique x2: ${goldenClickBoostTime}s`);
+if(goldenGpsBoostTime > 0) effects.push(`GPS x2: ${goldenGpsBoostTime}s`);
+if(goldenCritBoostTime > 0) effects.push(`+2% crítico: ${goldenCritBoostTime}s`);
+if(discountTime > 0) effects.push(`Desconto 10%: ${discountTime}s`);
+
+if(activeRandomEvent){
+effects.push(`Evento: ${activeRandomEvent.name} (${randomEventTimeLeft}s)`);
+}
+
+const text = effects.length ? effects.join(" | ") : "Nenhum efeito ativo.";
+
+if(text === lastEffectsSignature){
+return;
+}
+
+lastEffectsSignature = text;
+setTextCached(effectList, text);
+}
+
+function updatePrestigeInfo(){
+let gain = calculatePrestigeGain();
+let baseGain = calculateClaimableBaseAura();
+let totalAuraPossible = calculateTotalAuraLevelFromLifetime(lifetimeGobbi);
+let currentBonus = ((getAuraBonus()-1)*100).toFixed(2);
+let nextBonus = ((getProjectedAuraBonus(gain)-1)*100).toFixed(2);
+
+const nextUnclaimedAuraLevel = Math.max(claimedAuraLevel + 1, totalAuraPossible + 1);
+const nextAuraLifetime = calculateLifetimeForAuraLevel(nextUnclaimedAuraLevel);
+const missingForNextAura = Math.max(0, nextAuraLifetime - lifetimeGobbi);
+
+const sig = `${auraGobbi}|${totalSixGobbis}|${claimedAuraLevel}|${lifetimeGobbi}|${gain}|${baseGain}|${currentBonus}|${nextBonus}|${nextAuraLifetime}`;
+
+if(sig === lastPrestigeSignature){
+return;
+}
+
+lastPrestigeSignature = sig;
+
+prestigeInfo.innerHTML =
+`Six Gobbis disponíveis: <b>${format(auraGobbi)}</b><br>`+
+`Aura Gobbi total: <b>${format(totalSixGobbis)}</b><br>`+
+`Aura base desbloqueada pelo lifetime: <b>${format(totalAuraPossible)}</b><br>`+
+`Aura base já entrosada: <b>${format(claimedAuraLevel)}</b><br>`+
+`Próxima Aura Gobbi em: <b>${format(nextAuraLifetime)}</b> lifetime`+
+(missingForNextAura > 0 ? ` <span style="color:#aaa;">(faltam ${format(missingForNextAura)})</span><br>` : `<br>`)+
+`Bônus global atual: <b>+${currentBonus}%</b><br>`+
+(gain > 0
+? `Entrosar agora renderia <b>+${format(gain)}</b> Six Gobbis e deixaria o bônus em <b>+${nextBonus}%</b>.`
+: `Continue aumentando seu lifetime para liberar mais Six Gobbis.`);
+
+prestigeBtn.innerText = gain > 0 ? `Entrosar (+${format(gain)} Six Gobbis)` : `Próxima Aura em ${format(nextAuraLifetime)}`;
+}
+
+
+let tuffSiren = null;
+
+function playTuffSiren(){
+try{
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+const osc = ctx.createOscillator();
+const gain = ctx.createGain();
+
+osc.type = "sawtooth";
+gain.gain.value = 0.075;
+
+osc.connect(gain);
+gain.connect(ctx.destination);
+osc.start();
+
+let start = ctx.currentTime;
+let duration = 10;
+
+for(let t=0; t<duration; t+=0.5){
+osc.frequency.setValueAtTime(520, start + t);
+osc.frequency.linearRampToValueAtTime(980, start + t + 0.25);
+osc.frequency.linearRampToValueAtTime(520, start + t + 0.5);
+}
+
+gain.gain.setValueAtTime(0.075, start);
+gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+osc.stop(start + duration);
+
+tuffSiren = {ctx, osc, gain};
+}catch(e){}
+}
+
+
+function triggerTuffAlert(){
+if(tuffAlertTriggered) return;
+
+tuffAlertTriggered = true;
+
+document.body.classList.add("tuffFlash");
+
+const alert = document.createElement("div");
+alert.className = "tuffAlert";
+alert.innerHTML = `<div class="tuffAlertText">ALERTA TUFF!!<br>ALERTA TUFF</div>`;
+document.body.appendChild(alert);
+
+sound("error");
+playTuffSiren();
+
+setTimeout(()=>{
+document.body.classList.remove("tuffFlash");
+},10000);
+
+setTimeout(()=>{
+alert.remove();
+},10100);
+
+saveGame(false);
+}
+
+function checkTuffAlert(){
+const currentLifetime = cleanNumber(lifetimeGobbi,0);
+const previousLifetime = cleanNumber(tuffLastLifetimeGobbi,0);
+
+if(!tuffAlertTriggered && previousLifetime < 67000 && currentLifetime >= 67000){
+triggerTuffAlert();
+}
+
+tuffLastLifetimeGobbi = currentLifetime;
+}
+
+
+const FINAL_OBJECTIVE = 1e303;
+
+function updateObjective(){
+if(!objectiveText) return;
+
+let percent = Math.min(100, (cleanNumber(lifetimeGobbi) / FINAL_OBJECTIVE) * 100);
+
+if(lifetimeGobbi >= FINAL_OBJECTIVE){
+objectiveText.innerText = "Objetivo completo: Gobbilândia foi totalmente entrosada.";
+}else{
+objectiveText.innerText =
+"Progresso: " + percent.toFixed(2) + "% até 1Ce Gobbis lifetime.";
+}
+}
+
+function updateRecords(){
+localRecords.total = cleanNumber(Math.max(cleanNumber(localRecords.total || 0), lifetimeGobbi, gobbi));
+localRecords.gps = cleanNumber(Math.max(cleanNumber(localRecords.gps || 0), getEffectiveGps()));
+localRecords.click = cleanNumber(Math.max(cleanNumber(localRecords.click || 0), getEffectivePerClick()));
+localRecords.criticals = cleanNumber(Math.max(cleanNumber(localRecords.criticals || 0), criticals));
+localRecords.aura = cleanNumber(Math.max(cleanNumber(localRecords.aura || 0), auraGobbi, totalSixGobbis));
+localRecords.clicks = cleanNumber(Math.max(cleanNumber(localRecords.clicks || 0), clicks));
+}
+
+function renderRecords(){
+if(!rankTotal) return;
+
+const sig = [
+format(localRecords.total || 0),
+format(localRecords.gps || 0)+"/s",
+format(localRecords.click || 0),
+format(localRecords.criticals || 0),
+format(localRecords.aura || 0),
+format(localRecords.clicks || 0)
+].join("|");
+
+if(sig === lastRecordsSignature){
+return;
+}
+
+lastRecordsSignature = sig;
+const parts = sig.split("|");
+
+setTextCached(rankTotal, parts[0]);
+setTextCached(rankGps, parts[1]);
+setTextCached(rankClick, parts[2]);
+setTextCached(rankCrit, parts[3]);
+setTextCached(rankAura, parts[4]);
+setTextCached(rankClicks, parts[5]);
+}
+
+function showBigAchievement(name,reward){
+const div = document.createElement("div");
+div.className = "bigAchievement";
+div.innerHTML = `
+<div class="bigAchievementTitle">CONQUISTA DESBLOQUEADA</div>
+<div class="bigAchievementName">${name}</div>
+<div class="bigAchievementReward">${reward}</div>
+`;
+document.body.appendChild(div);
+setTimeout(()=>div.remove(),3500);
+}
+
+
+function checkEraUnlock(){
+const era = getCurrentEraIndex();
+
+if(era !== lastEraIndex){
+lastEraIndex = era;
+const name = eraName(era * UPGRADES_PER_ERA);
+showToast("Nova era liberada!", name);
+showEraUnlockBanner(name);
+shopPage = Math.min(shopPage,getUnlockedShopPages(getActiveShopList().type,Math.ceil(getActiveShopList().items.length / ITEMS_PER_PAGE))-1);
+renderShop();
+updateEraPanel();
+applyEraVisual();
+updateLore();
+}
+}
+
+function updateUI(){
+sanitizeGameNumbers();
+updateRecords();
+renderRecords();
+updateObjective();
+applyEraVisual();
+updateLore();
+renderMissions();
+
+setTextCached(countText, format(gobbi)+" GOBBI");
+setTextCached(gpsText, format(getEffectiveGps())+" por segundo");
+setTextCached(clicksText, clicks);
+setTextCached(criticalsText, criticals);
+setTextCached(perClickText, format(getEffectivePerClick()));
+setTextCached(achCountText, Object.keys(unlockedAchievements).length + "/" + achievements.length);
+setTextCached(auraCountText, format(auraGobbi));
+
+setTextCached(summaryTotal, format(gobbi)+" GOBBI");
+setTextCached(summaryGps, format(getEffectiveGps())+"/s");
+setTextCached(summaryClick, format(getEffectivePerClick())+" por clique");
+setTextCached(summaryCrit, Math.round(getEffectiveCritChance()*100)+"% x"+critMulti);
+
+renderOwnedIcons();
+applySkin();
+renderSkinGrid();
+updateEffects();
+updatePrestigeInfo();
+
+if(entTreeOverlay && entTreeOverlay.classList.contains("open")){
+renderEntrosamentoTree();
+}
+}
+
+function renderAchievements(){
+achList.innerHTML = "";
+
+achievements.forEach(a=>{
+const div = document.createElement("div");
+div.className = "ach " + (unlockedAchievements[a.id] ? "unlocked" : "");
+div.innerText = unlockedAchievements[a.id] ? "✅ " + a.name : "🔒 " + a.name;
+div.title = "Conquista visual";
+achList.appendChild(div);
+});
+}
+
+function renderOwnedIcons(force=false){
+const allItems = [...upgrades, ...clickUpgrades, ...specials];
+let bought = allItems.filter(i => i.owned && i.owned > 0);
+const sig = bought.map(i=>`${i.name}:${i.owned}`).join("|");
+
+if(!force && sig === ownedIconsSignature){
+return;
+}
+
+ownedIconsSignature = sig;
+ownedIcons.innerHTML = "";
+
+if(bought.length === 0){
+ownedIcons.innerHTML = `<span style="font-size:12px;color:#777;">Nenhum upgrade comprado ainda.</span>`;
+return;
+}
+
+bought.forEach(i=>{
+const div = document.createElement("div");
+div.className = "ownedIcon";
+div.title = `${i.name} x${i.owned}`;
+div.innerText = i.emoji;
+ownedIcons.appendChild(div);
+});
+}
+
+
+const entTreePositions = {
+aura_inicial:{row:1,col:2},
+memoria_tuff:{row:2,col:1},
+dedo_67:{row:2,col:3},
+radar_golden:{row:3,col:1},
+entrosamento_profundo:{row:3,col:3},
+desconto_tuff:{row:4,col:1},
+aura_do_67:{row:4,col:2},
+demiurgo_gobbi:{row:5,col:2},
+gobbilandia_inicial:{row:6,col:2},
+chave_centillion:{row:7,col:2}
+};
+
+function openEntrosamentoTree(){
+if(!entTreeOverlay) return;
+
+renderEntrosamentoTree();
+entTreeOverlay.classList.add("open");
+}
+
+function closeEntrosamentoTree(){
+if(!entTreeOverlay) return;
+
+entTreeOverlay.classList.remove("open");
+}
+
+function buyEntrosamentoNode(obj){
+const reqText = getEntRequirementText(obj);
+const maxed = (obj.level || 0) >= obj.max;
+const cost = getEntCost(obj);
+
+if(maxed){
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "MAX", true);
+return;
+}
+
+if(reqText){
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "Bloqueado", true);
+return;
+}
+
+if(auraGobbi < cost){
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "Faltam "+format(cost-auraGobbi), true);
+return;
+}
+
+auraGobbi -= cost;
+obj.level = (obj.level || 0) + 1;
+
+sound("buy");
+showToast("Entrosamento comprado!", `${obj.name} nível ${obj.level}`);
+floatText(window.innerWidth/2, window.innerHeight/2, "Entrosamento +1", false);
+
+updateUI();
+renderShop();
+renderEntrosamentoTree();
+saveGame(false);
+}
+
+function renderEntrosamentoTree(){
+if(!entTreeGrid) return;
+
+if(entTreeCurrency){
+const nextTreeAuraLevel = Math.max(claimedAuraLevel + 1, calculateTotalAuraLevelFromLifetime(lifetimeGobbi) + 1);
+const nextTreeAuraLifetime = calculateLifetimeForAuraLevel(nextTreeAuraLevel);
+
+entTreeCurrency.innerHTML =
+`Six Gobbis disponíveis: <b>${format(auraGobbi)}</b> • Aura total: <b>${format(totalSixGobbis)}</b> • Próxima Aura em: <b>${format(nextTreeAuraLifetime)}</b> lifetime`;
+}
+
+entTreeGrid.innerHTML = "";
+
+entrosamentoUpgrades.forEach(obj=>{
+const reqText = getEntRequirementText(obj);
+const maxed = (obj.level || 0) >= obj.max;
+const canBuy = canBuyEntUpgrade(obj);
+const cost = getEntCost(obj);
+const effect = typeof obj.effect === "function" ? obj.effect() : "";
+const nextEffect = typeof getEntNextEffect === "function" ? getEntNextEffect(obj) : "";
+
+const pos = entTreePositions[obj.id] || {row:1,col:1};
+const node = document.createElement("div");
+
+node.className =
+"entNode " +
+(reqText ? "locked " : "") +
+(canBuy ? "canBuy " : "") +
+(maxed ? "maxed " : "") +
+(obj.requires ? "hasReq " : "");
+
+node.style.gridColumn = pos.col;
+node.style.gridRow = pos.row;
+
+node.innerHTML = `
+<div class="entNodeTop">
+<div class="entNodeEmoji">${reqText ? "🔒" : obj.emoji}</div>
+<div>
+<div class="entNodeName">${reqText ? "???" : obj.name}</div>
+<div class="entNodeLevel">Nível ${obj.level || 0}/${obj.max}</div>
+</div>
+</div>
+
+<div class="entNodeDesc">${reqText ? "Upgrade bloqueado." : obj.desc}</div>
+${effect && !reqText ? `<div class="entNodeNext">Atual: ${effect}</div>` : ""}
+${nextEffect && !reqText && !maxed ? `<div class="entNodeNext">Próximo: ${nextEffect}</div>` : ""}
+<div class="entNodeCost">${maxed ? "MAX" : format(cost)+" Six Gobbis"}</div>
+${reqText ? `<div class="entNodeReq">${reqText}</div>` : ""}
+`;
+
+node.onclick = ()=>buyEntrosamentoNode(obj);
+entTreeGrid.appendChild(node);
+});
+
+const note = document.createElement("div");
+note.className = "entTreeFooterNote";
+note.style.gridColumn = "1 / -1";
+note.innerText = "Dica: cada compra aqui é permanente e continua depois de Entrosar.";
+entTreeGrid.appendChild(note);
+}
+
+
+if(entTreeOpenBtn){
+entTreeOpenBtn.onclick = openEntrosamentoTree;
+}
+
+if(entTreeClose){
+entTreeClose.onclick = closeEntrosamentoTree;
+}
+
+if(entTreeOverlay){
+entTreeOverlay.onclick = (e)=>{
+if(e.target === entTreeOverlay){
+closeEntrosamentoTree();
+}
+};
+}
+
+function setShopMode(mode){
+shopMode = mode;
+
+if(rightPanel){
+rightPanel.classList.toggle("showSkins", mode === "skins");
+rightPanel.classList.toggle("showShop", mode !== "skins");
+}
+
+if(shopModeStore){
+shopModeStore.classList.toggle("active", mode !== "skins");
+}
+
+if(shopModeSkins){
+shopModeSkins.classList.toggle("active", mode === "skins");
+}
+
+if(mode === "skins"){
+renderSkinGrid();
+applySkin();
+}else{
+renderShop();
+}
+}
+
+if(shopModeStore){
+shopModeStore.onclick = ()=>setShopMode("shop");
+}
+
+if(shopModeSkins){
+shopModeSkins.onclick = ()=>setShopMode("skins");
+}
+
+function setTab(tab){
+activeTab = tab;
+shopPage = 0;
+
+tabProduction.classList.remove("active");
+tabClick.classList.remove("active");
+tabSpecial.classList.remove("active");
+tabEntrosamento.classList.remove("active");
+
+if(tab === "production") tabProduction.classList.add("active");
+if(tab === "click") tabClick.classList.add("active");
+if(tab === "special") tabSpecial.classList.add("active");
+if(tab === "entrosamento") tabEntrosamento.classList.add("active");
+
+renderShop();
+}
+
+tabProduction.onclick = ()=>setTab("production");
+tabClick.onclick = ()=>setTab("click");
+tabSpecial.onclick = ()=>setTab("special");
+tabEntrosamento.onclick = ()=>openEntrosamentoTree();
+
+function setBuyAmount(n){
+buyAmount = n;
+buy1.classList.remove("active");
+buy10.classList.remove("active");
+buy100.classList.remove("active");
+
+if(n === 1) buy1.classList.add("active");
+if(n === 10) buy10.classList.add("active");
+if(n === 100) buy100.classList.add("active");
+
+renderShop();
+}
+
+buy1.onclick = ()=>setBuyAmount(1);
+buy10.onclick = ()=>setBuyAmount(10);
+buy100.onclick = ()=>setBuyAmount(100);
+
+function calculateBulkCost(item, amount, growth){
+let total = 0;
+let current = getDiscountedCost(item.cost);
+
+for(let i=0;i<amount;i++){
+total = safeAdd(total, Math.floor(current));
+current = Math.floor(safeMul(current, growth));
+
+if(total >= MAX_GAME_NUMBER || current >= MAX_GAME_NUMBER){
+return MAX_GAME_NUMBER;
+}
+}
+
+return cleanNumber(total);
+}
+
+function applyBulkPurchase(item, amount, growth){
+let current = cleanNumber(item.cost, item.baseCost || 1);
+
+for(let i=0;i<amount;i++){
+current = Math.floor(safeMul(current, growth));
+if(current >= MAX_GAME_NUMBER){
+current = MAX_GAME_NUMBER;
+break;
+}
+}
+
+item.cost = cleanNumber(current, item.baseCost || 1);
+item.owned = cleanNumber((item.owned || 0) + amount);
+}
+
+function createItem(obj, type){
+if(type === "entrosamento"){
+createEntrosamentoItem(obj);
+return;
+}
+
+const div = document.createElement("div");
+const unlocked = isUnlocked(obj);
+
+let className = "item";
+if(type === "click") className += " clickUpgrade";
+if(type === "special") className += " special";
+if(!unlocked) className += " locked";
+
+const growth = type === "production" ? 1.15 : (type === "special" ? 1.35 : 1.20);
+const desiredAmount = buyAmount;
+let realAmount = unlocked ? desiredAmount : 0;
+let totalCost = unlocked ? calculateBulkCost(obj, desiredAmount, growth) : 0;
+
+if(unlocked){
+while(realAmount > 1 && gobbi < totalCost){
+realAmount--;
+totalCost = calculateBulkCost(obj, realAmount, growth);
+}
+}
+
+if(unlocked){
+className += gobbi >= totalCost ? " canBuy" : " cannotBuy";
+}
+
+div.className = className;
+div.dataset.cost = unlocked ? String(totalCost) : "";
+div.dataset.unlocked = unlocked ? "1" : "0";
+div.dataset.type = type;
+
+let desc = "";
+let flavor = getFlavorDescription(obj,type);
+
+if(!unlocked){
+desc = `Desbloqueia em ${format(obj.unlock || 0)} lifetime`;
+}else if(type === "production"){
+desc = `+${format(obj.gps)} /s cada${obj.cookieModel ? " • curva " + obj.cookieModel : ""}`;
+}else{
+desc = obj.desc;
+}
+
+div.title =
+!unlocked
+? "Ainda bloqueado"
+: gobbi >= totalCost
+? `Comprar ${realAmount} por ${format(totalCost)} GOBBI`
+: "Faltam " + format(totalCost - gobbi) + " GOBBI";
+
+div.innerHTML = `
+<div class="icon">${unlocked ? obj.emoji : "🔒"}</div>
+<div class="info">
+<h2>${unlocked ? obj.name : "???"}</h2>
+<p>${unlocked ? format(totalCost)+" GOBBI" : desc}</p>
+<p>${unlocked ? desc : "Continue produzindo Gobbis."}</p>
+${unlocked && flavor ? `<p style="color:#c7ffc7;opacity:0.9;">${flavor}</p>` : ""}
+</div>
+<div class="amount">${obj.owned || 0}</div>
+`;
+
+div.onclick = ()=>{
+if(!unlocked){
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "Bloqueado", true);
+return;
+}
+
+if(gobbi >= totalCost && realAmount > 0){
+gobbi -= totalCost;
+
+if(type === "production"){
+gps = safeAdd(gps, safeMul(safeMul(obj.gps, realAmount), PRODUCTION_BUY_NERF));
+}else{
+for(let i=0;i<realAmount;i++){
+obj.buy();
+}
+}
+
+applyBulkPurchase(obj, realAmount, growth);
+
+buyEffect(div);
+floatText(window.innerWidth/2, window.innerHeight/2, "Comprado!", false);
+sound("buy");
+updateUI();
+renderOwnedIcons(true);
+renderShop();
+checkAchievements(true);
+checkEraUnlock();
+saveGame(false);
+}else{
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "Faltam "+format(totalCost-gobbi), true);
+}
+};
+
+shop.appendChild(div);
+}
+
+function createEntrosamentoItem(obj){
+const div = document.createElement("div");
+
+const reqText = getEntRequirementText(obj);
+const maxed = (obj.level || 0) >= obj.max;
+const cost = getEntCost(obj);
+const canBuy = canBuyEntUpgrade(obj);
+
+let className = "item entrosamentoUpgrade";
+
+if(reqText || maxed){
+className += " locked";
+}else{
+className += canBuy ? " canBuy" : " cannotBuy";
+}
+
+div.className = className;
+
+let status = maxed ? "MAX" : `${format(cost)} Six Gobbis`;
+let effect = typeof obj.effect === "function" ? obj.effect() : "";
+let nextEffect = getEntNextEffect(obj);
+
+div.title =
+maxed
+? "Upgrade no nível máximo"
+: reqText
+? reqText
+: canBuy
+? "Comprar nível de Entrosamento"
+: "Faltam " + format(cost - auraGobbi) + " Six Gobbis";
+
+div.innerHTML = `
+<div class="icon">${reqText ? "🔒" : obj.emoji}</div>
+<div class="info">
+<h2>${reqText ? "???" : obj.name}</h2>
+<p class="entrosamentoCurrency">${status}</p>
+<p>${reqText ? reqText : obj.desc}</p>
+${effect && !reqText ? `<p style="color:#d7b8ff;">Atual: ${effect}</p>` : ""}
+${nextEffect && !reqText && !maxed ? `<p style="color:var(--accent-soft);">Próximo: ${nextEffect}</p>` : ""}
+</div>
+<div class="amount">${obj.level || 0}/${obj.max}</div>
+`;
+
+div.onclick = ()=>{
+if(maxed){
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "MAX", true);
+return;
+}
+
+if(reqText){
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "Bloqueado", true);
+return;
+}
+
+if(auraGobbi >= cost){
+auraGobbi -= cost;
+obj.level = (obj.level || 0) + 1;
+
+buyEffect(div);
+sound("buy");
+showToast("Entrosamento comprado!", `${obj.name} nível ${obj.level}`);
+floatText(window.innerWidth/2, window.innerHeight/2, "Entrosamento +1", false);
+updateUI();
+renderShop();
+saveGame(false);
+}else{
+sound("error");
+floatText(window.innerWidth/2, window.innerHeight/2, "Faltam "+format(cost-auraGobbi), true);
+}
+};
+
+shop.appendChild(div);
+}
+
+
+function ensureShopArrays(){
+if(!Array.isArray(upgrades) || upgrades.length === 0){
+upgrades = defaultUpgrades();
+}
+
+if(!Array.isArray(clickUpgrades) || clickUpgrades.length === 0){
+clickUpgrades = defaultClickUpgrades();
+}
+
+if(!Array.isArray(specials) || specials.length === 0){
+specials = defaultSpecials();
+}
+
+if(!Array.isArray(entrosamentoUpgrades) || entrosamentoUpgrades.length === 0){
+entrosamentoUpgrades = defaultEntrosamentoUpgrades();
+}
+
+if(!["production","click","special","entrosamento"].includes(activeTab)){
+activeTab = "production";
+}
+
+if(!["shop","skins"].includes(shopMode)){
+shopMode = "shop";
+}
+}
+
+function forceRenderShopSafe(){
+try{
+ensureShopArrays();
+
+if(!["production","click","special","entrosamento"].includes(activeTab)){
+activeTab = "production";
+}
+
+if(shopMode !== "skins"){
+setShopMode("shop");
+}
+
+setTab(activeTab || "production");
+renderShop();
+
+if(shop && shop.children.length === 0){
+activeTab = "production";
+shopPage = 0;
+setTab("production");
+renderShop();
+}
+}catch(e){
+console.log("Erro ao forçar loja:", e);
+}
+}
+
+
+let shopRefreshQueued = false;
+
+function scheduleShopRefresh(){
+if(shopRefreshQueued) return;
+
+shopRefreshQueued = true;
+
+setTimeout(()=>{
+shopRefreshQueued = false;
+
+if(shopMode !== "skins"){
+renderShop();
+}
+},180);
+}
+
+function repairShopAchievementsOwned(reason=""){
+try{
+ensureShopArrays();
+
+if(!isMobileLayout()){
+document.body.classList.remove("force-mobile","mobile-view-main","mobile-view-shop","mobile-view-stats","mobile-view-goals");
+}
+
+positionAchievementPanel();
+
+if(achList && achList.children.length === 0){
+renderAchievements();
+}
+
+if(ownedIcons && ownedIcons.children.length === 0){
+renderOwnedIcons(true);
+}
+
+if(shopMode !== "skins"){
+if(!activeTab || !["production","click","special","entrosamento"].includes(activeTab)){
+activeTab = "production";
+}
+
+if(shop && shop.children.length === 0){
+setShopMode("shop");
+setTab(activeTab || "production");
+renderShop();
+
+if(shop.children.length === 0){
+activeTab = "production";
+shopPage = 0;
+setTab("production");
+renderShop();
+}
+}else{
+renderShop();
+}
+}
+}catch(e){
+console.log("Reparo visual falhou:", reason, e);
+}
+}
+
+function getActiveShopList(){
+if(activeTab === "production") return {items:upgrades,type:"production"};
+if(activeTab === "click") return {items:clickUpgrades,type:"click"};
+if(activeTab === "special") return {items:specials,type:"special"};
+return {items:entrosamentoUpgrades,type:"entrosamento"};
+}
+
+function renderShop(){
+ensureShopArrays();
+
+if(!shop) return;
+
+shop.innerHTML = "";
+shop.classList.toggle("entrosamentoShop", activeTab === "entrosamento");
+
+let data = getActiveShopList();
+let items = data.items || [];
+let type = data.type || "production";
+
+if(!items.length){
+activeTab = "production";
+shopPage = 0;
+upgrades = defaultUpgrades();
+data = getActiveShopList();
+items = data.items || [];
+type = data.type || "production";
+}
+
+const buyModesEl = document.querySelector(".buyModes");
+
+if(buyModesEl){
+buyModesEl.style.display = type === "entrosamento" ? "none" : "grid";
+}
+
+const allPages = Math.max(1, Math.ceil(items.length / ITEMS_PER_PAGE));
+const totalPages = getUnlockedShopPages(type, allPages);
+
+if(shopPage < 0) shopPage = 0;
+if(shopPage >= totalPages) shopPage = totalPages - 1;
+
+const start = shopPage * ITEMS_PER_PAGE;
+const end = start + ITEMS_PER_PAGE;
+let pageItems = items.slice(start,end);
+
+if(pageItems.length === 0 && items.length > 0){
+shopPage = 0;
+pageItems = items.slice(0, ITEMS_PER_PAGE);
+}
+
+pageItems.forEach(u=>{
+try{
+createItem(u,type);
+}catch(e){
+console.log("Erro ao criar item da loja:", e, u);
+}
+});
+
+if(shop.children.length === 0){
+const div = document.createElement("div");
+div.className = "lockedEraPageMsg";
+div.innerHTML = items.length === 0
+? "A loja não carregou os itens. Clique em Produção ou recarregue a página."
+: "Essa página pertence a uma era ainda bloqueada.";
+shop.appendChild(div);
+}
+
+if(pageInfo){
+const eraInfo = getCurrentEraInfo();
+pageInfo.innerText =
+type === "entrosamento"
+? `Página ${shopPage+1}/${totalPages}`
+: `Página ${shopPage+1}/${totalPages} • ${eraInfo.currentName}`;
+}
+
+if(prevPageBtn){
+prevPageBtn.disabled = shopPage <= 0;
+prevPageBtn.style.opacity = shopPage <= 0 ? "0.4" : "1";
+}
+
+if(nextPageBtn){
+nextPageBtn.disabled = shopPage >= totalPages-1;
+nextPageBtn.style.opacity = shopPage >= totalPages-1 ? "0.4" : "1";
+}
+
+updateEraPanel();
+}
+
+
+function refreshVisibleShopAffordability(){
+if(!shop || shopMode === "skins") return;
+
+const items = shop.querySelectorAll(".item");
+
+items.forEach(el=>{
+if(el.dataset.unlocked !== "1") return;
+
+const cost = Number(el.dataset.cost || "0");
+
+if(!Number.isFinite(cost) || cost <= 0) return;
+
+el.classList.remove("canBuy","cannotBuy");
+
+if(gobbi >= cost){
+el.classList.add("canBuy");
+}else{
+el.classList.add("cannotBuy");
+}
+});
+}
+
+function buyEffect(el){
+if(!el) return;
+
+el.animate([
+{transform:"scale(1)"},
+{transform:"scale(1.04)"},
+{transform:"scale(1)"}
+],{duration:lowPerfMode ? 110 : 170});
+
+if(lowPerfMode) return;
+
+document.body.animate([
+{filter:"brightness(1)"},
+{filter:"brightness(1.08)"},
+{filter:"brightness(1)"}
+],{duration:180});
+}
+
+function floatText(x,y,text,crit=false){
+const now = Date.now();
+
+if(lowPerfMode && !crit && now - lastFloatAt < 130){
+return;
+}
+
+lastFloatAt = now;
+
+const div = document.createElement("div");
+div.className = "float " + (crit ? "crit" : "normal");
+div.innerText = text;
+div.style.left = x+"px";
+div.style.top = y+"px";
+document.body.appendChild(div);
+setTimeout(()=>div.remove(),lowPerfMode ? 650 : 1000);
+}
+
+function particles(x,y, color="var(--accent)"){
+const count = lowPerfMode ? 3 : 8;
+
+for(let i=0;i<count;i++){
+const p = document.createElement("div");
+p.className = "particle";
+p.style.left = x+"px";
+p.style.top = y+"px";
+p.style.background = color;
+p.style.setProperty("--x",(Math.random()*160-80)+"px");
+p.style.setProperty("--y",(Math.random()*160-80)+"px");
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),lowPerfMode ? 650 : 900);
+}
+}
+
+function clickWave(x,y){
+if(lowPerfMode) return;
+
+const w = document.createElement("div");
+w.className = "wave";
+w.style.left = x+"px";
+w.style.top = y+"px";
+document.body.appendChild(w);
+setTimeout(()=>w.remove(),600);
+}
+
+function shake(){
+document.body.animate([
+{transform:"translate(0,0)"},
+{transform:"translate(4px,-3px)"},
+{transform:"translate(-4px,3px)"},
+{transform:"translate(0,0)"}
+],{duration:120});
+}
+
+gobbiBtn.onclick = (e)=>{
+sound("click");
+clickWave(e.clientX,e.clientY);
+
+let gain = getEffectivePerClick();
+const crit = Math.random() < getEffectiveCritChance();
+
+if(crit){
+gain *= critMulti;
+criticals++;
+shake();
+floatText(e.clientX,e.clientY,"CRÍTICO x"+critMulti,true);
+particles(e.clientX,e.clientY,"#ffe600");
+}else{
+floatText(e.clientX,e.clientY,"+"+format(gain));
+particles(e.clientX,e.clientY);
+}
+
+gobbi = safeAdd(gobbi, gain);
+lifetimeGobbi = safeAdd(lifetimeGobbi, gain);
+checkTuffAlert();
+clicks++;
+
+requestUIUpdate();
+refreshVisibleShopAffordability();
+scheduleShopRefresh();
+checkAchievements();
+checkEraUnlock();
+};
+
+
+function openMobileSettingsPopup(){
+const overlay = document.getElementById("mobileSettingsOverlay");
+if(overlay){
+overlay.classList.add("open");
+}
+}
+
+function closeMobileSettingsPopup(){
+const overlay = document.getElementById("mobileSettingsOverlay");
+if(overlay){
+overlay.classList.remove("open");
+}
+}
+
+
+function openGuidePopup(){
+const overlay = document.getElementById("guideOverlay");
+if(!overlay) return;
+overlay.classList.add("open");
+document.body.classList.add("guide-open");
+document.body.style.overflow = "hidden";
+}
+
+function closeGuidePopup(){
+const overlay = document.getElementById("guideOverlay");
+if(!overlay) return;
+overlay.classList.remove("open");
+document.body.classList.remove("guide-open");
+document.body.style.overflow = "";
+}
+
+function bindGuidePopup(){
+const overlay = document.getElementById("guideOverlay");
+const popup = document.getElementById("guidePopup");
+const closeBtn = document.getElementById("guideCloseBtn");
+const desktopBtn = document.getElementById("desktopGuideBtn");
+const mobileBtn = document.getElementById("mobilePopupGuide");
+
+if(desktopBtn){
+desktopBtn.onclick = openGuidePopup;
+}
+
+if(mobileBtn){
+mobileBtn.onclick = ()=>{
+closeMobileSettingsPopup();
+openGuidePopup();
+};
+}
+
+if(closeBtn){
+closeBtn.onclick = closeGuidePopup;
+}
+
+if(overlay){
+overlay.onclick = (e)=>{
+if(e.target === overlay){
+closeGuidePopup();
+}
+};
+}
+
+if(popup){
+popup.onclick = (e)=>e.stopPropagation();
+}
+}
+
+function bindMobileSettingsPopup(){
+const gear = document.getElementById("mobileSettingsGear");
+const overlay = document.getElementById("mobileSettingsOverlay");
+const popup = document.getElementById("mobileSettingsPopup");
+const closeBtn = document.getElementById("mobileSettingsClose");
+const saveBtn = document.getElementById("mobilePopupSave");
+const loadBtn = document.getElementById("mobilePopupLoad");
+const exportBtnMobile = document.getElementById("mobilePopupExport");
+const importBtnMobile = document.getElementById("mobilePopupImport");
+const resetBtnMobile = document.getElementById("mobilePopupReset");
+
+if(gear){
+gear.onclick = openMobileSettingsPopup;
+gear.ontouchend = (e)=>{
+e.preventDefault();
+openMobileSettingsPopup();
+};
+}
+
+if(closeBtn){
+closeBtn.onclick = closeMobileSettingsPopup;
+}
+
+if(overlay){
+overlay.onclick = (e)=>{
+if(e.target === overlay){
+closeMobileSettingsPopup();
+}
+};
+}
+
+if(popup){
+popup.onclick = (e)=>e.stopPropagation();
+}
+
+if(saveBtn){
+saveBtn.onclick = ()=>{
+closeMobileSettingsPopup();
+saveGame(true);
+};
+}
+
+if(loadBtn){
+loadBtn.onclick = ()=>{
+closeMobileSettingsPopup();
+loadGame(true);
+};
+}
+
+if(exportBtnMobile){
+exportBtnMobile.onclick = ()=>{
+closeMobileSettingsPopup();
+exportSaveCode();
+};
+}
+
+if(importBtnMobile){
+importBtnMobile.onclick = ()=>{
+closeMobileSettingsPopup();
+importSaveCode();
+};
+}
+
+if(resetBtnMobile){
+resetBtnMobile.onclick = ()=>{
+closeMobileSettingsPopup();
+
+if(typeof fullResetEverything === "function"){
+fullResetEverything();
+}else if(typeof resetRound === "function"){
+resetRound();
+}
+};
+}
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+bindMobileSettingsPopup();
+bindGuidePopup();
+});
+
+function bindMobileNavButtons(){
+const mainBtn = document.getElementById("mobileMainBtn");
+const shopBtn = document.getElementById("mobileShopBtn");
+const statsBtn = document.getElementById("mobileStatsBtn");
+const goalsBtn = document.getElementById("mobileGoalsBtn");
+
+if(mainBtn) mainBtn.onclick = ()=>setMobileView("main");
+if(shopBtn) shopBtn.onclick = ()=>setMobileView("shop");
+if(statsBtn) statsBtn.onclick = ()=>setMobileView("stats");
+if(goalsBtn) goalsBtn.onclick = ()=>setMobileView("goals");
+
+[mainBtn,shopBtn,statsBtn,goalsBtn].forEach(btn=>{
+if(!btn) return;
+btn.ontouchend = (e)=>{
+e.preventDefault();
+btn.click();
+};
+});
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+bindMobileNavButtons();
+setMobileView(mobileView || "main");
+});
+
+let productionTicks = 0;
+
+setInterval(()=>{
+const gain = getEffectiveGps()/4;
+
+if(gain > 0){
+gobbi = safeAdd(gobbi, gain);
+lifetimeGobbi = safeAdd(lifetimeGobbi, gain);
+checkTuffAlert();
+
+setTextCached(countText, format(gobbi)+" GOBBI");
+setTextCached(gpsText, format(getEffectiveGps())+" por segundo");
+setTextCached(summaryTotal, format(gobbi)+" GOBBI");
+setTextCached(summaryGps, format(getEffectiveGps())+"/s");
+
+productionTicks++;
+
+if(productionTicks % 4 === 0){
+refreshVisibleShopAffordability();
+scheduleShopRefresh();
+checkAchievements();
+checkEraUnlock();
+}
+}
+},250);
+
+setInterval(()=>{
+const hadDiscount = discountTime > 0 || getEventDiscount() > 0;
+
+if(goldenClickBoostTime > 0) goldenClickBoostTime--;
+if(goldenGpsBoostTime > 0) goldenGpsBoostTime--;
+if(goldenCritBoostTime > 0) goldenCritBoostTime--;
+if(discountTime > 0) discountTime--;
+
+tickRandomEvent();
+
+const hasDiscount = discountTime > 0 || getEventDiscount() > 0;
+
+updateUI();
+
+if(hadDiscount !== hasDiscount){
+renderShop();
+}
+},1000);
+
+function spawnGoldenGobbi(){
+const ambient = document.createElement("div");
+ambient.className = "goldAmbient";
+document.body.appendChild(ambient);
+
+const gold = document.createElement("img");
+gold.src = "./golden_gobbi.png";
+gold.className = "golden";
+
+let left = Math.random()*70;
+let top = Math.random()*65;
+
+gold.style.left = left + "vw";
+gold.style.top = top + "vh";
+
+const timer = document.createElement("div");
+timer.className = "goldenTimer";
+timer.style.left = `calc(${left}vw + 18px)`;
+timer.style.top = `calc(${top}vh + 92px)`;
+timer.innerText = "7";
+
+document.body.appendChild(gold);
+document.body.appendChild(timer);
+
+let remaining = 7;
+
+const timerInterval = setInterval(()=>{
+remaining--;
+timer.innerText = remaining;
+
+if(remaining <= 0){
+clearInterval(timerInterval);
+}
+},1000);
+
+function cleanGolden(){
+clearInterval(timerInterval);
+if(document.body.contains(gold)) gold.remove();
+if(document.body.contains(timer)) timer.remove();
+if(document.body.contains(ambient)) ambient.remove();
+}
+
+gold.onclick = ()=>{
+goldenClicks++;
+const roll = Math.random();
+
+if(roll < 0.35){
+let reward = Math.max(250, getEffectiveGps() * 2, getEffectivePerClick() * 5);
+gobbi = safeAdd(gobbi, reward);
+lifetimeGobbi = safeAdd(lifetimeGobbi, reward);
+checkTuffAlert();
+showToast("Golden Gobbi!", "+"+format(reward)+" GOBBI");
+floatText(window.innerWidth/2, window.innerHeight/2, "GOLDEN +" + format(reward), true);
+}
+else if(roll < 0.55){
+goldenGpsBoostTime = 15;
+showToast("Golden Gobbi!", "GPS x2 por 15 segundos.");
+floatText(window.innerWidth/2, window.innerHeight/2, "GPS x2!", true);
+}
+else if(roll < 0.75){
+goldenClickBoostTime = 12;
+showToast("Golden Gobbi!", "Clique x2 por 12 segundos.");
+floatText(window.innerWidth/2, window.innerHeight/2, "CLIQUE x3!", true);
+}
+else if(roll < 0.90){
+goldenCritBoostTime = 10;
+showToast("Golden Gobbi!", "+2% crítico por 10 segundos.");
+floatText(window.innerWidth/2, window.innerHeight/2, "+2% CRÍTICO!", true);
+}
+else{
+discountTime = 15;
+showToast("Golden Gobbi!", "10% de desconto por 15 segundos.");
+floatText(window.innerWidth/2, window.innerHeight/2, "DESCONTO!", true);
+}
+
+sound("gold");
+particles(window.innerWidth/2, window.innerHeight/2, "#ffe600");
+cleanGolden();
+updateUI();
+checkEraUnlock();
+renderShop();
+saveGame(false);
+};
+
+setTimeout(()=>{
+cleanGolden();
+},7000);
+}
+
+setInterval(()=>{
+if(Math.random() < getGoldenSpawnChance()){
+spawnGoldenGobbi();
+}
+},45000);
+
+setInterval(()=>{
+if(!activeRandomEvent && Math.random() < 0.28){
+startRandomEvent();
+}
+},90000);
+
+setInterval(()=>{
+checkMissions();
+},1000);
+
+
+const ENTROSAMENTO_SCALE = 500000000000; // 500B: primeira Aura Gobbi base
+
+function calculateTotalAuraLevelFromLifetime(value=lifetimeGobbi){
+value = cleanNumber(value,0);
+
+if(value < ENTROSAMENTO_SCALE){
+return 0;
+}
+
+return Math.floor(Math.cbrt(value / ENTROSAMENTO_SCALE));
+}
+
+function calculateLifetimeForAuraLevel(level){
+level = Math.max(1, cleanNumber(level,1));
+return cleanNumber(safeMul(ENTROSAMENTO_SCALE, Math.pow(level,3)), ENTROSAMENTO_SCALE);
+}
+
+function calculateClaimableBaseAura(){
+const totalAuraLevel = calculateTotalAuraLevelFromLifetime(lifetimeGobbi);
+return Math.max(0, totalAuraLevel - cleanNumber(claimedAuraLevel,0));
+}
+
+function calculatePrestigeGain(){
+const baseGain = calculateClaimableBaseAura();
+
+if(baseGain <= 0){
+return 0;
+}
+
+return Math.max(0, Math.floor(safeMul(baseGain, getSixGainMultiplier())));
+}
+
+function getProjectedAuraBonus(extraSix=0){
+return cleanNumber(1 + (totalSixGobbis + extraSix) * 0.005 + getEntLevel("chave_centillion") * 0.05,1);
+}
+
+
+function doPrestige(){
+const baseGain = calculateClaimableBaseAura();
+const gain = calculatePrestigeGain();
+
+if(gain <= 0 || baseGain <= 0){
+sound("error");
+showToast("Entrosamento indisponível", "Aumente seu lifetime para desbloquear mais Aura Gobbi.");
+return;
+}
+
+const totalAuraPossible = calculateTotalAuraLevelFromLifetime(lifetimeGobbi);
+const nextBonus = ((getProjectedAuraBonus(gain)-1)*100).toFixed(2);
+
+const ok = confirm(
+`Fazer Entrosamento?\n\n`+
+`Aura base nova: +${format(baseGain)}\n`+
+`Six Gobbis ganhos: +${format(gain)}\n`+
+`Bônus global depois: +${nextBonus}%\n\n`+
+`Sua rodada atual será resetada, mas Six Gobbis, Aura total, árvore de Entrosamento e skins continuam.`
+);
+
+if(!ok) return;
+
+claimedAuraLevel = totalAuraPossible;
+auraGobbi = safeAdd(auraGobbi, gain);
+totalSixGobbis = safeAdd(totalSixGobbis,
+claimedAuraLevel, gain);
+totalPrestiges++;
+
+gobbi = getStartingGobbis();
+lifetimeGobbi = gobbi;
+tuffLastLifetimeGobbi = lifetimeGobbi;
+
+gps = 0;
+perClick = 1;
+clicks = 0;
+criticals = 0;
+critChance = 0.0025;
+critMulti = 2;
+
+goldenClickBoostTime = 0;
+goldenGpsBoostTime = 0;
+goldenCritBoostTime = 0;
+discountTime = 0;
+
+upgrades = defaultUpgrades();
+clickUpgrades = defaultClickUpgrades();
+specials = defaultSpecials();
+
+ownedIconsSignature = "";
+lastPrestigeSignature = "";
+lastSkinGridSignature = "";
+lastAppliedSkinSignature = "";
+
+sound("prestige");
+showToast("Entrosamento feito!", `Você ganhou ${format(gain)} Six Gobbis.`);
+setTab("entrosamento");
+openEntrosamentoTree();
+updateUI();
+renderShop();
+renderSkinGrid(true);
+checkAchievements(true);
+saveGame(false);
+}
+
+prestigeBtn.onclick = doPrestige;
+
+function getSaveData(){
+return {
+gobbi,
+lifetimeGobbi,
+gps,
+perClick,
+clicks,
+criticals,
+critChance,
+critMulti,
+activeTab,
+buyAmount,
+shopPage,
+shopMode,
+auraGobbi,
+totalSixGobbis,
+claimedAuraLevel,
+totalPrestiges,
+entrosamentoUpgrades,
+selectedSkinId,
+activeRandomEvent,
+randomEventTimeLeft,
+goldenClicks,
+randomEventsTriggered,
+lastUnlockedEraBanner,
+mobileView,
+completedMissions,
+missions,
+missionGeneratedAt,
+goldenClickBoostTime,
+goldenGpsBoostTime,
+goldenCritBoostTime,
+discountTime,
+upgrades,
+clickUpgrades,
+specials,
+unlockedAchievements,
+tuffAlertTriggered,
+tuffLastLifetimeGobbi,
+localRecords,
+balanceVersion:BALANCE_VERSION
+};
+}
+
+function saveGame(show=true){
+try{
+sanitizeGameNumbers();
+
+const payload = JSON.stringify(getSaveData());
+const ok = storageSet("gobbiClickerSave", payload);
+const verified = storageGet("gobbiClickerSave") === payload;
+
+if(!ok || !verified){
+if(show || !storageWarningShown){
+showToast("Erro ao salvar", "O navegador bloqueou o localStorage. Use Exportar save como backup.");
+}
+storageWarningShown = true;
+return false;
+}
+
+if(show){
+showToast("Salvo!", "Seu progresso foi guardado.");
+}
+
+return true;
+}catch(e){
+console.log("Erro ao salvar:", e);
+
+if(show || !storageWarningShown){
+showToast("Erro ao salvar", "Não consegui salvar. Use Exportar save como backup.");
+}
+
+storageWarningShown = true;
+return false;
+}
+}
+
+function loadGame(show=true){
+const save = storageGet("gobbiClickerSave");
+
+if(!save){
+if(show){
+showToast("Nenhum save encontrado", "Ainda não existe progresso salvo neste navegador.");
+}
+return false;
+}
+
+let data = null;
+
+try{
+data = JSON.parse(save);
+}catch(e){
+console.log("Save ilegível preservado:", e);
+saveLoadFailed = true;
+
+if(show){
+showToast("Save não carregou", "O save parece ilegível, mas NÃO foi apagado. Tente usar Importar save se tiver backup.");
+}
+
+return false;
+}
+
+try{
+applySaveData(data);
+saveLoadFailed = false;
+
+if(show){
+showToast("Save carregado!", "Seu progresso voltou.");
+}
+
+return true;
+}catch(e){
+console.log("Erro ao aplicar save. Save preservado:", e);
+saveLoadFailed = true;
+
+if(show){
+showToast("Save não carregou", "O save foi preservado, mas esta versão não conseguiu aplicar ele. Exporte antes de resetar.");
+}
+
+return false;
+}
+}
+
+function applyArraySave(currentArray, savedArray){
+if(!savedArray) return;
+
+for(let i=0;i<currentArray.length;i++){
+const entry = savedArray[i];
+
+if(!entry) continue;
+
+if(Array.isArray(entry)){
+currentArray[i].cost = entry[0] ?? currentArray[i].cost;
+currentArray[i].owned = entry[1] ?? currentArray[i].owned;
+currentArray[i].level = entry[2] ?? currentArray[i].level;
+}else{
+currentArray[i].cost = entry.cost ?? currentArray[i].cost;
+currentArray[i].owned = entry.owned ?? currentArray[i].owned;
+currentArray[i].level = entry.level ?? currentArray[i].level;
+}
+}
+}
+
+function applySaveData(data){
+gobbi = data.gobbi || 0;
+lifetimeGobbi = data.lifetimeGobbi ?? data.gobbi ?? 0;
+gps = data.gps || 0;
+perClick = data.perClick || 1;
+clicks = data.clicks || 0;
+criticals = data.criticals || 0;
+critChance = data.critChance ?? 0.0025;
+critMulti = data.critMulti ?? 2;
+activeTab = data.activeTab || "production";
+buyAmount = data.buyAmount || 1;
+shopPage = data.shopPage || 0;
+shopMode = data.shopMode || "shop";
+auraGobbi = data.auraGobbi || 0;
+totalSixGobbis = data.totalSixGobbis ?? data.auraGobbi ?? 0;
+claimedAuraLevel = data.claimedAuraLevel ?? totalSixGobbis ?? 0;
+totalPrestiges = data.totalPrestiges || 0;
+selectedSkinId = data.selectedSkinId || "verde";
+activeRandomEvent = data.activeRandomEvent || null;
+randomEventTimeLeft = data.randomEventTimeLeft || 0;
+goldenClicks = data.goldenClicks || 0;
+randomEventsTriggered = data.randomEventsTriggered || 0;
+missions = data.missions || [];
+missionGeneratedAt = data.missionGeneratedAt || 0;
+completedMissions = data.completedMissions || 0;
+mobileView = data.mobileView || "main";
+lastUnlockedEraBanner = data.lastUnlockedEraBanner || 0;
+tuffAlertTriggered = data.tuffAlertTriggered || false;
+tuffLastLifetimeGobbi = data.tuffLastLifetimeGobbi ?? lifetimeGobbi;
+goldenClickBoostTime = data.goldenClickBoostTime || 0;
+goldenGpsBoostTime = data.goldenGpsBoostTime || 0;
+goldenCritBoostTime = data.goldenCritBoostTime || 0;
+discountTime = data.discountTime || 0;
+unlockedAchievements = data.unlockedAchievements || {};
+localRecords = data.localRecords || localRecords;
+
+upgrades = defaultUpgrades();
+clickUpgrades = defaultClickUpgrades();
+specials = defaultSpecials();
+entrosamentoUpgrades = defaultEntrosamentoUpgrades();
+
+applyArraySave(upgrades, data.upgrades);
+applyArraySave(clickUpgrades, data.clickUpgrades);
+applyArraySave(specials, data.specials);
+applyArraySave(entrosamentoUpgrades, data.entrosamentoUpgrades);
+
+sanitizeGameNumbers();
+lastEraIndex = getCurrentEraIndex();
+
+setTab(activeTab);
+setBuyAmount(buyAmount);
+setShopMode(shopMode || "shop");
+updateUI();
+renderShop();
+renderAchievements();
+positionAchievementPanel();
+checkAchievements();
+}
+
+
+function hideStartMenu(){
+if(startMenu){
+startMenu.classList.add("hidden");
+}
+}
+
+if(startPlayBtn){
+startPlayBtn.onclick = ()=>{
+hideStartMenu();
+showToast("Bem-vindo!", "A Gobbi começou a entrosar.");
+};
+}
+
+if(startLoadBtn){
+startLoadBtn.onclick = ()=>{
+loadGame(true);
+hideStartMenu();
+};
+}
+
+
+if(prevPageBtn){
+prevPageBtn.onclick = ()=>{
+shopPage = Math.max(0, shopPage - 1);
+renderShop();
+};
+}
+
+if(nextPageBtn){
+nextPageBtn.onclick = ()=>{
+shopPage++;
+renderShop();
+};
+}
+
+
+function fullResetEverything(){
+const ok = confirm(
+"Resetar TUDO MESMO?\n\nIsso vai apagar:\n- Gobbis\n- upgrades\n- Entrosamento / Six Gobbis\n- conquistas\n- skins desbloqueadas por progresso\n- estatísticas\n- save atual\n\nEssa ação não tem volta."
+);
+
+if(!ok) return;
+
+storageRemove("gobbiClickerSave");
+saveLoadFailed = false;
+
+gobbi = 0;
+lifetimeGobbi = 0;
+tuffLastLifetimeGobbi = 0;
+tuffAlertTriggered = false;
+
+gps = 0;
+perClick = 1;
+clicks = 0;
+criticals = 0;
+critChance = 0.0025;
+critMulti = 2;
+
+auraGobbi = 0;
+totalSixGobbis = 0;
+claimedAuraLevel = 0;
+totalPrestiges = 0;
+
+goldenClickBoostTime = 0;
+goldenGpsBoostTime = 0;
+goldenCritBoostTime = 0;
+discountTime = 0;
+
+activeRandomEvent = null;
+randomEventTimeLeft = 0;
+goldenClicks = 0;
+randomEventsTriggered = 0;
+
+selectedSkinId = "verde";
+activeTab = "production";
+buyAmount = 1;
+shopPage = 0;
+shopMode = "shop";
+mobileView = "main";
+lastUnlockedEraBanner = 0;
+completedMissions = 0;
+missions = [];
+missionGeneratedAt = 0;
+
+upgrades = defaultUpgrades();
+clickUpgrades = defaultClickUpgrades();
+specials = defaultSpecials();
+entrosamentoUpgrades = defaultEntrosamentoUpgrades();
+
+unlockedAchievements = {};
+localRecords = {
+total:0,
+gps:0,
+click:0,
+criticals:0,
+aura:0,
+clicks:0
+};
+
+ownedIconsSignature = "";
+achievementSignature = "";
+lastSkinGridSignature = "";
+lastLoreEra = -1;
+lastMissionsRender = 0;
+lastRecordsSignature = "";
+lastEffectsSignature = "";
+lastPrestigeSignature = "";
+lastAppliedSkinSignature = "";
+
+setTab("production");
+setBuyAmount(1);
+setShopMode("shop");
+setMobileView("main");
+applySkin();
+renderSkinGrid();
+renderAchievements();
+positionAchievementPanel();
+renderOwnedIcons(true);
+renderShop();
+updateUI();
+checkAchievements(true);
+
+showToast("Reset completo", "Tudo foi apagado e o jogo começou do zero.");
+saveGame(false);
+}
+
+function clearSaveAndReload(){
+const ok = confirm(
+"Limpar save completo?\n\nIsso apaga TUDO:\n- Gobbis\n- upgrades\n- Entrosamento / Six Gobbis\n- conquistas\n- skins\n- estatísticas\n\nDepois a página será recarregada."
+);
+
+if(!ok) return;
+
+storageRemove("gobbiClickerSave");
+location.reload();
+}
+
+
+
+function compactArraySave(arr){
+return (arr || []).map(item=>[
+cleanNumber(item.cost ?? item.baseCost ?? 0,0),
+cleanNumber(item.owned ?? 0,0),
+cleanNumber(item.level ?? 0,0)
+]);
+}
+
+function getCompactSaveData(){
+return {
+v:3,
+bv:BALANCE_VERSION,
+n:[
+gobbi,
+lifetimeGobbi,
+gps,
+perClick,
+clicks,
+criticals,
+critChance,
+critMulti,
+auraGobbi,
+totalSixGobbis,
+claimedAuraLevel,
+totalPrestiges,
+randomEventTimeLeft,
+goldenClicks,
+randomEventsTriggered,
+lastUnlockedEraBanner,
+completedMissions,
+missionGeneratedAt,
+goldenClickBoostTime,
+goldenGpsBoostTime,
+goldenCritBoostTime,
+discountTime,
+tuffLastLifetimeGobbi
+],
+s:[
+activeTab,
+buyAmount,
+shopPage,
+shopMode,
+selectedSkinId,
+mobileView,
+tuffAlertTriggered
+],
+u:compactArraySave(upgrades),
+c:compactArraySave(clickUpgrades),
+p:compactArraySave(specials),
+e:compactArraySave(entrosamentoUpgrades),
+a:Object.keys(unlockedAchievements || {}).filter(id=>unlockedAchievements[id]),
+r:localRecords || {},
+m:missions || []
+};
+}
+
+function expandCompactSaveData(data){
+if(!data || data.v !== 3){
+return data;
+}
+
+const n = data.n || [];
+const s = data.s || [];
+
+let unlocked = {};
+(data.a || []).forEach(id=>{
+unlocked[id] = true;
+});
+
+return {
+gobbi:n[0] ?? 0,
+lifetimeGobbi:n[1] ?? n[0] ?? 0,
+gps:n[2] ?? 0,
+perClick:n[3] ?? 1,
+clicks:n[4] ?? 0,
+criticals:n[5] ?? 0,
+critChance:n[6] ?? 0.0025,
+critMulti:n[7] ?? 2,
+auraGobbi:n[8] ?? 0,
+totalSixGobbis:n[9] ?? n[8] ?? 0,
+claimedAuraLevel:n[10] ?? n[9] ?? n[8] ?? 0,
+totalPrestiges:n[11] ?? 0,
+randomEventTimeLeft:n[12] ?? 0,
+goldenClicks:n[13] ?? 0,
+randomEventsTriggered:n[14] ?? 0,
+lastUnlockedEraBanner:n[15] ?? 0,
+completedMissions:n[16] ?? 0,
+missionGeneratedAt:n[17] ?? 0,
+goldenClickBoostTime:n[18] ?? 0,
+goldenGpsBoostTime:n[19] ?? 0,
+goldenCritBoostTime:n[20] ?? 0,
+discountTime:n[21] ?? 0,
+tuffLastLifetimeGobbi:n[22] ?? n[1] ?? 0,
+
+activeTab:s[0] || "production",
+buyAmount:s[1] || 1,
+shopPage:s[2] || 0,
+shopMode:s[3] || "shop",
+selectedSkinId:s[4] || "verde",
+mobileView:s[5] || "main",
+tuffAlertTriggered:!!s[6],
+
+activeRandomEvent:null,
+upgrades:data.u || [],
+clickUpgrades:data.c || [],
+specials:data.p || [],
+entrosamentoUpgrades:data.e || [],
+unlockedAchievements:unlocked,
+localRecords:data.r || {},
+missions:data.m || [],
+balanceVersion:data.bv || BALANCE_VERSION
+};
+}
+
+function hashSaveString(str){
+let h = 2166136261;
+
+for(let i=0;i<str.length;i++){
+h ^= str.charCodeAt(i);
+h = Math.imul(h, 16777619);
+}
+
+return (h >>> 0).toString(36);
+}
+
+function base64UrlEncodeUtf8(text){
+const bytes = new TextEncoder().encode(text);
+let binary = "";
+const chunkSize = 0x8000;
+
+for(let i=0;i<bytes.length;i+=chunkSize){
+const chunk = bytes.subarray(i,i+chunkSize);
+binary += String.fromCharCode.apply(null, chunk);
+}
+
+return btoa(binary).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+
+function base64UrlDecodeUtf8(code){
+let clean = String(code || "");
+
+clean = clean
+.replace(/[\u200B-\u200D\uFEFF]/g,"")
+.replace(/[`'"]/g,"")
+.replace(/\s+/g,"")
+.trim();
+
+clean = clean.replace(/-/g,"+").replace(/_/g,"/");
+
+while(clean.length % 4 !== 0){
+clean += "=";
+}
+
+const binary = atob(clean);
+const bytes = new Uint8Array(binary.length);
+
+for(let i=0;i<binary.length;i++){
+bytes[i] = binary.charCodeAt(i);
+}
+
+return new TextDecoder().decode(bytes);
+}
+
+function extractSaveCode(raw){
+let text = String(raw || "")
+.replace(/[\u200B-\u200D\uFEFF]/g,"")
+.trim();
+
+if(!text){
+throw new Error("Código vazio");
+}
+
+if(text.startsWith("{")){
+return text;
+}
+
+// Primeiro remove quebras de linha/espaços. Antes isso acontecia depois do regex,
+// então um código quebrado em várias linhas era lido só até a primeira quebra.
+const compact = text
+.replace(/[`'"]/g,"")
+.replace(/\s+/g,"");
+
+const prefixed = compact.match(/GOBBI4[_:-]?[A-Za-z0-9_-]+/i)
+|| compact.match(/GOBBI3[_:-]?[A-Za-z0-9_+/=-]+/i)
+|| compact.match(/GOBBI_SAVE_V3[_:-]?[A-Za-z0-9_+/=-]+/i);
+
+if(prefixed){
+return prefixed[0];
+}
+
+return compact;
+}
+
+function createPortableSaveCode(){
+const payload = getCompactSaveData();
+const payloadJson = JSON.stringify(payload);
+
+const envelope = {
+v:4,
+kind:"gobbi-clicker-save",
+checksum:hashSaveString(payloadJson),
+payload
+};
+
+return "GOBBI4_" + base64UrlEncodeUtf8(JSON.stringify(envelope));
+}
+
+function parseSaveCode(code){
+const extracted = extractSaveCode(code);
+
+if(!extracted){
+throw new Error("Código vazio");
+}
+
+if(extracted.startsWith("{")){
+return JSON.parse(extracted);
+}
+
+let normalized = extracted
+.replace(/^GOBBI4[_:-]/i,"")
+.replace(/^GOBBI3[_:-]/i,"")
+.replace(/^GOBBI_SAVE_V3[_:-]/i,"")
+.replace(/^SAVE[_:-]/i,"")
+.replace(/[\u200B-\u200D\uFEFF]/g,"")
+.replace(/\s+/g,"");
+
+try{
+const decoded = JSON.parse(base64UrlDecodeUtf8(normalized));
+
+if(decoded && decoded.v === 4 && decoded.payload){
+const check = hashSaveString(JSON.stringify(decoded.payload));
+
+if(decoded.checksum && decoded.checksum !== check){
+throw new Error("Código incompleto ou alterado");
+}
+
+return decoded.payload;
+}
+
+return decoded;
+}catch(e){}
+
+// Formato antigo, caso alguém ainda tenha export antigo.
+try{
+const oldClean = extracted
+.replace(/^GOBBI3[_:-]/i,"")
+.replace(/^GOBBI_SAVE_V3[_:-]/i,"")
+.replace(/^SAVE[_:-]/i,"")
+.replace(/[`'"]/g,"")
+.replace(/[\u200B-\u200D\uFEFF]/g,"")
+.replace(/\s+/g,"");
+
+return JSON.parse(decodeURIComponent(escape(atob(oldClean))));
+}catch(e){}
+
+throw new Error("Código inválido ou incompleto");
+}
+
+function getSaveTransferModal(){
+let overlay = document.getElementById("saveTransferOverlay");
+
+if(overlay) return overlay;
+
+overlay = document.createElement("div");
+overlay.className = "saveTransferOverlay";
+overlay.id = "saveTransferOverlay";
+
+overlay.innerHTML = `
+<div class="saveTransferBox" id="saveTransferBox">
+<div class="saveTransferHeader">
+<span id="saveTransferTitle">Save</span>
+<button class="saveTransferClose" id="saveTransferClose" type="button">×</button>
+</div>
+<div class="saveTransferBody">
+<div class="saveTransferHelp" id="saveTransferHelp"></div>
+<textarea class="saveTransferText" id="saveTransferText" spellcheck="false"></textarea>
+<div class="saveTransferStatus" id="saveTransferStatus"></div>
+<div class="saveTransferActions">
+<button id="saveTransferCopy" type="button">Copiar código</button>
+<button id="saveTransferImport" class="primary" type="button">Importar save</button>
+</div>
+</div>
+</div>
+`;
+
+document.body.appendChild(overlay);
+
+const close = ()=>{
+overlay.classList.remove("open");
+document.body.classList.remove("guide-open");
+document.body.style.overflow = "";
+};
+
+overlay.querySelector("#saveTransferClose").onclick = close;
+
+overlay.onclick = (e)=>{
+if(e.target === overlay){
+close();
+}
+};
+
+overlay.querySelector("#saveTransferBox").onclick = (e)=>e.stopPropagation();
+
+overlay.querySelector("#saveTransferCopy").onclick = async ()=>{
+const text = overlay.querySelector("#saveTransferText");
+text.focus();
+text.select();
+
+try{
+await navigator.clipboard.writeText(text.value);
+overlay.querySelector("#saveTransferStatus").innerText = "Código copiado.";
+}catch(e){
+document.execCommand("copy");
+overlay.querySelector("#saveTransferStatus").innerText = "Texto selecionado. Use copiar do navegador se precisar.";
+}
+};
+
+overlay.querySelector("#saveTransferImport").onclick = ()=>{
+const text = overlay.querySelector("#saveTransferText").value;
+
+try{
+const parsed = parseSaveCode(text);
+const data = expandCompactSaveData(parsed);
+
+applySaveData(data);
+saveLoadFailed = false;
+saveGame(false);
+
+overlay.querySelector("#saveTransferStatus").innerText = "Save importado com sucesso.";
+showToast("Save importado!", "Seu progresso foi carregado.");
+
+setTimeout(close,650);
+}catch(e){
+console.log("Erro ao importar:", e);
+overlay.querySelector("#saveTransferStatus").innerText = "Código inválido ou incompleto. Copie o código inteiro, começando por GOBBI4_.";
+showToast("Erro ao importar", "Código inválido ou incompleto.");
+}
+};
+
+return overlay;
+}
+
+function openSaveTransferModal(mode, code=""){
+const overlay = getSaveTransferModal();
+const title = overlay.querySelector("#saveTransferTitle");
+const help = overlay.querySelector("#saveTransferHelp");
+const text = overlay.querySelector("#saveTransferText");
+const status = overlay.querySelector("#saveTransferStatus");
+const copyBtn = overlay.querySelector("#saveTransferCopy");
+const importBtn = overlay.querySelector("#saveTransferImport");
+
+status.innerText = "";
+
+if(mode === "export"){
+title.innerText = "Exportar save";
+help.innerHTML = "Copie o código inteiro e cole no outro dispositivo. O código começa com <b>GOBBI4_</b>.";
+text.value = code;
+text.readOnly = true;
+copyBtn.style.display = "block";
+importBtn.style.display = "none";
+}else{
+title.innerText = "Importar save";
+help.innerHTML = "Cole aqui o código exportado do outro dispositivo. Pode ter quebras de linha ou espaços; o jogo tenta limpar automaticamente.";
+text.value = "";
+text.readOnly = false;
+copyBtn.style.display = "none";
+importBtn.style.display = "block";
+}
+
+overlay.classList.add("open");
+document.body.classList.add("guide-open");
+document.body.style.overflow = "hidden";
+
+setTimeout(()=>{
+text.focus();
+text.select();
+},50);
+}
+
+async function exportSaveCode(){
+try{
+saveGame(false);
+
+const code = createPortableSaveCode();
+openSaveTransferModal("export", code);
+
+try{
+await navigator.clipboard.writeText(code);
+const overlay = getSaveTransferModal();
+overlay.querySelector("#saveTransferStatus").innerText = "Código copiado automaticamente.";
+}catch(e){
+const overlay = getSaveTransferModal();
+overlay.querySelector("#saveTransferStatus").innerText = "Copie manualmente o código acima.";
+}
+}catch(e){
+console.log("Erro ao exportar save:", e);
+showToast("Erro ao exportar", "Não consegui gerar o código do save.");
+}
+}
+
+function importSaveCode(){
+openSaveTransferModal("import");
+}
+
+
+saveBtn.onclick = ()=>saveGame(true);
+loadBtn.onclick = ()=>loadGame(true);
+
+resetBtn.onclick = ()=>fullResetEverything();
+
+hardResetBtn.onclick = ()=>clearSaveAndReload();
+
+exportBtn.onclick = ()=>exportSaveCode();
+
+importBtn.onclick = ()=>importSaveCode();
+function positionAchievementPanel(){
+const ownedPanel = document.querySelector(".ownedPanel");
+const achPanel = document.querySelector(".achPanel");
+const desktopSlot = document.getElementById("desktopOwnedAchSlot");
+const ownedOriginalSlot = document.getElementById("ownedOriginalSlot");
+const achOriginalSlot = document.getElementById("achOriginalSlot");
+
+if(!ownedPanel || !achPanel || !desktopSlot || !ownedOriginalSlot || !achOriginalSlot) return;
+
+if(!isMobileLayout()){
+if(ownedPanel.parentElement !== desktopSlot){
+desktopSlot.appendChild(ownedPanel);
+}
+
+if(achPanel.parentElement !== desktopSlot){
+desktopSlot.appendChild(achPanel);
+}
+}else{
+if(ownedPanel.previousElementSibling !== ownedOriginalSlot){
+ownedOriginalSlot.insertAdjacentElement("afterend", ownedPanel);
+}
+
+if(achPanel.previousElementSibling !== achOriginalSlot){
+achOriginalSlot.insertAdjacentElement("afterend", achPanel);
+}
+}
+}
+
+
+setInterval(()=>{
+if(!saveLoadFailed){
+saveGame(false);
+}
+},5000);
+
+try{
+applyPerformanceMode();
+applyMobileLayoutMode();
+updateNews();
+loadGame(false);
+lastEraIndex = getCurrentEraIndex();
+ensureShopArrays();
+
+if(!isMobileLayout()){
+document.body.classList.remove("force-mobile","mobile-view-main","mobile-view-shop","mobile-view-stats","mobile-view-goals");
+}
+
+setShopMode(shopMode || "shop");
+setTab(activeTab || "production");
+setBuyAmount(buyAmount || 1);
+forceRenderShopSafe();
+renderAchievements();
+positionAchievementPanel();
+renderOwnedIcons(true);
+applySkin();
+renderSkinGrid(true);
+setMobileView(mobileView || "main");
+
+if(!isMobileLayout()){
+document.body.classList.remove("force-mobile","mobile-view-main","mobile-view-shop","mobile-view-stats","mobile-view-goals");
+}
+
+updateUI();
+checkAchievements(true);
+
+setTimeout(()=>{
+applyMobileLayoutMode();
+
+if(!isMobileLayout()){
+document.body.classList.remove("force-mobile","mobile-view-main","mobile-view-shop","mobile-view-stats","mobile-view-goals");
+}
+
+positionAchievementPanel();
+forceRenderShopSafe();
+},250);
+}catch(e){
+console.log("Erro na inicialização:", e);
+}
+
+
+// Reparo final para casos em que o navegador pula a primeira renderização.
+setTimeout(()=>repairShopAchievementsOwned("startup-100"),100);
+setTimeout(()=>repairShopAchievementsOwned("startup-600"),600);
+window.addEventListener("load",()=>repairShopAchievementsOwned("window-load"));
+
+
+setTimeout(()=>{
+try{
+renderAchievements();
+renderOwnedIcons(true);
+positionAchievementPanel();
+if(shopMode !== "skins"){
+renderShop();
+}
+refreshVisibleShopAffordability();
+}catch(e){
+console.log("startup-after-fatal-fix", e);
+}
+},300);
+</script>
+</body>
+</html>
